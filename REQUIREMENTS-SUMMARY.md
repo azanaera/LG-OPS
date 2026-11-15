@@ -258,7 +258,7 @@
 
 ## 11. Glossary (as used in the source documents)
 
-> This is a quick reference using the source documents' own wording. The **canonical terms**, the words to avoid, and how terms relate are kept in [CONTEXT.md](CONTEXT.md). Use those in tickets, test cases and screens.
+> Quick reference in the source documents' own wording. **Stakeholders:** use [GLOSSARY.md](GLOSSARY.md). **Developers and testers:** the canonical terms and the words to avoid are in [CONTEXT.md](CONTEXT.md). Use those in tickets, test cases and screens.
 
 | Term | Plain meaning |
 |---|---|

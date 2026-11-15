@@ -52,6 +52,10 @@ _Avoid_: Hauler, subcontractor
 A Party that groups several shippers' cargo under one master air waybill.
 _Avoid_: Co-loader, aggregator
 
+**Cargo Warehouse**:
+A place in the directory where cargo is held before or after it moves.
+_Avoid_: Depot, CFS, storage (alone)
+
 **Branch** ⚑ (BO-04):
 A physical office or terminal of the Company. It currently appears only on the map and is not a boundary for users or records.
 _Avoid_: Office, site, location
@@ -234,6 +238,18 @@ _Avoid_: Void (void is for Invoices), deleted, killed
 A Customer's vehicle being shipped on a roll-on/roll-off vessel. It is cargo, not equipment.
 _Avoid_: Vehicle (alone), car, unit, auto
 
+**Title Status**:
+Whether the ownership papers of a RORO Vehicle are Pending, Received or Missing.
+_Avoid_: Document status, papers, registration status
+
+**Customs Hold** ⚑ (OP-17):
+A marker that customs has not cleared a RORO Vehicle. It is separate from the Hold status.
+_Avoid_: Hold (alone), customs block, stop
+
+**Lien Release** ⚑ (OP-17):
+A marker that a lender's claim on a RORO Vehicle has been lifted.
+_Avoid_: Bank release, clearance, encumbrance
+
 **Fleet Vehicle**:
 A truck or other vehicle owned or run by the Company and used for cartage and dispatch.
 _Avoid_: Vehicle (alone), truck, equipment ⚑, unit
@@ -399,6 +415,14 @@ _Avoid_: Reversing entry, contra, credit note
 **Check Disbursement** ⚑ (DOC-09):
 A recorded payment by check, with its own status (Draft, Printed, Posted, Void).
 _Avoid_: Cheque, payment, CDV (see Flagged ambiguities)
+
+**Miscellaneous Invoice** ⚑ (AC-19):
+A Bridge Item type that does not come from a Freight File. Its use is undefined in the source.
+_Avoid_: (until defined)
+
+**Signatory**:
+A person authorised to sign a disbursement Voucher or check.
+_Avoid_: Signer (a signer signs a Proof of Delivery), approver, authoriser
 
 **Period**:
 One accounting month of the Ledger. It is Open or Closed.
