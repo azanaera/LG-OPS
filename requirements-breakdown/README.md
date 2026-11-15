@@ -78,7 +78,13 @@ Non-functional requirements use a fit table in place of the worked examples: `Me
 
 | File | Detailed enough | Refined | Blocked | Total |
 |---|---|---|---|---|
-| 01-operations.md | | | | 42 |
-| 02-accounting.md | | | | 33 |
-| 03-business-and-technical.md | | | | 50 |
-| **All** | | | | **125** |
+| 01-operations.md | 11 | 22 | 9 | 42 |
+| 02-accounting.md | 10 | 16 | 7 | 33 |
+| 03-business-and-technical.md | 24 | 14 | 12 | 50 |
+| **All** | **45** | **52** | **28** | **125** |
+
+**Reading the totals:** 80 of the 125 requirements (64%) are not yet detailed enough to confirm as written. 28 cannot be refined at all until an owner answers a question. Recount after each workshop with:
+
+```bash
+grep -oE '\*\*Verdict:\*\* (Detailed enough|Refined|Blocked)' requirements-breakdown/0*.md | sort | uniq -c
+```
