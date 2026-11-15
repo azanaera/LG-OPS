@@ -18,6 +18,8 @@
 
 When a question is answered, also update the affected requirement. If the answer settles a business term, update [CONTEXT.md](CONTEXT.md) at once: remove the ⚑ flag and adjust the definition.
 
+**Update order when a question is answered:** (1) this log; (2) [CONTEXT.md](CONTEXT.md) and [GLOSSARY.md](GLOSSARY.md) if a term changed; (3) the matching entry in [requirements-breakdown/](requirements-breakdown/README.md); (4) the status in [PROCESS-GAP-ANALYSIS.md](PROCESS-GAP-ANALYSIS.md). Nothing else stores decisions.
+
 ---
 
 ## Summary
@@ -25,12 +27,14 @@ When a question is answered, also update the affected requirement. If the answer
 | Group | Count | Open |
 |---|---|---|
 | A. Interview with QA lead (Round 1) | 9 | 9 |
-| B. Business owner | 11 | 11 |
-| C. Accounting lead | 18 | 18 |
-| D. Operations lead | 12 | 12 |
-| E. Technical lead | 10 | 10 |
-| F. Document fixes for Engineering | 14 | 14 |
-| **Total** | **74** | **74** |
+| B. Business owner | 14 | 14 |
+| C. Accounting lead | 22 | 22 |
+| D. Operations lead | 18 | 18 |
+| E. Technical lead | 12 | 12 |
+| F. Document fixes for Engineering | 18 | 18 |
+| **Total** | **93** | **93** |
+
+*19 questions were added on 15 November 2026 during the second review pass: BO-12 to BO-14, AC-19 to AC-22, OP-13 to OP-18, TL-11, TL-12 and DOC-15 to DOC-18.*
 
 ---
 
@@ -67,6 +71,9 @@ These set up how the confirmation work is run. Q5 to Q8 are business questions. 
 | BO-09 | **Owner decisions in SAD §13.** (a) When will the legacy ledger cleanup run on production (R-06)? (b) Will the stopped earlier production instance be removed? | Both are listed as owner decisions and have no date. | SAD §2.3, §13 | (a) Before go-live, after the dry run and a verified backup. (b) Remove it after its data is archived. | Open | |
 | BO-10 | **Business volumes.** How many files a month, how many users at the same time, and how much growth is expected in the next 2 years? | SQLite limits concurrent writers (R-01, High). Performance was only measured on a demo copy. | SAD R-01, §12.2; SRS NFR-PF-03 | (fact needed) | Open | |
 | BO-11 | **Record retention.** How long must freight and accounting records be kept? May they ever be deleted or archived? | No retention requirement exists. Legal and tax record-keeping periods apply. | SRS §7.2, DR-05 | Confirm the legal retention period with Accounting. | Open | |
+| BO-12 | **Data migration and cut-over.** The Platform "replaces spreadsheet and paper steps". What existing data must be loaded before go-live (customers, open files, tariffs, ledger opening balances)? Who prepares it, and what is the cut-over date? | No requirement or plan covers loading existing data. A ledger without opening balances cannot produce correct statements. | SRS §2.1; SAD §2.3 | (decision needed) | Open | |
+| BO-13 | **Training and acceptance.** Who trains users, and who signs off user acceptance testing for each area? | The SRS names four owners who "confirm" requirements, but nobody who accepts the working system. | SRS Review and Approval table | The owner of each area signs acceptance for that area. | Open | |
+| BO-14 | **Delete rights and audit access.** Which roles may delete which records? Which roles may read the audit trail? | The SRS says "authorised user" and "authorised roles" without naming them, so the rule cannot be tested. | SRS FR-AD-01/02/03, DR-05 | Name the roles in each requirement. | Open | |
 
 ---
 
@@ -92,6 +99,10 @@ These set up how the confirmation work is run. Q5 to Q8 are business questions. 
 | AC-16 | **Accountant rights on freight files.** Can accountants edit approved files, or are they read-only? | The SAD says both (see DOC-01). | SAD §2.6 vs §3.3 | Read-only. | Open | |
 | AC-17 | **Billing for cartage, vehicles and dispatch.** How are trucking, RORO vehicle shipping and dispatch charged to customers? | Billing runs only on air and ocean files, so these services have no way to be billed. | SAD §7.8; SRS FR-BL-01 | (decision needed, with the Operations lead) | Open | |
 | AC-18 | **Tariff data entry.** Who enters tariffs and charge packages, and by when? Only one lane has a known rate today. | Automatic billing depends on tariffs (R-03, High). | SRS A-01, App. B #4; SAD §14.1, R-03 | A named owner and a target date before go-live. | Open | |
+| AC-19 | **Miscellaneous invoice.** The bridge has a third item type, "miscellaneous invoice", with its own tab. What is it used for, and who raises one? | No requirement covers it. It is a route into the ledger that does not start from an approved file. | SAD §7.9 | (definition needed) | Open | |
+| AC-20 | **Re-issue after a re-rate.** When an approved file is re-rated after its invoice is issued, the invoice is "marked for re-issue". Who is told, who re-issues it, and may the old invoice stay with the customer meanwhile? | The customer may hold an invoice that no longer matches the file. | SAD §7.8 | (decision needed) | Open | |
+| AC-21 | **Fiscal year.** What is the fiscal year? Is there a year-end close beyond the month-end close? | Only a month-end close is specified. | SRS FR-FS-06 | (fact needed) | Open | |
+| AC-22 | **Check disbursements and other payments.** What are check disbursements used for (supplier payments, refunds, other)? Are payments by bank transfer or cash recorded, and where? | Only checks have a register. Bank file transfers are out of scope, but the payments still happen. | SRS FR-BR-06, FR-FS-02 | (decision needed, with AC-09) | Open | |
 
 ---
 
@@ -111,6 +122,12 @@ These set up how the confirmation work is run. Q5 to Q8 are business questions. 
 | OP-10 | **Proof of delivery.** Signature pads are not connected, so POD capture is disabled. Is a paper POD, or an uploaded photo of one, acceptable for now? | The POD requirement is only partly met (FR-FD-04). | SRS FR-FD-04 | Allow a photo attachment in the meantime. | Open | |
 | OP-11 | **House number on a consolidation invoice.** What should the invoice show as the house number for a consolidation? | It repeats the MAWB number today (known gap 8). It depends on AC-01. | SRS App. B #8; SAD R-07 | Follows AC-01. | Open | |
 | OP-12 | **Approval turnaround.** How quickly must files be approved or returned? Who covers when the approver is away? | No service level and no deputy rule. Billing waits on approval. | SRS FR-AP-04/05 | (decision needed) | Open | |
+| OP-13 | **Domestic files.** A file has a mode of ocean or air only, yet a direction of domestic. What is a domestic file in practice (inter-island sea or air)? Is trucking-only work a file, or only a cartage order? | Billing runs only on files. Work that is not a file cannot be billed (see AC-17). | SRS FR-SH-01 | (fact needed) | Open | |
+| OP-14 | **Quote lifecycle.** Who marks a quote Sent and Accepted? What proves the customer accepted? Does a quote expire by date automatically? | An accepted quote replaces the tariff prices, so a wrong "Accepted" changes what the customer is billed. | SRS FR-RT-04, FR-SH-07 | (decision needed) | Open | |
+| OP-15 | **Required fields at submit.** Submit checks "dates" and "cargo". Which dates and which cargo fields are required? Do they differ for ocean, air and consolidation? | "Dates" and "cargo" cannot be tested as written. | SRS FR-AP-02 | List the required fields for each mode. | Open | |
+| OP-16 | **Notifications.** How do approvers learn that a file is pending, and operators that a file was returned? | No notification requirement exists. Files may wait unnoticed, and billing waits on approval. | SRS FR-AP-02/05, FR-OV-01 | The Overview to-do list at minimum. Email is a later item. | Open | |
+| OP-17 | **RORO holds.** Who may put a vehicle on Hold and release it? How do the Hold status, the customs hold flag and the lien release flag relate? | Three separate "hold" markers exist, with no rule on who sets them or which one stops shipment. | SRS FR-VH-02/03 | (decision needed) | Open | |
+| OP-18 | **Legacy files.** Files created before the approval step are treated as approved. Should any of them be reviewed before they are billed? | They reach billing without anyone having approved them. | SAD §3.3, §8.4 | Review any that are not yet invoiced. | Open | |
 
 ---
 
@@ -128,6 +145,8 @@ These set up how the confirmation work is run. Q5 to Q8 are business questions. 
 | TL-08 | **Exchange rate in the browser.** Is the browser-fetched exchange rate ever used for invoice or ledger amounts? | Linked to AC-03. Money rules should not depend on the browser. | SAD §10.3, §11.3 | Fetch and store the rate on the server. | Open | |
 | TL-09 | **Time zone.** Which time zone is used for dates, the daily and monthly invoice sequences, and period close? | It is not specified. Entries near midnight could land in the wrong day or month. | SRS FR-BL-04/05, FR-FS-04 | Asia/Manila for all business dates. | Open | |
 | TL-10 | **Acceptance criteria stakeholders can read.** Can Engineering turn the main checks (check:billing, check:invoice, check:bridge, check:air-booking) into worked examples that stakeholders can confirm? | "check:billing passes" means nothing to an Accounting lead. | SRS §4 (acceptance column) | Provide 3 to 5 worked examples for each rule. | Open | |
+| TL-11 | **Password policy and idle time-out values.** What are the actual values (minimum length, character rules, history depth, idle time)? Does the one-minute sign-in block run from the first or the fifth failure? | The SRS gives only the 72-byte maximum, "a recent password" and "a period of inactivity". | SRS FR-AU-04/06/07/08 | State the values in the SRS. The Business owner confirms them. | Open | |
+| TL-12 | **Attachments.** Which file types are accepted, and are uploads scanned? | Only the 15 MB size limit is specified. | SRS FR-AD-04 | (fact needed) | Open | |
 
 ---
 
@@ -149,3 +168,7 @@ These set up how the confirmation work is run. Q5 to Q8 are business questions. 
 | DOC-12 | NFR-PF-03 is marked Built, but it was measured on a demo copy, not at production volume. | SRS NFR-PF-03; SAD §12.2 | Re-state the target against BO-10 volumes. | Open |
 | DOC-13 | Viewers have "read access to modules". It is unclear whether this includes the ledger, since ledger routes need a separate ledger access check. | SRS Table 2-1; SAD §11.2 | State the viewer's ledger access explicitly. | Open |
 | DOC-14 | Managers have "no user administration" (Table 2-1), yet FR-AU-12 says "a manager shall not manage superadmin accounts", which implies managers manage other users. | SRS Table 2-1 vs FR-AU-12 | Clarify which user changes a manager may make. | Open |
+| DOC-15 | The SAD approval table has no Operations lead, although the SAD defines the approval and movement process. | SAD Document Control | Add the Operations lead. | Open |
+| DOC-16 | Tariffs are maintained by "the business" in one place and by "the accounting team" in another. | SRS A-01; SAD §14.1 | Resolve with AC-18. | Open |
+| DOC-17 | SAD §15 traces FR-AP-01 to 06 and FR-BL-01 to 08 only. FR-AP-07, FR-BL-09 and FR-BL-10 have no design reference. | SAD §15 | Add them, marked Planned. | Open |
+| DOC-18 | NFR-US-01/02, constraints C-01 to C-05 and assumptions A-01 to A-04 are missing from the SRS traceability matrix, so no owner confirms them. | SRS §8 | Assign each an owner. | Open |
