@@ -58,7 +58,7 @@ The column **"How the business does it today"** is empty on purpose. Fill it in 
 | # | Gap | In one line | Owner |
 |---|---|---|---|
 | 1 | GAP-56 | Four **Must** requirements are not built, so by the SRS's own rule the system cannot be released. | Business owner |
-| 2 | GAP-57 | No backup and restore for two single-file databases. | Technical lead |
+| 2 | GAP-57 | No documented backup and restore for two single-file databases. | Technical lead |
 | 3 | GAP-15 | A manager can submit and approve the same file. | Business owner |
 | 4 | GAP-16 | An approved file can be edited and re-billed with no second check. | Operations lead |
 | 5 | GAP-33 | "One invoice per file" cannot bill the many customers of a consolidation. | Accounting lead |
@@ -84,7 +84,7 @@ Before ──► 1 Quote ──► 2 Booking ──► 3 APPROVAL ──► 4 Mo
 | GAP ID | What the documents say the system does | How the business does it today | Gap | Type | Severity | Question | Proposed resolution |
 |---|---|---|---|---|---|---|---|
 | GAP-01 | The Platform "replaces spreadsheet and paper steps" (SRS §2.1). No loading of existing data is described. | | No plan for existing customers, open files, tariffs or ledger opening balances, and no cut-over date. | Missing | High | BO-12 | A migration plan with an owner and a date. |
-| GAP-02 | Tariffs are entered by the business. Only one lane has a known rate (SRS A-01, App. B #4; SAD R-03). | | Automatic billing produces "no tariff" for almost every file. The documents disagree on who enters tariffs. | Unbuilt | High | AC-18, DOC-16 | A named owner and a date before go-live. |
+| GAP-02 | Tariffs are entered by the business. Only one lane has a known rate (SRS A-01, App. B #4; SAD R-03). | | Automatic billing produces "no tariff" for almost every file. The documents disagree on who enters tariffs. | Unbuilt | High | AC-18, AC-26, DOC-16 | A named owner and a date before go-live. |
 | GAP-03 | The ledger is assumed to hold every account that charge codes map to (SRS A-02). A legacy ledger cleanup has not been run on production (SAD R-06; App. B #3). | | Nobody has confirmed the chart, and leftover rows remain in the production ledger. | Unverified | Medium | BO-09 | Accounting lead confirms the chart. Cleanup runs before go-live after a dry run and a verified backup. |
 | GAP-04 | Four owners "confirm" the requirements (SRS Review and Approval). | | Nobody is named to train users or to accept the working system. | Missing | Medium | BO-13 | The owner of each area signs acceptance for it. |
 | GAP-05 | A "live site" deploys from main, and a stopped earlier production instance still exists (SAD §2.3). | | It is unclear whether staff already use the system for real shipments, and what happens to the old instance. | Undefined | Medium | BO-09 | Confirm the fact (Q2). Archive, then remove, the old instance. |
@@ -128,7 +128,7 @@ Before ──► 1 Quote ──► 2 Booking ──► 3 APPROVAL ──► 4 Mo
 | GAP-23 | A proof-of-delivery signature is captured only when a signature pad is connected. No connector exists (SRS FR-FD-04). | | Delivery cannot be proven in the system today. | Unbuilt | Medium | OP-10 | Allow a photo of the paper proof as an attachment. |
 | GAP-24 | A RORO vehicle has a Hold status, a customs hold flag and a lien release flag (SRS FR-VH-02/03). | | No rule on who sets or clears each, or which one stops shipment. | Undefined | Medium | OP-17 | Define each marker and who may change it. |
 | GAP-25 | The vehicle number decode works for US-format numbers only, and its "engine" label shows the engine layout (SRS App. B #6; SAD R-09). | | Non-US vehicles must be typed by hand. | Unbuilt | Low | OP-17 | Confirm it is acceptable when RORO holds are discussed. |
-| GAP-26 | Billing runs only on ocean and air files (SAD §7.8). | | Cartage, RORO vehicle shipping and dispatch have no way to be billed. | Missing | High | AC-17 | Decide how each service is charged. |
+| GAP-26 | Billing runs only on ocean and air files (SAD §7.8). | | The documents do not say how cartage, RORO vehicle shipping and dispatch are billed. | Missing | High | AC-17 | Decide how each service is charged. |
 | GAP-27 | Vehicles, cartage and dispatch are verified by "functional review" only. The rehearsal skipped the RORO inspection dialog and the milestone screens (SRS §8, App. B #12; SAD §12.3). | | These modules have no automated checks and were not all exercised. | Unverified | Medium | TL-07 | QA writes manual test cases. End-to-end scripts join the automated checks. |
 
 ### Step 5: Tracking, public lookup and map
@@ -139,7 +139,7 @@ Before ──► 1 Quote ──► 2 Booking ──► 3 APPROVAL ──► 4 Mo
 | GAP-29 | The public lookup returns "tracking fields only" for a file, booking, waybill, master or house number, with no sign-in (SRS FR-PT-01/02). | | The fields are not listed. File numbers follow a pattern, so anyone who guesses one sees its status. | Undefined | High | BO-07 | List the allowed fields. Exclude party names. |
 | GAP-30 | Customer web account records exist with permission flags, but customers cannot sign in (SRS FR-TR-03/04/05; SAD R-12). | | The flags do nothing. | Unbuilt | Low | BO-05 | Defer the portal. Hide the flags until then. |
 | GAP-31 | The live map needs internet and a ship feed token; without the token no ships show (SRS App. B #9; SAD R-09). | | The map may be empty at go-live. | Unbuilt | Low | BO-08 | Decide with the other connectors whether the feed is needed. |
-| GAP-32 | Live device, government and carrier connectors "are required", with priority Could. None exists (SRS FR-AD-05; SAD R-12). | | The requirement contradicts its own priority. | Contradiction | Low | BO-08, DOC-03 | Could, after go-live. Correct the wording. |
+| GAP-32 | Live device, government and carrier connectors "are required", with priority Could. None exists (SRS FR-AD-05; SAD R-12). | | The requirement contradicts its own priority. | Contradiction | Low | BO-08, BO-15, DOC-03 | Could, after go-live. Correct the wording. |
 
 ### Step 6: Billing and invoices
 
@@ -147,11 +147,11 @@ Before ──► 1 Quote ──► 2 Booking ──► 3 APPROVAL ──► 4 Mo
 |---|---|---|---|---|---|---|---|
 | GAP-33 | Each file has one live invoice (SRS FR-BL-04). | | A consolidation with 40 house customers cannot be invoiced per customer. | Missing | High | AC-01 | Accounting lead decides: one invoice, or one per house. |
 | GAP-34 | A file has one bill-to party (SRS FR-AP-02). | | Charges split between parties (prepaid and collect, origin and destination, overseas agent) cannot be expressed. | Missing | High | AC-02 | Decide whether split billing is needed. |
-| GAP-35 | Amounts keep their currency and the ledger records in PHP. The exchange rate service is called from the browser (SRS C-05; SAD §10.3). | | No rule for which rate applies, when, or who may override it. The rate used for posting is not controlled. | Missing | High | AC-03, TL-08 | Fix the rate at invoice issue from one chosen source, held by the server. |
+| GAP-35 | Amounts keep their currency and the ledger records in PHP. The SRS says the server calls the exchange rate service; the SAD also lets the browser connect to it (SRS C-05, IFR-06; SAD §10.3, §11.3). | | No rule for which rate applies, when, or who may override it. It is unclear which rate is used for posting. | Missing | High | AC-03, TL-08 | Fix the rate at invoice issue from one chosen source, held by the server. |
 | GAP-36 | VAT is 12% on taxable lines, and each invoice is 12%, zero-rated or exempt. The rule sits in the freight group, not billing (SRS FR-SH-06). | | No rule for choosing the treatment or who chooses. Withholding tax is not mentioned. | Undefined | High | AC-04, DOC-10 | Accounting lead states the rules. |
 | GAP-37 | Invoice numbers are fixed at issue and never reused. A void drafts a new revision (SRS FR-BL-04/05/06, DR-04). | | Nobody has checked the numbering and voiding against the tax authority's rules for official invoices. | Unverified | High | AC-05 | Confirm the rules and add them as requirements. |
 | GAP-38 | No credit note. An invoice with a zero or negative total is refused; the correction is void and re-issue (SRS FR-BL-09, App. B #1; SAD R-04). | | A **Must** requirement is not built. | Unbuilt | High | AC-06 | Decide whether void and re-issue is acceptable at go-live. |
-| GAP-39 | A re-rate after issue "marks the invoice for re-issue" (SAD §7.8). | | Nobody is told, and the customer may hold an invoice that no longer matches the file. | Undefined | Medium | AC-20 | Define who re-issues and when. |
+| GAP-39 | A re-rate after issue "marks the invoice for re-issue" (SAD §7.8). | | Nobody is told, and the customer may hold an invoice that no longer matches the file. | Undefined | Medium | AC-20, AC-24 | Define who re-issues and when. |
 | GAP-40 | The Overview sums monthly income by estimated or actual dates. The ledger counts income by posting date (SRS FR-OV-01, App. B #5). | | Two different "income" figures. | Contradiction | Medium | AC-11 | The ledger is official. Label the Overview figure "estimated". |
 | GAP-41 | Acceptance for the billing rules is "check:billing passes" and similar (SRS §4). | | An owner cannot confirm a rule from an engineering check name. | Unverified | Medium | TL-10, DOC-11 | Worked examples with numbers for each rule. |
 | GAP-42 | Invoice references use a daily sequence, invoice numbers a monthly one, and periods close by month (SRS FR-BL-04/05, FR-FS-04). | | No time zone is stated. An entry near midnight could land in the wrong day or month. | Undefined | Medium | TL-09 | Asia/Manila for all business dates. |
@@ -160,11 +160,11 @@ Before ──► 1 Quote ──► 2 Booking ──► 3 APPROVAL ──► 4 Mo
 
 | GAP ID | What the documents say the system does | How the business does it today | Gap | Type | Severity | Question | Proposed resolution |
 |---|---|---|---|---|---|---|---|
-| GAP-43 | The company chooses manual, review (default) or auto posting. Auto posts with no person checking (SRS FR-BL-08). | | No decision on the mode at go-live or on who may change it. | Control | Medium | AC-13 | Review mode. Only a superadmin changes it, with the Accounting lead's approval. |
+| GAP-43 | The company chooses manual, review (default) or auto posting. Auto posts with no person checking (SRS FR-BL-08). | | No decision on the mode at go-live or on who may change it. | Control | Medium | AC-13, AC-23 | Review mode. Only a superadmin changes it, with the Accounting lead's approval. |
 | GAP-44 | Auto mode posts only when "no rate note is open" (SRS FR-BL-08). | | "Rate note" is not defined anywhere. | Undefined | Medium | AC-14 | Engineering defines it. Accounting lead confirms. |
 | GAP-45 | Managers approve files and have "all ledger functions". The bridge requirements name no roles (SRS Table 2-1, FR-BR-04/05; SAD §2.6). | | One person could approve, bill and post the same file. | Control | High | AC-15 | Only accountants post. Managers approve but do not post. |
 | GAP-46 | All charges post to one sales account (SRS FR-BL-10, App. B #2; SAD R-05). | | Revenue cannot be reported by service. | Unbuilt | Medium | AC-07 | Accounting lead provides the mapping from charge code to revenue account. |
-| GAP-47 | The bridge has a "miscellaneous invoice" item type and tab (SAD §7.9). | | No requirement covers it. It is a route to the ledger that does not start from an approved file. | Missing | Medium | AC-19 | Define its use and who may raise one. |
+| GAP-47 | The bridge has a "miscellaneous invoice" item type and tab (SAD §7.9). | | No requirement covers it. It may be a route to the ledger that does not start from an approved file. | Missing | Medium | AC-19 | Define its use and who may raise one. |
 | GAP-48 | A check disbursement register exists. "CDV" is a check disbursement voucher in one place and a cash disbursement voucher in another (SRS FR-BR-06, FR-FS-02, Table 1-1). | | Unclear what payments are recorded, and where payments that are not by check go. | Undefined | Medium | AC-22, DOC-09 | Define the term and the payment types covered. |
 
 ### Step 8: Ledger and month-end
@@ -172,7 +172,7 @@ Before ──► 1 Quote ──► 2 Booking ──► 3 APPROVAL ──► 4 Mo
 | GAP ID | What the documents say the system does | How the business does it today | Gap | Type | Severity | Question | Proposed resolution |
 |---|---|---|---|---|---|---|---|
 | GAP-49 | The system cannot reopen a closed month. Reopening is "an owner decision made outside the system" (SRS §7.1). | | A change made outside the system leaves no audit record. | Control | High | AC-12 | A written procedure with approval and a backup, or an audited reopen function. |
-| GAP-50 | Month-end close creates closing entries and closes the period (SRS FR-FS-06). | | No fiscal year and no year-end close are stated. | Missing | Medium | AC-21 | State the fiscal year and any year-end steps. |
+| GAP-50 | Month-end close creates closing entries and closes the period (SRS FR-FS-06). | | No fiscal year and no year-end close are stated. | Missing | Medium | AC-21, AC-25 | State the fiscal year and any year-end steps. |
 | GAP-51 | Every record carries a company code so several companies can be supported, but only this deployment's company has a ledger (SRS FR-FS-09; SAD D-02). | | A second company's invoices would have nowhere to post. | Contradiction | Medium | BO-03, DOC-05 | Confirm a single company for go-live. |
 | GAP-52 | Viewers have "read access to modules". Ledger pages need a separate ledger access check (SRS Table 2-1; SAD §11.2). | | Unclear whether an auditor with the viewer role can read the ledger. | Undefined | Low | DOC-13 | State the viewer's ledger access. |
 
@@ -193,9 +193,9 @@ Before ──► 1 Quote ──► 2 Booking ──► 3 APPROVAL ──► 4 Mo
 | GAP ID | What the documents say the system does | How the business does it today | Gap | Type | Severity | Question | Proposed resolution |
 |---|---|---|---|---|---|---|---|
 | GAP-56 | "Must = required for release." Four Must items are not fully built: credit note, penetration test, backup and restore, paging on every list (SRS §1, App. A). | | By its own rule the system cannot be released, and no go-live date or gate is stated. | Contradiction | High | BO-01, DOC-06 | Blockers until the Business owner downgrades them in writing. |
-| GAP-57 | A health check exists. No routine backup and restore procedure exists for either database. Recovery depends on file copies (SRS NFR-AV-01; SAD §6.5, R-01, rated High). | | A lost or damaged file could lose all freight or ledger data. | Unbuilt | High | TL-01 | Daily backup at minimum. A restore tested before go-live. Agree how much data may be lost and how long a restore may take. |
+| GAP-57 | A health check exists. No routine backup and restore procedure is documented for either database. Recovery depends on file copies (SRS NFR-AV-01; SAD §6.5, R-01, rated High). | | A lost or damaged file could lose all freight or ledger data. | Unbuilt | High | TL-01 | Daily backup at minimum. A restore tested before go-live. Agree how much data may be lost and how long a restore may take. |
 | GAP-58 | Performance targets were met on a demo copy. The databases allow limited concurrent writing (SRS NFR-PF-03; SAD §12.2, R-01). | | No business volumes are stated, so nobody knows whether the system will cope. | Unverified | High | BO-10, TL-02, DOC-12 | Business owner gives volumes. Technical lead shares load test results against them. |
-| GAP-59 | A penetration test and dependency audit are required before go-live and are not scheduled (SRS NFR-SE-07). | | A **Must** requirement is not built. | Unbuilt | High | TL-03 | Book it before go-live. |
+| GAP-59 | A penetration test and dependency audit are required before go-live. They are Planned, with no date (SRS NFR-SE-07). | | A **Must** requirement is not built. | Unbuilt | High | TL-03 | Book it before go-live. |
 | GAP-60 | Every list must be paged; some are not (SRS NFR-PF-02). | | A **Must** requirement is partly built, and the unpaged lists are not named. | Unbuilt | Medium | TL-06 | Engineering lists the endpoints. |
 | GAP-61 | Encryption of the database files depends on the host and is "planned for review" (SAD §11.4). | | Ledger and customer data may be stored unencrypted. | Unverified | Medium | TL-04 | Confirm the host's setting. |
 
@@ -204,7 +204,7 @@ Before ──► 1 Quote ──► 2 Booking ──► 3 APPROVAL ──► 4 Mo
 | GAP ID | What the documents say the system does | How the business does it today | Gap | Type | Severity | Question | Proposed resolution |
 |---|---|---|---|---|---|---|---|
 | GAP-62 | No password reset and no self-registration exist. Help requests become support tickets (SAD §11.1; SRS FR-AD-04). | | A user who forgets a password is locked out until an administrator acts. No requirement says so. | Missing | Medium | BO-06 | Accept for go-live and write it as a requirement. |
-| GAP-63 | A password policy, a password history and an idle time-out exist (SRS FR-AU-06/07/08). | | The values are not stated, except a 72-byte maximum. | Undefined | Low | TL-11 | State the values. Business owner confirms. |
+| GAP-63 | A password policy, a password history and an idle time-out exist (SRS FR-AU-06/07/08). | | The values are not stated, except a 72-byte maximum. | Undefined | Low | TL-11, TL-13 | State the values. Business owner confirms. |
 | GAP-64 | Branches appear on the map and in "single-person offices" (SRS FR-MP-01; SAD R-02). | | Branches do not exist in roles or data, so nothing can be limited to a branch. | Missing | Medium | BO-04 | Decide whether users, files or approvals are limited by branch. |
 | GAP-65 | Managers have "no user administration", yet "a manager shall not manage superadmin accounts" (SRS Table 2-1, FR-AU-12). | | Unclear whether managers can manage other users. | Contradiction | Medium | DOC-14 | State which user changes a manager may make. |
 | GAP-66 | An "authorised user" manages users and companies. "Authorised roles" read the audit trail. Deletion is "limited to roles allowed by the route" (SRS FR-AD-01/02/03, DR-05). | | The roles are not named, so the rules cannot be tested or confirmed. | Undefined | Medium | BO-14 | Name the roles in each requirement. |
@@ -226,7 +226,7 @@ These cannot be closed until someone is named to decide them.
 
 | GAP ID | What the documents say the system does | How the business does it today | Gap | Type | Severity | Question | Proposed resolution |
 |---|---|---|---|---|---|---|---|
-| GAP-71 | The traceability matrix assigns each requirement group to an owner (SRS §8). | | The usability requirements, constraints C-01 to C-05 and assumptions A-01 to A-04 are not in the matrix, so nobody confirms them. | Missing | Medium | DOC-18 | Assign each an owner. |
+| GAP-71 | The traceability matrix assigns each requirement group to an owner (SRS §8). | | The usability requirements, two security requirements (NFR-SE-06/07), constraints C-02 to C-05 and assumptions A-01 to A-04 are not in the matrix, so nobody confirms them. IFR-07 has two owners. | Missing | Medium | DOC-18 | Assign each an owner. |
 | GAP-72 | Screens must work at phone width, and every list must show loading, empty and error states. Both are Partial (SRS NFR-US-01, IFR-02). | | The screens that fail are not named, and no owner confirms usability. | Unbuilt | Low | DOC-18 | Engineering lists the screens. The owner from GAP-71 accepts or rejects. |
 
 ### Gaps that need two owners
@@ -249,4 +249,4 @@ These cannot be closed until someone is named to decide them.
 |---|---|---|
 | Known limitations (SRS App. B) | 1 to 12 | GAP-38, GAP-46, GAP-03, GAP-02, GAP-40, GAP-25, GAP-11, GAP-12, GAP-31, GAP-14, GAP-10, GAP-27 |
 | Risks (SAD §13) | R-01 to R-13 | R-01 GAP-57 · R-02 GAP-15 · R-03 GAP-02 · R-04 GAP-38 · R-05 GAP-46 · R-06 GAP-03 · R-07 GAP-12 · R-08 GAP-11 · R-09 GAP-25, GAP-31 · R-10 GAP-14 · R-11 GAP-10 · R-12 GAP-30, GAP-32 · R-13 GAP-06 |
-| Open questions, groups B to F | 84 | Every question appears in the Question column of at least one gap above. |
+| Open questions, groups B to F | 90 | Every question appears in the Question column of at least one gap above. |

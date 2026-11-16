@@ -36,8 +36,8 @@
 | FR-OV-02.1 | Each of the five Roles (Superadmin, Manager, Operator, Accountant, Viewer) sees a workspace made for that Role. | (system) | ☐ |
 
 **Worked examples**
-- *Given* an Accountant signs in, *then* the workspace shows billing, Accounting Bridge and Ledger work.
-- *Given* an Operator signs in, *then* the workspace shows no Ledger functions.
+- *Given* an Accountant signs in, *then* the workspace shows billing, Accounting Bridge and Ledger work. *(Assumed from the Role table — confirm.)*
+- *Given* an Operator signs in, *then* the workspace shows no Ledger functions. *(Assumed from the Role table — confirm.)*
 
 **Not stated — ask:** the content of each workspace is not listed anywhere. Ask Engineering for the list per Role (TL-10), then confirm it with each owner.
 
@@ -74,7 +74,7 @@
 | FR-AP-02.4 | On Submit the revision number increases by one, and the Submitter and time are recorded as an event. | (system) | ☐ |
 
 **Worked examples**
-- *Given* a Draft file with no Consignee, *when* the Operator submits, *then* it stays Draft and the Operator is told what is missing.
+- *Given* a Draft file with no Consignee, *when* the Operator submits, *then* it stays Draft. *(Whether the message names the missing field is not stated — ask.)*
 - *Given* a For Correction file at revision 1 with all required fields filled, *when* the Operator submits, *then* it is Pending at revision 2.
 
 **Not stated — ask:** which dates and which cargo fields are required, and whether they differ by Mode (OP-15). Whether the refusal names each missing field. How the Approver learns a file is Pending (OP-16).
@@ -264,12 +264,12 @@
 | ID | Refined statement | Actor | Confirmed |
 |---|---|---|---|
 | FR-SH-07.1 | A Quote with status Accepted can be linked to a Freight File. | Operator, Manager, Superadmin | ☐ |
-| FR-SH-07.2 | A Quote that is not Accepted cannot be linked. | (system) | ☐ |
+| FR-SH-07.2 | A Quote that is not Accepted cannot be linked. *(Assumed — confirm.)* | (system) | ☐ |
 | FR-SH-07.3 | When a Quote is linked, Rating uses the Quote's lines as the Sell Lines in place of Tariff Sell Lines. | (system) | ☐ |
 
 **Worked examples**
 - *Given* a file whose Tariff gives freight of 95.00 and a linked Accepted Quote with freight of 85.00, *then* the Sell Line is 85.00.
-- *Given* a Quote with status Sent, *when* an Operator tries to link it, *then* the link is refused.
+- *Given* a Quote with status Sent, *when* an Operator tries to link it, *then* the link is refused. *(Assumed — confirm.)*
 
 **Not stated — ask:** who marks a Quote Accepted and what proves it (OP-14). Whether Cost Lines are still taken from Tariffs. Whether a Quote can be linked after approval.
 **Engineering check:** check:billing.
@@ -700,7 +700,7 @@ These are **not** requirements. Each is a possible new requirement raised by a g
 
 | ID | Candidate requirement | Why | Question | Gap |
 |---|---|---|---|---|
-| CR-01 | A Manager can cancel a Freight File with a reason; a Cancelled ⚑ file cannot be billed. | A cancelled shipment stays Approved and billable today. | OP-03 | GAP-17 |
+| CR-01 | A Manager can cancel a Freight File with a reason; a Cancelled ⚑ file is not billed. | A cancelled shipment stays Approved and billable today. | OP-03 | GAP-17 |
 | CR-02 | An edit to a billable field on an Approved file returns it to Pending. | Billing is re-rated today with no second check. | OP-02 | GAP-16 |
 | CR-03 | Approvers are told when a file is Pending; Submitters are told when a file is returned. | No notification exists. | OP-16 | GAP-19 |
 | CR-04 | A file is approved or returned within an agreed time, and a named deputy can approve when the Approver is away. | Billing waits on approval. | OP-12 | GAP-18 |

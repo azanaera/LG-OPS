@@ -8,7 +8,7 @@
 | **Pre-read** | [Stakeholder Summary](../STAKEHOLDER-SUMMARY.md) steps 6 to 8 (V-35 to V-56), sections 5 and 6 · [Glossary](../GLOSSARY.md) section 2 |
 | **Ask them to bring** | A real invoice · an invoice that was corrected, and how · a consolidation's invoices · the current rate sheet · the chart of accounts · the month-end checklist |
 | **You bring** | Demo copy open on: an approved file's charges, a draft invoice, the bridge queue, a closed month · [02-accounting breakdown](../requirements-breakdown/02-accounting.md) · carried items from Workshop 1 |
-| **Decides here** | AC-01 to AC-14, AC-16, AC-17, AC-19 to AC-22 |
+| **Decides here** | AC-01 to AC-14, AC-16, AC-17, AC-19 to AC-26 · OP-11 |
 | **Raised here, decided by the Business owner** | AC-15, AC-18 · consulted on BO-11 |
 
 ## Carried in from Workshop 1
@@ -84,34 +84,37 @@ Write these in before the session:
 **Record:** acceptable or not, and until when · what a credit note must contain.
 **Probe if time:** correcting an invoice from a month that is already closed.
 
-### Topic 5 — The bridge, and who posts (10 min) · V-45 to V-50 · AC-07, AC-13, AC-14, AC-15, AC-16, AC-19
+### Topic 5 — The bridge, and who posts (10 min) · V-45 to V-50 · AC-07, AC-13, AC-14, AC-15, AC-16, AC-19, AC-23, AC-24
 **As-is — ask first:** "Today, how does a finished invoice get into the books, and who checks it before it does?"
 **Listen for:** who enters, who checks; whether one person does both; how income is split across accounts today.
 **Show:** the bridge queue in the demo copy; run a trial post, then post.
 **Say:** "Today amounts wait in the bridge. The accountant runs a trial that builds the entry and checks it balances, without touching the books. Then the accountant posts it. If a kind of charge has no account assigned, the item is refused. The system never guesses."
-**Say:** "The company can choose to keep everything as drafts, to have amounts wait for an accountant, or to have them posted with no person checking. Today it is set to wait for an accountant."
+**Say:** "The company can choose to keep everything as drafts, to have amounts wait for an accountant, or to have them posted with no person checking. Unless someone changes it, amounts wait for an accountant."
 **Ask:**
 1. "Which of those three ways do you want on day one, and who may change it?" → AC-13
 2. "Who should be allowed to post? Managers also approve files. Should the person who approved a file be able to post it?" → AC-15 (the Business owner decides; record the Accounting lead's view)
 3. "Should accountants be able to change a freight file, or only read it?" → AC-16
 4. "All income goes to one sales account today. Which accounts should freight, handling, documentation and the rest go to?" → AC-07
-5. "The system has an item called a miscellaneous invoice that does not come from a freight file. What would you use it for?" → AC-19
+5. "The system has a kind of item called a miscellaneous invoice, and the documents do not say what it is for. Engineering says: ______. What would you use it for?" → AC-19
 6. "Automatic posting stops when a 'rate note' is open. Here is what engineering says that means: ______. Does that make sense to you?" → AC-14
+7. "Must every amount go through the trial check before it is posted, or may an accountant post in one step?" → AC-23
+8. "When a file is changed after its amounts are already waiting in the bridge, or already in the books, what should happen to those amounts?" → AC-24
 **If no view — offer:** the Proposed answers for AC-13, AC-15 and AC-16. Say they are proposals.
 **Record:** the mode · the Accounting lead's view on who posts · the account mapping, or who will supply it and when.
 **Probe if time:** who may record a journal directly, outside the bridge.
 
-### Topic 6 — The books, the month and the year (8 min) · V-51 to V-56 · AC-12, AC-21, AC-22
+### Topic 6 — The books, the month and the year (8 min) · V-51 to V-56 · AC-12, AC-21, AC-22, AC-25
 **As-is — ask first:** "Walk me through your last month-end. What had to be finished before you closed, and has a closed month ever had to be reopened?"
 **Listen for:** the real checklist; who signs off; how reopening is done; the fiscal year; how payments are made.
 **Show:** a closed month in the demo copy; try to date an entry in it.
 **Say:** "Today, once a month is closed, nothing can be dated in it. With October closed, an entry dated 31 October is refused, and the system names 1 November as the first open date. The system cannot reopen a month."
-**Say:** "Checks are recorded as draft, printed, posted or void. Payments made in other ways have no register."
+**Say:** "Checks are recorded as draft, printed, posted or void. The documents do not say where payments made in other ways are recorded."
 **Ask:**
 1. "If a closed month must be reopened, who authorises it and how should it be recorded?" → AC-12
 2. "What is your fiscal year? Is there a year-end close beyond the monthly one?" → AC-21
 3. "What do you pay by check? How do you pay otherwise, and should those payments be recorded here?" → AC-22
 4. "How long must accounting and shipping records be kept by law?" → consult for BO-11
+5. "Can two months be open at once? If an invoice from a closed month is voided, which month should the reversal fall in?" → AC-25
 **If no view — offer:** the Proposed answer for AC-12.
 **Record:** the reopening rule · fiscal year · payment types · the legal retention period for session 3.
 **Probe if time:** which reports they actually use each month, and which are missing.
@@ -120,8 +123,8 @@ Write these in before the session:
 **As-is — ask first:** "Once an invoice is sent, how do you know it has been paid? And when a supplier's bill arrives, what do you compare it with?"
 **Listen for:** where receipts are recorded today; how overdue accounts are chased; how supplier bills are checked; whether profit per job is tracked.
 **Show:** [Stakeholder Summary](../STAKEHOLDER-SUMMARY.md) section 5, items N-11 to N-13.
-**Say:** "Today the system stops at the posted invoice. It does not record customer payments or receipts, it does not record suppliers' actual bills, and it has no report of profit per job."
-**Say:** "Trucking, vehicle shipping and delivery runs are recorded, but only ocean and air files are billed."
+**Say:** "The documents describe nothing after the posted invoice: no recording of customer payments or receipts, no recording of suppliers' actual bills, and no report of profit per job."
+**Say:** "Trucking, vehicle shipping and delivery runs are recorded, but charges are worked out automatically only for ocean and air files. The documents do not say how the other services are billed."
 **Ask:**
 1. "Should customer payments, receipts and overdue lists be in this system? On day one or later?" → AC-08
 2. "How should suppliers' actual bills be recorded and compared with the expected cost?" → AC-09
@@ -131,14 +134,15 @@ Write these in before the session:
 **Record:** in scope for go-live, later, or never, for each · where the work is done meanwhile.
 **Probe if time:** statements of account; deposits and advance payments.
 
-### Topic 8 — Rates and set-up (7 min) · V-44 · AC-18
+### Topic 8 — Rates and set-up (7 min) · V-44 · AC-18, AC-26
 **As-is — ask first:** "Where do your rates live today, and who keeps them up to date?"
 **Listen for:** the number of lanes and customers with special rates; how often rates change; who owns the sheet.
 **Show:** the rate table in the demo copy, mostly empty.
-**Say:** "Today the rate tables are mostly empty. Only one lane has a known rate. Where there is no rate, the file shows 'no tariff' and no charge is produced, so every charge would be typed by hand."
+**Say:** "Today the rate tables are mostly empty. Only one lane has a known rate. Where a lane has no rate, the file shows 'no tariff'. The documents do not say what is charged in that case."
 **Ask:**
 1. "Who should enter the rates, and by when?" → AC-18 (the Business owner names the person; record the Accounting lead's view)
 2. "Roughly how many rates are there to enter?" → AC-18
+3. "Who keeps the standard sets of charges for each kind of job, and where is the trade term recorded that decides who pays what?" → AC-26
 **If no view — offer:** the Proposed answer for AC-18.
 **Record:** the size of the job · a suggested owner and date, for session 3.
 **Probe if time:** whether the chart of accounts in the system matches theirs.
@@ -161,7 +165,7 @@ Write these in before the session:
 | 2 | AC-01, AC-02 | OP-11 |
 | 3 | AC-03, AC-04, AC-05 | TL-09 |
 | 4 | AC-06 | |
-| 5 | AC-07, AC-13, AC-14, AC-16, AC-19 | AC-15 |
-| 6 | AC-12, AC-21, AC-22 | BO-11 |
+| 5 | AC-07, AC-13, AC-14, AC-16, AC-19, AC-23, AC-24 | AC-15 |
+| 6 | AC-12, AC-21, AC-22, AC-25 | BO-11 |
 | 7 | AC-08, AC-09, AC-10, AC-17 | |
-| 8 | | AC-18 |
+| 8 | AC-26 | AC-18 |

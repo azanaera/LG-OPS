@@ -4,7 +4,7 @@
 
 **Prepared by:** QA (requirements confirmation) · **Companions:** [OPEN-QUESTIONS.md](OPEN-QUESTIONS.md) · [CONTEXT.md](CONTEXT.md) (canonical terms) · [GLOSSARY.md](GLOSSARY.md) (plain-language terms) · [PROCESS-GAP-ANALYSIS.md](PROCESS-GAP-ANALYSIS.md) · [requirements-breakdown/](requirements-breakdown/README.md) · full index in [README.md](README.md)
 
-**Updated 15 November 2026:** question ranges and gaps brought into line with the second review pass (93 questions, 72 gaps).
+**Updated 15 November 2026:** question ranges and gaps brought into line with the second review pass (99 questions, 72 gaps).
 
 > **Read this first.** Engineering wrote both source documents from the code (they are "revised to the origin/main state"). They describe **what the system does today**, not what the business has agreed it needs. No owner has signed either one. Treat every statement below as *"the system currently does this"* until the owner in Section 10 confirms it.
 
@@ -245,11 +245,11 @@
 
 | Owner | Confirms | Requirement groups | Open questions |
 |---|---|---|---|
-| **Business owner** | Scope, priorities, roles, release gate | FR-AU-09 to 12, FR-AD, NFR-SE-05, IFR-07 | BO-01 to BO-14 |
-| **Accounting lead** | Billing, tax, exchange rates, bridge, ledger, periods | FR-RT, FR-BL, FR-BR, FR-FS, NFR-AU | AC-01 to AC-22 |
+| **Business owner** | Scope, priorities, roles, release gate | FR-AU-09 to 12, FR-AD, NFR-SE-05, IFR-07 | BO-01 to BO-15 |
+| **Accounting lead** | Billing, tax, exchange rates, bridge, ledger, periods | FR-RT, FR-BL, FR-BR, FR-FS, NFR-AU | AC-01 to AC-26 |
 | **Operations lead** | Freight, approval, cartage, dispatch, tracking | FR-AP, FR-OV, FR-SH, FR-VH, FR-PD, FR-FD, FR-TR, FR-PT, FR-MP | OP-01 to OP-18 |
-| **Technical lead** | Feasibility, security, performance, deployment | FR-AU-01 to 08, IFR, NFR-SE, NFR-PF, NFR-AV, NFR-MT, DR | TL-01 to TL-12 |
-| *No owner in the SRS* | Usability, constraints, assumptions | NFR-US, C-01 to C-05, A-01 to A-04 | DOC-18 |
+| **Technical lead** | Feasibility, security, performance, deployment | FR-AU-01 to 08, IFR, NFR-SE, NFR-PF, NFR-AV, NFR-MT, DR | TL-01 to TL-13 |
+| *No owner in the SRS* | Usability, constraints, assumptions | NFR-US, NFR-SE-06/07, C-02 to C-05, A-01 to A-04 | DOC-18 |
 
 ### The biggest gaps to raise first
 1. **Release gate:** 4 Must items are not built (BO-01).
@@ -259,7 +259,7 @@
 5. **Nothing after the invoice:** collections, supplier bill matching and profit per file (AC-08 to AC-10).
 6. **No backup and restore** for a system that runs on two single-file databases (TL-01).
 7. **No data migration or cut-over plan:** nothing says what existing data is loaded, by whom, or when (BO-12).
-8. **Requirements with no owner:** nobody confirms the usability requirements, the constraints or the assumptions (DOC-18).
+8. **Requirements with no owner:** nobody confirms the usability requirements, two security requirements, most constraints or the assumptions (DOC-18).
 
 The full list of 72 gaps, by process step, is in [PROCESS-GAP-ANALYSIS.md](PROCESS-GAP-ANALYSIS.md).
 

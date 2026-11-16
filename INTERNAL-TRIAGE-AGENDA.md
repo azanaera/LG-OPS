@@ -7,7 +7,7 @@
 
 ## 1. Purpose and outcome
 
-There are **93 open questions**. Stakeholders' time is short, so they should only be asked what needs them. This meeting sorts every question into one of three piles:
+There are **99 open questions**. Stakeholders' time is short, so they should only be asked what needs them. This meeting sorts every question into one of three piles:
 
 | Pile | Meaning | What happens |
 |---|---|---|
@@ -38,9 +38,9 @@ There are **93 open questions**. Stakeholders' time is short, so they should onl
 | # | Min | Item | Questions | Output |
 |---|---|---|---|---|
 | 1 | 10 | **Mandate and people.** What are we producing: a signed v0.1, or a v0.2 that reflects real decisions? Is the system already in use with real shipments? Is there a go-live date? Who are the four owners? Where do requirements and tests live? | Q1, Q2, Q3, Q4, Q9 | Register filled in. Mandate written in one sentence. |
-| 2 | 15 | **Answer from the code now.** Engineering states each fact. QA writes it in the log as "Answered (Engineering), to be confirmed by owner". | TL-02, TL-04, TL-06, TL-08, TL-11, TL-12, AC-14, AC-19, BO-07 (field list only), OP-15 (field list only), DOC-09 | Facts recorded. Fewer questions for stakeholders. |
+| 2 | 15 | **Answer from the code now.** Engineering states each fact. QA writes it in the log as "Answered (Engineering), to be confirmed by owner". | TL-02, TL-04, TL-06, TL-08, TL-11, TL-12, TL-13, AC-14, AC-23, AC-25, AC-19, BO-07 (field list only), OP-15 (field list only), DOC-09 | Facts recorded. Fewer questions for stakeholders. |
 | 3 | 20 | **Document fixes.** For each: fix now, or wait for which question? | DOC-01 to DOC-18 | Each DOC item marked "Fix now" or "Waits for …". |
-| 4 | 25 | **Route the business questions.** One owner and one workshop each. Mark the ones that cross two owners. | Q5 to Q8; BO-01 to BO-14; AC-01 to AC-22; OP-01 to OP-18 | Route and Session columns filled. |
+| 4 | 25 | **Route the business questions.** One owner and one workshop each. Mark the ones that cross two owners. | Q5 to Q8; BO-01 to BO-15; AC-01 to AC-26; OP-01 to OP-18 | Route and Session columns filled. |
 | 5 | 15 | **Technical items that need a name and a date.** | TL-01, TL-03, TL-05, TL-07, TL-09, TL-10 | Owner and target date for each. Worked examples (TL-10) requested, due before the first workshop. |
 | 6 | 15 | **Rank what blocks go-live.** Start from the ten in the gap analysis. Agree the order to raise them. | BO-01, TL-01, BO-02, OP-02, AC-01, AC-03, AC-06, AC-15, BO-12, AC-08 | Ranked list of ten. "Blocks go-live?" column filled. |
 | 7 | 10 | **Schedule.** Four workshops of 90 minutes and a 30-minute play-back, in this order: Operations, Accounting, Business owner, Technical. Pre-read goes out five working days before the first. | — | Dates in calendars. |
@@ -85,7 +85,8 @@ Routes: `Internal` · `Operations` · `Accounting` · `Business` · `Technical` 
 | BO-11 | Record retention | Business, Accounting | | | |
 | BO-12 | Data migration and cut-over | Business | What import tools exist, if any | | |
 | BO-13 | Training and acceptance sign-off | Business | | | |
-| BO-14 | Delete rights and audit access | Business | Which Role can delete what, and read the audit trail, today | | |
+| BO-14 | Administration, delete rights and audit access | Business | Which Role can manage users, change settings, delete what, and read the audit trail, today | | |
+| BO-15 | Government filing: in scope or not? | Business | | | |
 
 ### C. Accounting lead
 
@@ -113,6 +114,10 @@ Routes: `Internal` · `Operations` · `Accounting` · `Business` · `Technical` 
 | AC-20 | Re-issue after a re-rate | Accounting | What "marked for re-issue" shows on screen | | |
 | AC-21 | Fiscal year and year-end close | Accounting | | | |
 | AC-22 | Check disbursements and other payments | Accounting | | | |
+| AC-23 | Is the trial post mandatory? | Internal → Accounting | Whether a Staged item can be posted directly today | | |
+| AC-24 | Bridge items after a re-rate | Accounting | What happens to them today | | |
+| AC-25 | Periods: one open month or several | Internal → Accounting | How periods behave today | | |
+| AC-26 | Charge packages and Incoterm | Accounting | Where each is maintained today | | |
 
 ### D. Operations lead
 
@@ -153,6 +158,7 @@ Routes: `Internal` · `Operations` · `Accounting` · `Business` · `Technical` 
 | TL-10 | Worked examples for the main checks | Technical | 3 to 5 examples per rule | | |
 | TL-11 | Password policy and idle time-out values | Internal → Business | The values | | |
 | TL-12 | Attachment types and scanning | Internal | The accepted types | | |
+| TL-13 | Sign-in lifetimes and request limits | Internal | The production values | | |
 
 ### F. Document fixes
 

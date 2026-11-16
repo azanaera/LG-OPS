@@ -6,7 +6,7 @@ Everything QA needs to confirm the requirements of the Platform with its four ow
 
 **Pack date:** 15 November 2026 · **Source documents:** `Document_SRS_v0.1_REDACTED.pdf`, `Document_SAD_v0.1_REDACTED.pdf` (both 8 November 2026)
 
-**Where things stand:** 125 requirements · 93 open questions, none answered yet · 72 gaps, 21 of them High · 80 requirements not yet detailed enough to confirm as written.
+**Where things stand:** 125 requirements · 99 open questions, none answered yet · 72 gaps, 21 of them High · 80 requirements not yet detailed enough to confirm as written.
 
 ## Start here (QA reading order)
 
@@ -47,7 +47,7 @@ Everything QA needs to confirm the requirements of the Platform with its four ow
 | [requirements-breakdown/01-operations.md](requirements-breakdown/01-operations.md) | 42 requirements confirmed by the Operations lead. |
 | [requirements-breakdown/02-accounting.md](requirements-breakdown/02-accounting.md) | 33 requirements confirmed by the Accounting lead. |
 | [requirements-breakdown/03-business-and-technical.md](requirements-breakdown/03-business-and-technical.md) | 50 requirements confirmed by the Business owner and the Technical lead, plus constraints and assumptions. |
-| [OPEN-QUESTIONS.md](OPEN-QUESTIONS.md) | The one log of 93 questions, proposed answers and decisions. |
+| [OPEN-QUESTIONS.md](OPEN-QUESTIONS.md) | The one log of 99 questions, proposed answers and decisions. |
 | [CONTEXT.md](CONTEXT.md) | Canonical term names and the words to avoid, for tickets, tests and screens. |
 
 ### For running the sessions

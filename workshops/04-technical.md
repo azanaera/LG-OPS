@@ -8,7 +8,7 @@
 | **Pre-read** | The decisions from Workshops 1 to 3 in [OPEN-QUESTIONS.md](../OPEN-QUESTIONS.md) · [03 breakdown, Part B](../requirements-breakdown/03-business-and-technical.md) · [gap analysis](../PROCESS-GAP-ANALYSIS.md) cross-cutting section |
 | **Ask them to bring** | Load test notes · the list of lists that are not paged · the list of credentials to rotate · hosting backup options and cost · quotes or dates for a security test |
 | **You bring** | The Business owner's decisions on the four unfinished items, the volumes, and the two backup limits · the list of new requirements the business asked for |
-| **Decides here** | TL-01 to TL-12 · status of DOC-01 to DOC-18 |
+| **Decides here** | TL-01 to TL-13, except TL-11 (the Business owner confirms those values) · status of DOC-01 to DOC-18 |
 
 This session is different from the first three. The Technical lead knows the system; you know what the business decided. The aim is a **name and a date** against each item, and an honest statement of what is and is not proven.
 
@@ -45,7 +45,7 @@ Write these in before the session:
 **Record:** the backup routine, a date and a name · the date of the first practised restore · load test figures against the business's volumes.
 **Probe if time:** where backups are kept; who is told when one fails.
 
-### Topic 2 — Security before go-live (15 min) · TL-03, TL-04, TL-05, TL-11, TL-12
+### Topic 2 — Security before go-live (15 min) · TL-03, TL-04, TL-05, TL-11, TL-12, TL-13
 **As-is — ask first:** "What security checking has been done so far, by whom, and what has not been looked at by anyone outside the team?"
 **Listen for:** self-checks only; any known weaknesses; credentials that were shared during the build.
 **Show:** the Business owner's decision on the security test.
@@ -54,10 +54,11 @@ Write these in before the session:
 1. "Who will carry out the security test and the review of third-party components, and on what dates?" → TL-03
 2. "Are the data files encrypted where they are stored? If you do not know, who can find out?" → TL-04
 3. "Which passwords and keys were used during the build, who changes them, and when?" → TL-05
-4. "What are the password rules today: shortest length, kinds of character, how many old passwords are remembered? How long before an idle screen signs out? When the lock starts after five wrong attempts, is it from the first or the fifth?" → TL-11
+4. "What are the password rules today: shortest length, kinds of character, how many old passwords are remembered? How long before an idle screen signs out? Is the lock after five wrong attempts per user or per device, and what resets the count?" → TL-11 (confirm what triage recorded)
 5. "Which kinds of file may be attached, and are they checked for anything harmful?" → TL-12
+6. "In production, how long does a sign-in last before it must be renewed, and what are the limits on sign-in attempts, public lookups and requests in general?" → TL-13
 **If no view — offer:** the Proposed answers for TL-03, TL-04 and TL-05.
-**Record:** names and dates · the actual values for TL-11, to go back to the Business owner for confirmation.
+**Record:** names and dates · any TL-11 value that differs from what triage recorded, to go back to the Business owner.
 **Probe if time:** who can sign a user out everywhere if a laptop is lost.
 
 ### Topic 3 — Long lists and speed at real volumes (10 min) · TL-06
@@ -94,7 +95,7 @@ Write these in before the session:
 **Ask:**
 1. "Where does the exchange rate come from today, and is a rate fetched by the user's own screen ever used on an invoice or in the books?" → TL-08
 2. "What would it take to fetch the rate centrally and keep it with the invoice, as Accounting asked?" → TL-08
-3. "Which time zone is used for dates, for the daily and monthly numbering, and for closing a month? Can it be fixed to Manila time?" → TL-09
+3. "Which time zone is used for dates, for the daily and monthly numbering, and for closing a month? Can one zone be fixed for all three?" → TL-09
 **If no view — offer:** the Proposed answers for TL-08 and TL-09.
 **Record:** the present behaviour as a fact · effort and date for the change.
 **Probe if time:** how amounts are rounded when dollars become pesos, and whether VAT is rounded per line or on the total.
@@ -147,7 +148,7 @@ Write these in before the session:
 | Topic | Decided here | Uses a decision from |
 |---|---|---|
 | 1 | TL-01, TL-02 | BO-10, BO-01 |
-| 2 | TL-03, TL-04, TL-05, TL-11, TL-12 | BO-01 |
+| 2 | TL-03, TL-04, TL-05, TL-12, TL-13 | BO-01, TL-11 |
 | 3 | TL-06 | BO-10 |
 | 4 | TL-07, TL-10 | |
 | 5 | TL-08, TL-09 | AC-03 |

@@ -89,7 +89,7 @@ Bring this document, marked up, to your workshop. We will go through it together
 | Send amounts to the books | ✔ | **?** | ✖ | ✔ | ✖ |
 | Record accounting entries and close the month | ✔ | ✔ | ✖ | ✔ | ✖ |
 | Read the accounts and reports | ✔ | ✔ | ✖ | ✔ | **?** |
-| Add, change or switch off users | ✔ | **?** | ✖ | ✖ | ✖ |
+| Add, change or switch off users | ✔ | **?** | **?** | **?** | ✖ |
 | Delete records | **?** | **?** | **?** | **?** | ✖ |
 | Read the record of who changed what | **?** | **?** | **?** | **?** | **?** |
 
@@ -114,9 +114,9 @@ Today, the system lets an operator or manager prepare a quote for a customer. A 
 | V-ID | What the system does today | ✔ ✎ ✖ ? | Your correction | Ref |
 |---|---|:-:|---|---|
 | V-01 | A quote is Draft, Sent, Accepted, Rejected or Expired. | | | OP-14 |
-| V-02 | Only an accepted quote can be turned into a Freight File. | | | OP-14 |
+| V-02 | An accepted quote can be turned into a Freight File. | | | OP-14 |
 | V-03 | When an accepted quote is linked to a file, the quote's prices replace the standard rates. Example: the standard rate gives 95.00, the quote says 85.00, the customer is charged 85.00. | | | |
-| V-04 | The system does not record how the customer accepted, or who marked the quote as accepted. | | | OP-14 |
+| V-04 | Nothing in the documents says how a customer's acceptance is proven. The change of status itself is kept in the record of who changed what. | | | OP-14 |
 
 ### Step 2: Booking, cargo and documents
 
@@ -130,7 +130,7 @@ For air consolidations, one master air waybill carries many house air waybills. 
 |---|---|:-:|---|---|
 | V-05 | Every job is a Freight File. A file is ocean or air, and export, import or domestic. | | | OP-13 |
 | V-06 | The system gives each file its own File Number. The first part of the number shows whether it is ocean or air, and export, import or domestic. | | | OP-01 |
-| V-07 | We call this record a **Freight File**. "Booking number" means only the carrier's reference. | | | OP-01 |
+| V-07 | The documents call this record a file, a shipment and a booking. *Proposed, for you to confirm or change:* one name, **Freight File**, with "booking number" kept for the carrier's reference only. | | | OP-01 |
 | V-08 | Ocean cargo is charged on the greater of its weight in tonnes and its volume in cubic metres. Example: 3.2 tonnes and 5.0 cubic metres is charged on 5.0. | | | |
 | V-09 | Air cargo is charged on the greater of its actual weight and its volume weight (length × width × height ÷ 6000 for each piece), rounded up to the next half kilo. Example: 2 pieces of 100 × 50 × 40 cm weighing 30 kg in total are charged as 67.0 kg. | | | TL-10 |
 | V-10 | In a consolidation, the master's chargeable weight is the greater of the total actual weight and the total volume weight. Example: house A is 100 kg actual, 60 kg volume; house B is 40 kg actual, 90 kg volume. The master is charged on 150 kg, not 190 kg. | | | AC-01 |
@@ -153,7 +153,7 @@ Today, when an operator finishes a file, they submit it. The system first checks
 | V-18 | A manager can approve a file that the same manager submitted. | | | BO-02 |
 | V-19 | After approval, a manager can still change the file, including its weights and charges. The charges are worked out again. Nobody is asked to approve it a second time. | | | OP-02 |
 | V-20 | There is no way to cancel a file. A job that is cancelled stays as it was. | | | OP-03 |
-| V-21 | The system does not tell a manager that a file is waiting, or an operator that a file has come back. They see it when they look at the overview page. | | | OP-16 |
+| V-21 | The system does not tell a manager that a file is waiting, or an operator that a file has come back. The overview page has a to-do list, but the documents do not say what it shows. | | | OP-16 |
 
 ### Step 4: Movement (vehicles, trucking, deliveries)
 
@@ -170,7 +170,7 @@ Today, the system keeps three kinds of movement record. **RORO vehicles** are cu
 | V-26 | A driver and "equipment" are assigned to each cartage order. | | | OP-04 |
 | V-27 | A dispatch route has one driver, one truck and several stops. It is Draft, Dispatched, In Transit, Arrived or Completed. | | | OP-04 |
 | V-28 | A delivery signature can only be captured on a signature pad. No signature pad is connected, so no proof of delivery is captured in the system today. | | | OP-10 |
-| V-29 | Trucking, vehicle shipping and delivery runs are recorded but cannot be billed from the system. Only ocean and air files are billed. | | | AC-17 |
+| V-29 | Trucking, vehicle shipping and delivery runs are recorded. Charges are worked out automatically only for ocean and air files. The documents do not say how these other services are billed. | | | AC-17 |
 
 ### Step 5: Tracking and the public lookup
 
@@ -184,7 +184,7 @@ Today, staff type in status updates ("milestones") by hand, each with a place, a
 | V-31 | Anyone who knows or guesses a reference number can see that shipment's status. No sign-in is needed. | | | BO-07 |
 | V-32 | The public page shows "tracking information only" and no amounts. The exact list of what it shows is not written down. | | | BO-07 |
 | V-33 | Customers cannot sign in to see their own files, documents or invoices. | | | BO-05 |
-| V-34 | An arrival notice can be previewed but not emailed from the system. | | | OP-09 |
+| V-34 | An arrival notice is a preview only until email sending is set up. The documents do not say whether it has been set up. | | | OP-09 |
 
 ### Step 6: Billing and invoices
 
@@ -203,7 +203,7 @@ Today, each time an approved file is saved, the system works out two sets of lin
 | V-41 | An invoice gets a temporary reference as a draft, and its invoice number when issued. The number is fixed and never used again. | | | AC-05 |
 | V-42 | Invoices can be in US dollars or other currencies, and the books are kept in pesos. No rule says which exchange rate is used or when it is fixed. | | | AC-03 |
 | V-43 | An invoice with a total of zero or less is refused. There is no credit note. | | | AC-06 |
-| V-44 | Rate tables are mostly empty today. Only one lane has a known rate. Where there is no rate, the file shows "no tariff" and no charge is produced. | | | AC-18 |
+| V-44 | Rate tables are mostly empty today. Only one lane has a known rate. Where a lane has no rate, the file shows "no tariff". The documents do not say whether a standard rate is charged in its place. | | | AC-18 |
 
 ### Step 7: The accounting bridge
 
@@ -214,9 +214,9 @@ Today, invoice amounts and cost amounts do not go straight into the books. They 
 | V-ID | What the system does today | ✔ ✎ ✖ ? | Your correction | Ref |
 |---|---|:-:|---|---|
 | V-45 | Each amount is placed in the bridge once. It cannot be placed twice. | | | |
-| V-46 | An amount is checked with a trial post before it can be posted. The trial changes nothing in the books. | | | |
+| V-46 | An amount can be checked with a trial post, which changes nothing in the books. The documents do not make clear whether the trial must always come before posting. | | | AC-23 |
 | V-47 | If a kind of charge has no account assigned, the item is refused and the reason is shown. The system never guesses an account. | | | |
-| V-48 | The company chooses one of three ways of working. **Manual**: invoices stay as drafts. **Review** (the setting today): amounts wait for an accountant to post them. **Auto**: amounts are posted with no person checking. | | | AC-13 |
+| V-48 | The company chooses one of three ways of working. **Manual**: invoices stay as drafts. **Review** (the standard setting): amounts wait for an accountant to post them. **Auto**: amounts are posted with no person checking. | | | AC-13 |
 | V-49 | All income is recorded under one sales account, whatever the service. | | | AC-07 |
 | V-50 | Managers have the accounting functions as well as approval. The documents do not say who may post. | | | AC-15 |
 
@@ -232,7 +232,7 @@ Today, the system keeps the company's books: the chart of accounts, vouchers, jo
 | V-52 | Once a month is closed, no entry can be dated in it. Example: October 2026 is closed; an entry dated 31 October is refused, and the system names 1 November as the first open date. | | | |
 | V-53 | The system cannot reopen a closed month. If it must be reopened, that is done outside the system. | | | AC-12 |
 | V-54 | The reports are: trial balance, income statement, balance sheet, cash flow, check voucher report and subsidiary schedule. | | | AC-10 |
-| V-55 | Checks are recorded as Draft, Printed, Posted or Void. Payments made in other ways have no register. | | | AC-22 |
+| V-55 | Checks are recorded as Draft, Printed, Posted or Void. The documents do not say where payments made in other ways are recorded. | | | AC-22 |
 | V-56 | The books exist for one company only. | | | BO-03 |
 
 ---
@@ -241,27 +241,27 @@ Today, the system keeps the company's books: the chart of accounts, vouchers, jo
 
 Please mark each one: is this acceptable on the day we start using the system for real?
 
-| # | Not done today | What staff do instead | Acceptable at go-live? Yes / No / Until when | Ref |
+| # | Not done today | What do staff do instead? (please fill in) | Acceptable at go-live? Yes / No / Until when | Ref |
 |---|---|---|---|---|
 | N-01 | No credit note. | Void the invoice and issue a new one. | | AC-06 |
-| N-02 | No routine backup of the data, and no practised way to restore it. | Nothing. | | TL-01 |
-| N-03 | No independent security test has been done. | The team's own checks only. | | TL-03 |
-| N-04 | Some long lists load everything at once and may be slow. | — | | TL-06 |
-| N-05 | A manager can approve their own file. | — | | BO-02 |
-| N-06 | Income is not split by service in the books. | One sales account. | | AC-07 |
-| N-07 | Customers cannot sign in. | They use the public lookup or call the office. | | BO-05 |
-| N-08 | No barcode scanners, signature pads, label printers, government filing or carrier connections. | Manual entry and paper. | | BO-08 |
-| N-09 | Arrival notices cannot be emailed. | Print or save, then send by hand. | | OP-09 |
-| N-10 | Rate tables are mostly empty. | Type each charge by hand. | | AC-18 |
-| N-11 | Customer payments, receipts and statements of account are not recorded. | Outside the system. | | AC-08 |
-| N-12 | Suppliers' actual bills are not recorded or compared with expected costs. | Outside the system. | | AC-09 |
-| N-13 | No report of profit per file, customer or lane. | — | | AC-10 |
-| N-14 | A shipment cannot be cancelled. | — | | OP-03 |
-| N-15 | The vehicle number lookup works for US-format numbers only. | Type the details. | | OP-17 |
-| N-16 | The live map shows no ships without an internet connection and a paid data feed. | — | | BO-08 |
+| N-02 | No written or practised routine for backing up the data and restoring it. | | | TL-01 |
+| N-03 | No independent security test has been done. | | | TL-03 |
+| N-04 | Some long lists load everything at once and may be slow. | | | TL-06 |
+| N-05 | A manager can approve their own file. | | | BO-02 |
+| N-06 | Income is not split by service in the books. | | | AC-07 |
+| N-07 | Customers cannot sign in. | | | BO-05 |
+| N-08 | No barcode scanners, signature pads, label printers, government filing or carrier connections. | | | BO-08 |
+| N-09 | Arrival notices are a preview only until email sending is set up. | | | OP-09 |
+| N-10 | Rate tables are mostly empty. | | | AC-18 |
+| N-11 | The documents describe no recording of customer payments, receipts or statements of account. | | | AC-08 |
+| N-12 | The documents describe no recording of suppliers' actual bills, or comparing them with expected costs. | | | AC-09 |
+| N-13 | The documents describe no report of profit per file, customer or lane. | | | AC-10 |
+| N-14 | A shipment cannot be cancelled. | | | OP-03 |
+| N-15 | The vehicle number lookup works for US-format numbers only. | | | OP-17 |
+| N-16 | The live map shows no ships without an internet connection and an access key for the ship data feed. | | | BO-08 |
 | N-17 | A file loaded from another system, not typed into the form, gets a plain number without the usual first part. | Use the form. | | OP-08 |
-| N-18 | Speed was measured on demonstration data only, not at our real volumes. | — | | BO-10 |
-| N-19 | No plan yet for loading our existing customers, open jobs, rates and opening balances. | — | | BO-12 |
+| N-18 | Speed was measured on demonstration data only, not at our real volumes. | | | BO-10 |
+| N-19 | No plan yet for loading our existing customers, open jobs, rates and opening balances. | | | BO-12 |
 
 ---
 

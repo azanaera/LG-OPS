@@ -1,6 +1,6 @@
 # Session Notes: [session name]
 
-> **How to use.** Copy this file for each session and name the copy `notes/YYYY-MM-DD-<session>.md`. The note-taker fills it in live. These notes are the working record. Decisions only count once they are written into [OPEN-QUESTIONS.md](OPEN-QUESTIONS.md).
+> **How to use.** Copy this file for each session and name the copy `notes/YYYY-MM-DD-<session>.md`. The note-taker fills it in live. The `notes/` folder is git-ignored because notes hold people's names; do not commit them. These notes are the working record. Decisions only count once they are written into [OPEN-QUESTIONS.md](OPEN-QUESTIONS.md).
 
 | | |
 |---|---|

@@ -417,7 +417,7 @@ A recorded payment by check, with its own status (Draft, Printed, Posted, Void).
 _Avoid_: Cheque, payment, CDV (see Flagged ambiguities)
 
 **Miscellaneous Invoice** ⚑ (AC-19):
-A Bridge Item type that does not come from a Freight File. Its use is undefined in the source.
+A third Bridge Item type, beside invoice and cost items. Its use is undefined in the source.
 _Avoid_: (until defined)
 
 **Signatory**:

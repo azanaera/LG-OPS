@@ -8,8 +8,8 @@
 | **Pre-read** | [Stakeholder Summary](../STAKEHOLDER-SUMMARY.md) steps 1 to 5 (V-01 to V-34) · [Glossary](../GLOSSARY.md) section 2 |
 | **Ask them to bring** | Their last three files · one real consolidation (manifest, house waybills) · a file that was sent back · a delivery sheet with a signed proof of delivery |
 | **You bring** | Demo copy open on: new booking, a Pending file, a consolidation, the vehicle list, the public lookup · [01-operations breakdown](../requirements-breakdown/01-operations.md) · [facilitation rules](README.md) |
-| **Decides here** | OP-01 to OP-18 |
-| **Consulted here, decided elsewhere** | AC-01, AC-17 (Accounting) · BO-02, BO-04, BO-07 (Business owner) |
+| **Decides here** | OP-01 to OP-18, except OP-11 |
+| **Consulted here, decided elsewhere** | AC-01, OP-11, AC-17 (Accounting) · BO-02, BO-04, BO-07 (Business owner) |
 
 ## Opening (5 min)
 
@@ -27,9 +27,9 @@
 **As-is — ask first:** "When you pick up the phone about a job, what do you call it? A file, a shipment, a booking? And what is its number called?"
 **Listen for:** the word they actually use. Whether "booking number" means their own number or the carrier's. What they call a customer's vehicle and a company truck.
 **Show:** [Glossary](../GLOSSARY.md) section 2 and section 5.
-**Say:** "In the documents, the same record is called a file, a shipment and a booking. We would like one word. We have used Freight File so far, and kept booking number for the carrier's reference only."
+**Say:** "In the documents, the same record is called a file, a shipment and a booking. We would like to settle on one word."
 **Ask:**
-1. "Which word do your staff use, and would Freight File feel natural?" → OP-01
+1. "Which word do your staff use?" → OP-01
 2. "The word vehicle is used for a customer's car being shipped and for our own trucks. What do you call each?" → OP-01
 **If no view — offer:** the Proposed answer for OP-01. Say it is a proposal.
 **Record:** the confirmed terms · any local word to add to the Glossary's "You may know it as" column.
@@ -39,7 +39,7 @@
 **As-is — ask first:** "Take the last job you booked. How did it start? Was there a quote? How did you know the customer had said yes?"
 **Listen for:** whether quotes are formal at all. How acceptance is shown (email, signature, phone). What information they have at booking and what arrives later.
 **Show:** the new booking form in the demo copy; Stakeholder Summary steps 1 and 2.
-**Say:** "Today the system keeps quotes as draft, sent, accepted, rejected or expired. Only an accepted quote can become a file, and then its prices are used on the invoice in place of the standard rates."
+**Say:** "Today the system keeps quotes as draft, sent, accepted, rejected or expired. An accepted quote can become a file, and then its prices are used on the invoice in place of the standard rates."
 **Say:** "A file is either ocean or air, and export, import or domestic. The system gives it a number of its own that is never used again."
 **Ask:**
 1. "Who should mark a quote as accepted, and what should be kept as proof?" → OP-14
@@ -77,7 +77,7 @@
 **Ask:**
 1. "Do you issue your own house bills as the carrier of record? Which printed documents must follow a set legal or carrier format?" → OP-07
 2. "Do arrival notices need to be emailed from the system on day one?" → OP-09
-3. "On a consolidation invoice, what should appear as the house number?" → OP-11
+3. "On a consolidation invoice, what would you expect to see as the house number?" → consult for OP-11 (Accounting decides it with AC-01)
 4. "Today, is a consolidation billed as one invoice or one per house customer?" → as-is only, consult for AC-01
 **If no view — offer:** nothing for OP-07 (it is a fact); OP-11 follows the Accounting lead's decision.
 **Record:** the list of documents with a required format · as-is billing of consolidations, for session 2.
@@ -103,7 +103,7 @@
 **Say:** "Today the system records pickup and delivery orders, and delivery runs with one driver, one truck and several stops. A delivery signature can only be captured on a signature pad, and no pad is connected, so no proof of delivery is captured in the system."
 **Ask:**
 1. "Is dispatcher a separate job from the staff who book files? Do they need to do anything those staff must not, or the other way round?" → OP-04
-2. "Until signature pads exist, is a photo of the signed paper acceptable as proof of delivery?" → OP-10
+2. "Until signature pads exist, what would you accept as proof of delivery?" → OP-10
 3. "Which of these services do you charge customers for: trucking, vehicle shipping, delivery runs?" → as-is, consult for AC-17
 4. "Do your offices work separately? Should staff in one office see or approve another office's files?" → consult for BO-04
 **If no view — offer:** the Proposed answers for OP-04 and OP-10.
@@ -152,7 +152,7 @@
 | 1 | OP-01 | |
 | 2 | OP-13, OP-14, OP-15, OP-08 | |
 | 3 | OP-02, OP-05, OP-12, OP-16, OP-18 | BO-02 |
-| 4 | OP-07, OP-09, OP-11 | AC-01 |
+| 4 | OP-07, OP-09 | AC-01, OP-11 |
 | 5 | OP-17 | |
 | 6 | OP-04, OP-10 | AC-17, BO-04 |
 | 7 | OP-06 | BO-07 |

@@ -109,7 +109,7 @@ Do not confuse the **commercial invoice** (for the goods) with the forwarder's o
 | **Cost Lines**: what we expect to pay the carrier and other suppliers | 7,500.00 |
 | **Profit on the job** | 2,500.00 |
 
-The system produces both kinds of line but has no report that shows the profit (AC-10). Its Cost Lines are *estimates*. Suppliers' real bills are not recorded (AC-09).
+The system produces both kinds of line, but the documents describe no report that shows the profit (AC-10). Its Cost Lines are *estimates*. Nothing describes recording suppliers' real bills (AC-09).
 
 **How a charge is worked out.**
 
@@ -122,7 +122,7 @@ The system produces both kinds of line but has no report that shows the profit (
 **Invoice, receipt, credit note.**
 
 - An **Invoice** asks for payment.
-- A *receipt* acknowledges payment. The system has no way to record one (AC-08).
+- A *receipt* acknowledges payment. The documents describe no way to record one (AC-08).
 - A **Credit Note** reduces an invoice already issued. The system has none (AC-06). Today the whole invoice is **voided** and issued again.
 
 **Debits and credits, once.** Every accounting entry (a **Journal**) has two sides that must be equal. When we invoice 11,200.00:
@@ -325,8 +325,8 @@ Who decided. When. One sentence a tester could turn into a test. What is exclude
 7. **Terms with ⚑ are not settled.** Do not teach them as fact.
 8. **The two documents disagree with each other** in at least 18 places (the DOC list). If an owner quotes one, check the other.
 9. **The process has no beginning and no end.** Nothing covers loading existing data before day one (BO-12), or payments and supplier bills after the invoice (AC-08, AC-09). Owners will assume these exist.
-10. **Trucking, RORO and dispatch cannot be billed** (AC-17). Operations will assume they can.
-11. **Proposed answers are yours, not theirs.** 93 questions each have a column called "Proposed". It is easy to start believing them. Do not read them out as the plan.
+10. **Nothing says how trucking, RORO and dispatch are billed** (AC-17). Charges are worked out only for ocean and air files. Operations will assume it is covered.
+11. **Proposed answers are yours, not theirs.** 99 questions each have a column called "Proposed". It is easy to start believing them. Do not read them out as the plan.
 12. **You may be told it is already live.** The SAD mentions a "live site" (Q2). If staff are using it with real shipments, some "requirements" questions are really incident questions. Find out first.
 13. **The four owners have no names yet** (Q1). Until they do, nobody can decide anything.
 

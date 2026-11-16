@@ -4,7 +4,7 @@
 
 **Owner of this register:** QA (requirements confirmation) · **Date:** 15 November 2026
 
-> **Privacy.** This is the only document in the pack that holds people's names. Keep contact details out of it if the repository is shared outside the team; write "see company directory" in that column.
+> **Privacy.** This is the only committed document in the pack that holds people's names. Session notes hold names too, so the `notes/` folder is git-ignored. Keep contact details out of it if the repository is shared outside the team; write "see company directory" in that column.
 
 ---
 
@@ -14,10 +14,10 @@ The SRS names four owner roles but no people (open question Q1). Nothing can be 
 
 | Area | Role in the SRS | Name | Deputy | Decides | Is consulted on | Best way to reach | Availability |
 |---|---|---|---|---|---|---|---|
-| Business | Business owner | | | Scope, priorities, roles and controls, the release gate, go-live readiness. Questions BO-01 to BO-14. Breaks any tie between owners. | Segregation of duties (AC-15), tariff ownership (AC-18), what the public sees (BO-07) | | |
-| Accounting | Accounting lead | | | Billing, tax, exchange rates, the Accounting Bridge, the Ledger, Periods. Questions AC-01 to AC-22. | Retention period (BO-11), edits after approval (OP-02), house number on invoices (OP-11) | | |
-| Operations | Operations lead | | | Freight Files, approval, cartage, dispatch, tracking, printed documents. Questions OP-01 to OP-18. | Consolidation billing (AC-01), billing of trucking and RORO (AC-17), Self-approval in small offices (BO-02), Branches (BO-04) | | |
-| Technical | Technical lead | | | Feasibility, security, performance, backup, deployment. Questions TL-01 to TL-12 and document fixes DOC-01 to DOC-18. | Exchange rate source (AC-03), volumes (BO-10), time zone (TL-09) | | |
+| Business | Business owner | | | Scope, priorities, roles and controls, the release gate, go-live readiness. Questions BO-01 to BO-15, plus AC-15, AC-18 and TL-11. Breaks any tie between owners. | Billing-to-ledger mode (AC-13), the two backup limits (TL-01) | | |
+| Accounting | Accounting lead | | | Billing, tax, exchange rates, the Accounting Bridge, the Ledger, Periods. Questions AC-01 to AC-26, except AC-15 and AC-18 (Business owner). Also OP-11. | Retention period (BO-11), edits after approval (OP-02), who may post (AC-15), tariff ownership (AC-18), time zone (TL-09) | | |
+| Operations | Operations lead | | | Freight Files, approval, cartage, dispatch, tracking, printed documents. Questions OP-01 to OP-18, except OP-11 (Accounting lead). | Consolidation billing (AC-01), house number on invoices (OP-11), what the public sees (BO-07), billing of trucking and RORO (AC-17), Self-approval in small offices (BO-02), Branches (BO-04) | | |
+| Technical | Technical lead | | | Feasibility, security, performance, backup, deployment. Questions TL-01 to TL-13, except TL-11 (Business owner), and document fixes DOC-01 to DOC-18. | Exchange rate source (AC-03), volumes (BO-10), password values (TL-11) | | |
 
 ## 2. Other people to interview
 

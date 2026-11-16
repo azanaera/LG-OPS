@@ -51,9 +51,9 @@
 **Worked examples**
 - *Given* three valid Tariffs for freight — Customer and Lane 80.00, Lane only 95.00, general 110.00 — *then* **80.00** is used.
 - *Given* the same three, but the Customer and Lane Tariff expired yesterday, *then* **95.00** is used.
-- *Given* no Tariff fits at all, *then* the file shows "no tariff" and no amount is guessed (SRS A-01).
+- *Given* no Tariff fits at all, *then* the file shows "no tariff" (SRS A-01). *(Whether the Charge Code's default rate is then used is not stated — ask.)*
 
-**Not stated — ask:** which date decides validity: booking, departure, or the day the file is rated. Who enters Tariffs, and by when; only one Lane has a rate today (AC-18, DOC-16).
+**Not stated — ask:** which date decides validity: booking, departure, or the day the file is rated. Who enters Tariffs, and by when; only one Lane has a rate today (AC-18, DOC-16). Who maintains Charge Packages, and where the Incoterm is recorded (AC-26).
 **Engineering check:** check:billing specificity and validity cases.
 
 ### FR-RT-04 Quotes
@@ -64,11 +64,11 @@
 |---|---|---|---|
 | FR-RT-04.1 | A Quote has one status: Draft, Sent, Accepted, Rejected or Expired. | Operator, Manager (SAD §3.2) | ☐ |
 | FR-RT-04.2 | An Accepted Quote can be converted into a new Freight File. | Operator, Manager | ☐ |
-| FR-RT-04.3 | A Quote that is not Accepted cannot be converted. | (system) | ☐ |
+| FR-RT-04.3 | A Quote that is not Accepted cannot be converted. *(Assumed — confirm.)* | (system) | ☐ |
 
 **Worked examples**
-- *Given* an Accepted Quote, *when* it is converted, *then* a Draft Freight File is created carrying the Quote's lines.
-- *Given* a Rejected Quote, *when* someone tries to convert it, *then* the request is refused.
+- *Given* an Accepted Quote, *when* it is converted, *then* a Draft Freight File is created carrying the Quote's lines. *(Assumed — confirm.)*
+- *Given* a Rejected Quote, *when* someone tries to convert it, *then* the request is refused. *(Assumed — confirm.)*
 
 **Not stated — ask:** who marks a Quote Sent and Accepted, what proves the Customer accepted, and whether a Quote expires by date on its own (OP-14). Whether a Quote can be converted twice.
 
@@ -112,7 +112,7 @@
 - *Given* an Approved Ocean file with a Revenue Weight of 5.0 and a freight Tariff of 95.00 per unit, *when* it is saved, *then* a Sell Line of 475.00 is generated and shows that Tariff.
 - *Given* a Pending file, *when* anything is saved, *then* no billing is released.
 
-**Not stated — ask:** Cost Lines are estimates; how actual supplier bills are recorded and matched (AC-09). Rating runs only on Ocean and Air files, so cartage, RORO and dispatch are not billed (AC-17). A save after the Invoice is issued re-rates the file and marks the Invoice for re-issue (AC-20).
+**Not stated — ask:** Cost Lines are estimates; how actual supplier bills are recorded and matched (AC-09). Rating runs only on Ocean and Air files, and nothing says how cartage, RORO and dispatch are billed (AC-17). A save after the Invoice is issued re-rates the file and marks the Invoice for re-issue (AC-20). What happens to Bridge Items already Staged or Posted is not stated (AC-24).
 **Engineering check:** check:billing.
 
 ### FR-BL-02 Manual Lines are never changed
@@ -286,7 +286,7 @@
 
 **Worked examples**
 - *Given* 5 Staged and 2 Trial Verified items, *then* the queue shows 7 items and the counts show 5 and 2.
-- *Given* an Operator, *when* they try to open the queue, *then* access is refused: Operators have no Ledger access.
+- *Given* an Operator, *when* they try to open the queue — allowed or refused? *(Not stated: Operators have no Ledger access, but the Overview shows a count of Staged items. Ask.)*
 
 **Not stated — ask:** whether Managers and Viewers can see the queue (AC-15, DOC-13).
 
@@ -331,12 +331,12 @@
 |---|---|---|---|
 | FR-BR-05.1 | A Trial Verified Bridge Item can be posted; a balanced Journal is written to the Ledger. | Accountant (SAD §9.2); other Roles not stated | ☐ |
 | FR-BR-05.2 | The Bridge Item becomes Posted and keeps the Journal's reference. | (system) | ☐ |
-| FR-BR-05.3 | A Staged item that has not been Trial Verified cannot be posted. | (system) | ☐ |
+| FR-BR-05.3 | A Staged item that has not been Trial Verified cannot be posted. *(Assumed — Review mode is described as "one-click posting"; confirm, AC-23.)* | (system) | ☐ |
 | FR-BR-05.4 | Posting into a Closed Period is refused (SAD §9.2). | (system) | ☐ |
 
 **Worked examples**
 - *Given* a Trial Verified item, *when* the Accountant posts it, *then* the Journal is in the register for the Open Period and the item shows its Journal reference.
-- *Given* a Staged item, *when* someone tries to post it directly, *then* the request is refused.
+- *Given* a Staged item, *when* someone tries to post it directly, *then* the request is refused. *(Assumed — confirm, AC-23.)*
 
 **Not stated — ask:** which Roles may Post, and whether the person who approved the file may post it (AC-15). The posting date and time zone (TL-09).
 **Engineering check:** check:bridge.
@@ -461,7 +461,7 @@
 - *Given* October 2026 is the Open Period, *when* the Accountant runs Month-end Close, *then* closing entries exist and October is Closed.
 - *Given* October still has Staged Bridge Items that are not posted, *when* Month-end Close is run — allowed, warned or refused? *(Not stated. Ask.)*
 
-**Not stated — ask:** what must be finished before a close is allowed. Whether a second person approves the close. The fiscal year, and whether there is a year-end close (AC-21). Reopening (AC-12).
+**Not stated — ask:** what must be finished before a close is allowed. Whether a second person approves the close. The fiscal year, and whether there is a year-end close (AC-21). Reopening (AC-12). Whether more than one Period can be Open at once (AC-25).
 
 ### FR-FS-07 Reports
 **Source (SRS, verbatim):** "The system shall produce the trial balance, income statement, balance sheet, cash flow, check voucher report and subsidiary schedule."
@@ -544,7 +544,7 @@ These are **not** requirements. Each is a possible new requirement raised by a g
 
 | ID | Candidate requirement | Why | Question | Gap |
 |---|---|---|---|---|
-| CR-20 | The exchange rate for an Invoice is fixed at Issue from one chosen source, stored on the Invoice, and can be overridden only by an Accountant. | No rule exists; the rate comes from the browser today. | AC-03, TL-08 | GAP-35 |
+| CR-20 | The exchange rate for an Invoice is fixed at Issue from one chosen source, stored on the Invoice, and can be overridden only by an Accountant. | No rule exists; it is unclear whether a browser-fetched rate is used. | AC-03, TL-08 | GAP-35 |
 | CR-21 | Rules state when an Invoice is 12 percent, zero-rated or exempt, who chooses, and whether withholding tax applies. | Only the 12 percent rate is stated. | AC-04 | GAP-36 |
 | CR-22 | The Invoice meets the tax authority's rules for number series, voided numbers and printed format. | Not checked. | AC-05 | GAP-37 |
 | CR-23 | A Consolidation can be invoiced per HAWB to each house Customer. | One Invoice per file cannot bill many Customers. | AC-01 | GAP-33 |

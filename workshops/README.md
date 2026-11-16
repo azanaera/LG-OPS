@@ -89,9 +89,9 @@ Raise each with the owner who **decides**, and confirm it with the one who is **
 | AC-13 | Billing-to-ledger mode at go-live | Accounting lead | Business owner | Session 2 | Session 3 |
 | AC-03, TL-08 | Exchange rate rule and where the rate comes from | Accounting lead | Technical lead | Session 2 | Session 4 |
 | BO-10, TL-02 | Volumes and whether the system copes | Business owner (volumes) | Technical lead | Session 3 | Session 4 |
-| TL-01 | How much data may be lost; how long a restore may take | Business owner (the limits) | Technical lead (the method) | Session 3 | Session 4 |
+| TL-01 | Backup and restore | Technical lead (the method and the date) | Business owner (sets the two limits: data lost, time down) | Session 3 | Session 4 |
 | TL-09 | Time zone | Technical lead | Accounting lead | Session 2 | Session 4 |
-| TL-11 | Password and idle time-out values | Business owner | Technical lead | Session 3 | Session 4 |
+| TL-11 | Password and idle time-out values | Business owner | Technical lead (states the values at triage) | Triage | Session 3 |
 
 ## 7. After each session
 

@@ -52,4 +52,33 @@ fi
 grep -hE '^\*\*Say:\*\*|^> \*\*Say' workshops/*.md 2>/dev/null |
   grep -nE '\b(FR|NFR|IFR|DR)-[A-Z0-9-]+|SQLite|JWT|\bAPI\b|token|endpoint|Prisma' && err "technical wording in a Say line"
 
+# 7. Claims the final review found unsupported by the SRS/SAD must not come back
+while IFS= read -r phrase; do
+  hits=$(grep -rlF --include='*.md' --exclude-dir=.git --exclude-dir=docs --exclude-dir=.superpowers --exclude-dir=.scratch -- "$phrase" . 2>/dev/null)
+  [ -n "$hits" ] && err "unsupported claim \"$phrase\" in: $(echo $hits)"
+done <<'EOF'
+paid data feed
+every user sees every file
+has no way to record one
+cannot be billed
+No backup today
+not scheduled
+the setting today
+have no register
+does not come from a Freight File
+does not come from a freight file
+no charge is produced
+protects everything else
+first or the fifth
+would Freight File feel natural
+Can it be fixed to Manila time
+who marked the quote as accepted
+EOF
+
+# 8. Owner routing and privacy fixes from the final review stay in place
+grep -qF "except AC-15" STAKEHOLDER-REGISTER.md 2>/dev/null || err "register does not carve AC-15/AC-18 out of the Accounting lead's decisions"
+grep -qF "except OP-11" workshops/01-operations.md 2>/dev/null || err "workshop 1 still lists OP-11 as decided by Operations"
+grep -qxF "notes/" .gitignore 2>/dev/null || err "notes/ (holds names) is not git-ignored"
+grep -qF "NFR-SE-06/07" OPEN-QUESTIONS.md 2>/dev/null || err "DOC-18 does not list NFR-SE-06/07 as unowned"
+
 [ $fail -eq 0 ] && echo OK; exit $fail

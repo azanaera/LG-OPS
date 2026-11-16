@@ -8,7 +8,7 @@
 | **Pre-read** | [Stakeholder Summary](../STAKEHOLDER-SUMMARY.md) sections 3, 5 and 6 (V-57 to V-61, the "not done today" list, decisions D-1 to D-10) |
 | **Ask them to bring** | The intended go-live date · rough volumes: jobs a month, staff who will use the system · the list of offices |
 | **You bring** | The decisions from Workshops 1 and 2, written into this script · [03 breakdown, Part A](../requirements-breakdown/03-business-and-technical.md) · [gap analysis, top ten](../PROCESS-GAP-ANALYSIS.md) · cost and date for each unfinished item, from Engineering |
-| **Decides here** | BO-01 to BO-14 · AC-15 · AC-18 |
+| **Decides here** | BO-01 to BO-15 · AC-15 · AC-18 · TL-11 |
 
 ## Carried in from Workshops 1 and 2
 
@@ -20,6 +20,7 @@ Write these in before the session:
 - Accounting's view on who may post (for AC-15): ______
 - Accounting's view on who enters rates, and how many there are (for AC-18): ______
 - The legal retention period, from Accounting (for BO-11): ______
+- Password rules and idle sign-out time, as Engineering stated them at triage (for TL-11): ______
 - Anything the two leads disagreed on: ______
 
 ## Opening (5 min)
@@ -37,7 +38,7 @@ Write these in before the session:
 **Listen for:** whether the date is fixed or flexible; what happens if it slips; whether staff are already using it.
 **Show:** [Stakeholder Summary](../STAKEHOLDER-SUMMARY.md) section 6, decision D-1, with Engineering's effort and date for each item.
 **Say:** "The engineering document marks some items as required for release. Four of those are not finished: the credit note; an independent security test; a routine backup with a practised way to restore; and loading long lists a page at a time."
-**Say:** "Of the four, the backup is the one that protects everything else. Today, if the data were lost or damaged, there is no routine copy to go back to."
+**Say:** "On the backup, the documents say that no routine for backing up and restoring the data has been written down or practised."
 **Ask:**
 1. "For each of the four: must it be done before go-live, or may it follow by a stated date?" → BO-01
 2. "Who signs when one of these is postponed?" → BO-01
@@ -64,7 +65,7 @@ Write these in before the session:
 **As-is — ask first:** "How is the business organised: one company or several, and how many offices? Do the offices keep their work separate?"
 **Listen for:** plans for sister companies; whether a manager in one office should see another's files; whether accounts are kept per office.
 **Show:** the carried-in notes from Operations.
-**Say:** "Today the system could hold more than one company, each seeing only its own records. But the books exist for one company only. Offices appear on the map and nowhere else: every user sees every file of the company."
+**Say:** "Today the system could hold more than one company, each seeing only its own records. But the books exist for one company only. Offices appear on the map and nowhere else. Nothing limits a user to an office."
 **Ask:**
 1. "Will more than one company use the system? If so, when?" → BO-03
 2. "Should users, files or approvals be limited to an office?" → BO-04
@@ -72,7 +73,7 @@ Write these in before the session:
 **Record:** one company or several · whether offices are a boundary.
 **Probe if time:** reporting per office.
 
-### Topic 4 — Customers, the public and passwords (10 min) · V-31 to V-33, V-60, V-61 · BO-05, BO-06, BO-07, BO-08
+### Topic 4 — Customers, the public and passwords (10 min) · V-31 to V-33, V-60, V-61 · BO-05, BO-06, BO-07, BO-08, BO-15, TL-11
 **As-is — ask first:** "How do customers find out where their cargo is today? What would you not want a competitor to be able to find out?"
 **Listen for:** how sensitive customer names and routes are; how much customers ask for a login; tolerance for staff waiting on a password reset.
 **Show:** the public lookup in the demo copy, with a real-looking reference. Show exactly what appears.
@@ -83,9 +84,11 @@ Write these in before the session:
 2. "Do customers need their own sign-in on day one, or is the public page enough?" → BO-05
 3. "Is it acceptable that a forgotten password needs an administrator?" → BO-06
 4. "Barcode scanners, signature pads, label printers, government filing and carrier connections do not exist yet. Are any needed on day one?" → BO-08
+5. "The scope says the system does not file directly with government systems, yet another line says a government filing connection is required. Which is it?" → BO-15
+6. "Engineering tells me the password rules and the idle sign-out time are: ______. Are you comfortable with those?" → TL-11
 **If no view — offer:** the Proposed answers for BO-05, BO-06, BO-07 and BO-08.
 **Record:** the list of public details, item by item · decisions on the other three.
-**Probe if time:** password rules and how long an idle screen stays signed in (TL-11): ask what they are comfortable with.
+**Probe if time:** how fast a help request for a forgotten password should be answered.
 
 ### Topic 5 — Being ready on day one (12 min) · D-8, D-9, N-10, N-18, N-19 · BO-09, BO-10, BO-12, BO-13, AC-18
 **As-is — ask first:** "On the first morning of real use, what must already be in the system for staff to do their jobs?"
@@ -123,7 +126,7 @@ Write these in before the session:
 **Ask:**
 1. For each carried disagreement: "Which way do you want it?" → the question ID noted beside it
 2. "The posting mode on day one: Accounting asked for ______. Do you agree?" → confirms AC-13
-3. "Nobody has been named to confirm that the screens are usable, or to confirm the assumptions the engineers made. Who should that be?" → DOC-18
+3. "Nobody has been named to confirm that the screens are usable, two of the security requirements, or the assumptions the engineers made. Who should that be?" → DOC-18
 **If no view — offer:** nothing. If they cannot choose, ask what they need to know, and park it with a date.
 **Record:** each decision with both positions.
 **Probe if time:** anything in the pre-read they marked ✖ or ? that has not come up.
@@ -145,7 +148,7 @@ Write these in before the session:
 | 1 | BO-01 | |
 | 2 | BO-02, BO-14, AC-15 | |
 | 3 | BO-03, BO-04 | |
-| 4 | BO-05, BO-06, BO-07, BO-08 | TL-11 |
+| 4 | BO-05, BO-06, BO-07, BO-08, BO-15, TL-11 | |
 | 5 | BO-09, BO-10, BO-12, BO-13, AC-18 | TL-01 |
 | 6 | BO-11 | |
 | 7 | carried items | AC-13, DOC-18 |

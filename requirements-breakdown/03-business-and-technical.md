@@ -35,7 +35,7 @@
 | Trial Post and Post Bridge Items | ✔ | ? | ✖ | ✔ | ✖ | AC-15 |
 | Ledger: Vouchers, Journals, Month-end Close | ✔ | ✔ | ✖ | ✔ | ✖ | AC-15 |
 | Read the Ledger and its reports | ✔ | ✔ | ✖ | ✔ | ? | DOC-13 |
-| Create, change and deactivate Users | ✔ | ? | ✖ | ✖ | ✖ | DOC-14 |
+| Create, change and deactivate Users | ✔ | ? | ? | ? | ✖ | DOC-14, BO-14 |
 | Change a Superadmin account | ✔ | ✖ | ✖ | ✖ | ✖ | |
 | Change Company settings, including the Billing-to-Ledger Mode | ✔ | ? | ? | ? | ✖ | BO-14, AC-13 |
 | Delete records | ? | ? | ? | ? | ✖ | BO-14 |
@@ -111,7 +111,7 @@
 
 **Worked examples**
 - *Given* an Operator is deactivated, *when* they next try to do anything, *then* they are refused.
-- *Given* an Operator, *when* they try to create a User, *then* it is refused.
+- *Given* an Operator, *when* they try to create a User, *then* it is refused. *(Assumed — confirm.)*
 
 **Not stated — ask:** which Roles are "authorised" (BO-14, DOC-14). There is no password reset: a User who forgets a password waits for an administrator (BO-06). Who approves a new User or a Role change.
 
@@ -125,7 +125,7 @@
 | FR-AD-02.2 | The Billing-to-Ledger Mode (Manual, Review, Auto) is one of those settings and applies once saved. | *Role not named* | ☐ |
 
 **Worked examples**
-- *Given* the mode is changed from Review to Manual, *then* the next rated file is not staged.
+- *Given* the mode is changed from Review to Manual, *then* the next rated file is not staged. *(Assumed from "drafts only" — confirm.)*
 - *Given* an Accountant, *when* they try to change the mode — allowed or refused? *(Not stated. Ask.)*
 
 **Not stated — ask:** who may change the mode; Auto posts with no person checking (AC-13, BO-14). Whether a second Company may be created (BO-03).
@@ -171,7 +171,7 @@
 | FR-AD-05.2 | *(Live connectors do not exist. Whether they are required is contradictory.)* | (system) | ☐ |
 
 **Worked examples**
-- *Given* today's system, *then* every integration shows disconnected, and features that need one are switched off.
+- *Given* an integration with no live connector, *then* the features that need it stay switched off (SAD §10.4).
 - *Given* a connected scanner — cannot be tested: no connector exists.
 
 **Not stated — ask:** the text says the connectors "are required" but the priority is Could. Which, if any, are needed at go-live (BO-08, DOC-03).
@@ -216,7 +216,7 @@
 - *Given* the short-lived pass has expired and the longer one is still valid, *when* the User saves a file, *then* the save works with no new sign-in.
 - *Given* both have expired, *then* the User must sign in again.
 
-**Not stated — ask:** how long each pass lasts in production; "by configuration" gives no value (TL-11).
+**Not stated — ask:** how long each pass lasts in production; "by configuration" gives no value (TL-13).
 
 ### FR-AU-03 Sign out
 **Source (SRS, verbatim):** "The system shall revoke the refresh token on sign-out."
@@ -238,7 +238,7 @@
 - *Given* five failed attempts between 09:00:00 and 09:00:40, *when* a sixth is made at 09:00:50, *then* it is refused even with the right password.
 - *Given* the same, *when* an attempt is made at 09:01:45 with the right password, *then* it succeeds.
 
-**Not stated — ask:** whether the minute runs from the first or the fifth failure, and whether the block is per username or per device (TL-11). Whether one minute is long enough for the business.
+**Not stated — ask:** whether the block is per username or per device, and what resets the count (TL-11). Whether one minute is long enough for the business.
 
 ### FR-AU-05 Bot protection at sign-in
 **Source (SRS, verbatim):** "The system shall require a solved, signed, expiring, single-use proof-of-work token before a sign-in is accepted."
@@ -421,7 +421,7 @@
 | Production starts without secrets | Never | Start without them | Production settings | Production start refuses missing secrets |
 | Lifetime of each pass | **Not stated** | Read the production settings | Production | — |
 
-**Not stated — ask:** the lifetimes (TL-11). Who holds the secrets, and when the development ones are replaced (TL-05).
+**Not stated — ask:** the lifetimes (TL-13). Who holds the secrets, and when the development ones are replaced (TL-05).
 
 ### NFR-SE-03 Security headers
 **Source (SRS, verbatim):** "Responses shall carry security headers; the content security policy shall block scripts and fonts from other origins; body sizes shall be limited."
@@ -443,11 +443,11 @@
 |---|---|---|---|---|
 | The three linked requirements pass | All | Their own checks | Test system | Security checks pass |
 
-**Not stated — ask:** the limits themselves (see FR-PT-03 and TL-11).
+**Not stated — ask:** the limits themselves (see FR-PT-03 and TL-13).
 
 ### NFR-SE-06 Secrets stay on the server
 **Source (SRS, verbatim):** "Feed credentials and secrets shall never reach the browser or the repository."
-**Priority / Status:** Must / Built · **Owner:** Technical lead · **Verdict:** Detailed enough
+**Priority / Status:** Must / Built · **Owner:** *none in SRS §8* (DOC-18); Technical lead assumed · **Verdict:** Detailed enough
 **In plain words:** passwords for outside services are kept on the server only, never in the web pages or in the source code.
 
 | Measure | Target | How measured | On what data | Current evidence |
@@ -458,12 +458,12 @@
 
 ### NFR-SE-07 Penetration test and dependency audit
 **Source (SRS, verbatim):** "A penetration test and dependency audit shall be completed before go-live."
-**Priority / Status:** Must / Planned · **Owner:** Technical lead · **Verdict:** Blocked
+**Priority / Status:** Must / Planned · **Owner:** *none in SRS §8* (DOC-18); Technical lead assumed · **Verdict:** Blocked
 **In plain words:** an independent tester tries to break in, and the third-party software the system uses is checked for known weaknesses. Neither has been done.
 
 | Measure | Target | How measured | On what data | Current evidence |
 |---|---|---|---|---|
-| Signed test report | Exists before go-live | Report on file | Production-like system | None — not scheduled |
+| Signed test report | Exists before go-live | Report on file | Production-like system | None — Planned, no date stated |
 
 **Not stated — ask:** who does it and when (TL-03). Which findings would stop go-live, and who decides (BO-01). Whether database files are encrypted on the host (TL-04).
 
@@ -511,13 +511,13 @@
 ### NFR-AV-01 Health check, backup and restore
 **Source (SRS, verbatim):** "The platform shall expose a health endpoint for hosting probes, and a documented backup and restore procedure shall exist for both database files."
 **Priority / Status:** Must / Partial · **Owner:** Technical lead · **Verdict:** Blocked
-**In plain words:** the host can check that the system is running. But there is no routine backup of the two databases, and no tested way to restore them.
+**In plain words:** the host can check that the system is running. But no routine for backing up and restoring the two databases has been documented or practised.
 
 | Measure | Target | How measured | On what data | Current evidence |
 |---|---|---|---|---|
 | Health check answers | Always | Call it | Production | Present |
-| Backup procedure, written and run on a schedule | Exists | Document and backup log | Both databases | **None** |
-| Restore tested | Before go-live | Restore to a test system and reconcile the Ledger | Both databases | **None** |
+| Backup procedure, written and run on a schedule | Exists | Document and backup log | Both databases | **None documented** |
+| Restore tested | Before go-live | Restore to a test system and reconcile the Ledger | Both databases | **None documented** |
 | Most data that may be lost | **Not stated** | — | — | — |
 | Longest time to restore | **Not stated** | — | — | — |
 
@@ -655,11 +655,11 @@
 
 ## Constraints and assumptions with no owner
 
-The SRS lists these in §2.5 and §2.6, but they are not in its traceability matrix, so no owner confirms them (DOC-18).
+The SRS lists these in §2.5 and §2.6. Only C-01 is in its traceability matrix (Technical lead); no owner confirms the others (DOC-18).
 
 | ID | Statement (SRS) | In plain words | Who should confirm | Question |
 |---|---|---|---|---|
-| C-01 | Production has no migration command. Schema changes must be additive and applied at start-up. | Releases can only add to the database structure. | Technical lead | DOC-18 |
+| C-01 | Production has no migration command. Schema changes must be additive and applied at start-up. | Releases can only add to the database structure. | Technical lead (per SRS §8) | — |
 | C-02 | Secrets are held only in host settings; never committed or sent to the browser. | Keys and passwords live only on the server. | Technical lead | TL-05 |
 | C-03 | Production records must not be used for testing or demonstrations. | Real data is never used for demos or tests. | Business owner | BO-09 |
 | C-04 | Ledger postings are made only through the accounting bridge. | Nothing reaches the Ledger except through the Accounting Bridge. *But Accountants can also record Journals directly (FR-FS-03) — confirm what the rule really is.* | Accounting lead | AC-15 |
@@ -680,7 +680,7 @@ These are **not** requirements. Each is a possible new requirement raised by a g
 | CR-40 | A User who forgets their password asks an administrator through a support ticket; there is no self-service reset. | No requirement says so either way. | BO-06 | GAP-62 |
 | CR-41 | Records are kept for a stated period and are archived, not deleted, before it ends. | No retention rule. | BO-11 | GAP-67 |
 | CR-42 | The system supports a stated number of files per month and Users at once, with response-time targets at that volume. | Measured on demo data only. | BO-10, TL-02 | GAP-58 |
-| CR-43 | Both databases are backed up on a schedule; a stated maximum of data may be lost; a restore takes no longer than a stated time and is tested. | No backup today. | TL-01 | GAP-57 |
+| CR-43 | Both databases are backed up on a schedule; a stated maximum of data may be lost; a restore takes no longer than a stated time and is tested. | No documented procedure today. | TL-01 | GAP-57 |
 | CR-44 | All business dates, sequences and Period boundaries use one stated time zone. | Not specified. | TL-09 | GAP-42 |
 | CR-45 | Database files are encrypted on the host. | "Planned for review." | TL-04 | GAP-61 |
 | CR-46 | Users, Freight Files or approvals are limited by Branch. | Branches exist only on the map. | BO-04 | GAP-64 |

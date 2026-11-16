@@ -102,7 +102,7 @@ A flag **⚑** means *we still need your answer on this one*. The code after it 
 | **MAWB** | The master air waybill: the airline's contract for a whole consolidation. | Master, master bill | One per consolidation. | Proposed |
 | **Milestone** | A dated status update on a shipment, with place and note. | Event, status update | "Arrived at port, 3 November." | Proposed |
 | **Minimum Charge** | The lowest amount a Tariff allows. A smaller calculated amount is raised to it. | Floor, min rate | 1,800.00 raised to 2,500.00. | Proposed |
-| **Miscellaneous Invoice** | A kind of Bridge Item that does not come from a Freight File. Its use is not yet defined. | — | — | ⚑ AC-19 |
+| **Miscellaneous Invoice** | A third kind of Bridge Item, beside invoice and cost items. Its use is not defined in the source documents. | — | — | ⚑ AC-19 |
 | **Mode** | How cargo travels on a file: Ocean or Air. | Type, service | — | Proposed |
 | **Month-end Close** | Closing the open accounting month. After it, nothing more can be dated in that month. | Period end, closing | Close October in early November. | Proposed |
 | **Notify Party** | The party to be told when cargo arrives. May differ from the consignee. | Notify | The consignee's customs broker. | Proposed |
