@@ -17,6 +17,8 @@ Everything QA needs to confirm the requirements of the Platform with its four ow
 5. [INTERNAL-TRIAGE-AGENDA.md](INTERNAL-TRIAGE-AGENDA.md) — the first meeting to hold
 6. [workshops/](workshops/README.md) — the scripts for each stakeholder session
 
+For the whole shipment on one page, see the [process map](process-map/freight-lifecycle-map.html).
+
 ## The process
 
 | # | Step | Uses | Output |
@@ -35,6 +37,7 @@ Everything QA needs to confirm the requirements of the Platform with its four ow
 |---|---|
 | [STAKEHOLDER-SUMMARY.md](STAKEHOLDER-SUMMARY.md) | Business Process Summary for Validation. The process in business words, 61 numbered items to mark correct or wrong, what is not done today, ten decisions, and a sign-off block. |
 | [GLOSSARY.md](GLOSSARY.md) | The words we use, in plain language, with the words each office may use for the same thing. |
+| [process-map/](process-map/freight-lifecycle-map.html) | The freight lifecycle top to bottom, steps 1 to 14, with the documents needed at each step and what the platform covers. Source swimlane: [swimlane.png](process-map/swimlane.png). Open the HTML in a browser (filter by ocean, air or consolidation) or use the [PNG](process-map/freight-lifecycle-map.png). |
 
 ### For QA and the delivery team
 

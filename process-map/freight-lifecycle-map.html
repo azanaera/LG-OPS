@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Freight Lifecycle Process Map</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one vertical spine, steps hang off it in order; numbers match the swimlane (1-14). */
+:root {
+  --bg: #f3f5f8;
+  --surface: #ffffff;
+  --ink: #15202b;
+  --muted: #55657a;
+  --line: #c9d2dd;
+  --plat: #1d5aa6;      --plat-bg: #e2edfa;
+  --out: #546170;       --out-bg: #e9edf1;
+  --conf: #8a2a69;      --conf-bg: #f7e3ef;
+  --amber: #b9851a;     --amber-bg: #fff3d4;
+  --gate: #14202b;
+  --font: "IBM Plex Sans", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e141a; --surface: #172029; --ink: #e5ecf3; --muted: #9aa9b9; --line: #2e3b49;
+    --plat: #86b8f2; --plat-bg: #19304a; --out: #a6b2bf; --out-bg: #222d38;
+    --conf: #f0a3d1; --conf-bg: #3b2033; --amber: #d3a03a; --amber-bg: #3a2f13; --gate: #e5ecf3;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e141a; --surface: #172029; --ink: #e5ecf3; --muted: #9aa9b9; --line: #2e3b49;
+  --plat: #86b8f2; --plat-bg: #19304a; --out: #a6b2bf; --out-bg: #222d38;
+  --conf: #f0a3d1; --conf-bg: #3b2033; --amber: #d3a03a; --amber-bg: #3a2f13; --gate: #e5ecf3;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font: 400 14px/1.5 var(--font); padding-block: 24px 56px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.wrap { max-width: 860px; margin: 0 auto; }
+h1 { font: 600 28px/1.15 var(--font); margin: 0 0 8px; letter-spacing: -0.01em; text-wrap: balance; }
+.lede { color: var(--muted); margin: 0 0 18px; max-width: 65ch; }
+.bar { display: flex; flex-wrap: wrap; gap: 16px 28px; padding: 14px 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; margin-bottom: 8px; }
+.bar h2 { font: 600 11px/1 var(--font); text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin: 0 0 8px; }
+.legend { display: flex; flex-direction: column; gap: 6px; font-size: 13px; min-width: 0; }
+.legend div { display: flex; gap: 8px; align-items: baseline; }
+.modes { display: flex; flex-wrap: wrap; gap: 6px; }
+.modes button { font: 500 13px var(--font); color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 6px 12px; cursor: pointer; }
+.modes button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+button:focus-visible, a:focus-visible { outline: 2px solid var(--plat); outline-offset: 2px; }
+.tag { display: inline-block; font: 500 11px/1 var(--font); padding: 4px 7px; border-radius: 4px; white-space: nowrap; flex: none; }
+.t-plat { color: var(--plat); background: var(--plat-bg); }
+.t-out { color: var(--out); background: var(--out-bg); }
+.t-conf { color: var(--conf); background: var(--conf-bg); }
+.t-amber { color: var(--amber); background: var(--amber-bg); border: 1px solid var(--amber); }
+
+/* spine */
+.flow { position: relative; padding-left: 44px; padding-top: 8px; }
+.flow::before { content: ""; position: absolute; left: 15px; top: 0; bottom: 0; width: 2px; background: var(--line); }
+.phase { margin: 22px 0 14px -44px; padding: 8px 0 8px 0; background: var(--bg); position: relative; display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 12px; }
+.phase b { font: 600 12px/1 var(--font); text-transform: uppercase; letter-spacing: .1em; color: var(--ink); }
+.phase span { color: var(--muted); font-size: 13px; }
+.step, .gate, .loop { position: relative; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; margin-bottom: 14px; padding: 14px 16px; }
+.step.amber { background: var(--amber-bg); border-color: var(--amber); }
+.num { position: absolute; left: -44px; top: 12px; width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--ink); color: var(--bg); font: 600 13px var(--font); }
+.amber .num { background: var(--amber); color: #fff; }
+.head { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin-bottom: 10px; }
+.head h3 { font: 600 16px/1.3 var(--font); margin: 0; }
+.who { font: 500 12px/1 var(--font); color: var(--muted); border: 1px solid var(--line); border-radius: 4px; padding: 4px 7px; }
+.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.col { min-width: 0; }
+.col h4 { font: 600 11px/1 var(--font); text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin: 0 0 6px; }
+ul { margin: 0; padding-left: 16px; }
+li { margin: 2px 0; }
+.doc { font: 400 12.5px var(--mono); }
+.sys { border-top: 1px dashed var(--line); margin-top: 12px; padding-top: 10px; display: flex; flex-direction: column; gap: 6px; }
+.sys div { display: flex; gap: 8px; align-items: baseline; min-width: 0; }
+.sys div > span:last-child { min-width: 0; }
+.gate { border: 2px solid var(--gate); }
+.gate .num { background: var(--surface); color: var(--gate); border-radius: 4px; transform: rotate(45deg); border: 2px solid var(--gate); }
+.gate .num i { transform: rotate(-45deg); font-style: normal; }
+.outs { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; margin-top: 8px; }
+.outs div { background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px; min-width: 0; }
+.outs b { display: block; font-size: 12px; margin-bottom: 2px; }
+.sub { margin: 10px 0 0; display: grid; gap: 8px; }
+.sub > div { background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: 10px 12px; min-width: 0; }
+.sub h5 { font: 600 13px/1.3 var(--font); margin: 0 0 4px; display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: center; }
+.loop { border-style: dashed; background: transparent; }
+.note { color: var(--muted); font-size: 13px; margin: 8px 0 0; }
+.gap { font: 500 11px var(--mono); color: var(--conf); }
+h2.sec { font: 600 20px/1.2 var(--font); margin: 40px 0 6px; }
+.tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 640px; font-size: 13px; }
+th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font: 600 11px var(--font); text-transform: uppercase; letter-spacing: .06em; color: var(--muted); background: var(--bg); }
+tr:last-child td { border-bottom: 0; }
+td:first-child { font-family: var(--mono); font-size: 12.5px; }
+.foot { color: var(--muted); font-size: 13px; margin-top: 28px; max-width: 70ch; }
+@media (max-width: 620px) { .cols { grid-template-columns: 1fr; } h1 { font-size: 24px; } }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+<h1>Freight Lifecycle Process Map</h1>
+<p class="lede">One shipment from first inquiry to month-end close, top to bottom. Step numbers 1 to 14 match the swimlane. Each step shows who acts, what paper and information they need, what comes out, and whether the platform covers it.</p>
+
+<div class="bar">
+  <div>
+    <h2>Show</h2>
+    <div class="modes" id="modes" role="group" aria-label="Shipment type">
+      <button data-mode="all" aria-pressed="true">All</button>
+      <button data-mode="ocean" aria-pressed="false">Ocean</button>
+      <button data-mode="air" aria-pressed="false">Air</button>
+      <button data-mode="consol" aria-pressed="false">Air consolidation</button>
+    </div>
+  </div>
+  <div>
+    <h2>Legend</h2>
+    <div class="legend">
+      <div><span class="tag t-plat">In the platform</span> Described in the requirements (SRS) as a platform feature</div>
+      <div><span class="tag t-out">Outside the platform</span> Done by people or other parties; at most a number or date is typed in</div>
+      <div><span class="tag t-conf">To confirm</span> Documents do not say. Raise it in a workshop</div>
+      <div><span class="tag t-amber">Amber step</span> Extra work for air consolidation only</div>
+    </div>
+  </div>
+</div>
+
+<div class="flow">
+
+<!-- ============ PHASE A ============ -->
+<div class="phase"><b>A. Sell</b><span>From first contact to a job we can work on</span></div>
+
+<section class="step">
+  <div class="num">1</div>
+  <div class="head"><h3>Inquiry</h3><span class="who">Shipper / Consignee</span></div>
+  <div class="cols">
+    <div class="col"><h4>Needs</h4><ul>
+      <li>What is moving: goods, pieces, weight, size</li>
+      <li>From where to where, and by when</li>
+      <li>Trade term (Incoterm): who pays which charges</li>
+      <li>Ocean or air</li></ul></div>
+    <div class="col"><h4>Produces</h4><ul>
+      <li>A request, usually by email or phone</li></ul></div>
+  </div>
+  <div class="sys"><div><span class="tag t-out">Outside the platform</span><span>The platform starts at the quote. No inquiry record is described.</span></div></div>
+</section>
+
+<section class="step">
+  <div class="num">2</div>
+  <div class="head"><h3>Quote, accept, set up job</h3><span class="who">Sales / Customer service</span></div>
+  <div class="cols">
+    <div class="col"><h4>Needs</h4><ul>
+      <li>Customer in the directory, with the party who will be billed</li>
+      <li>Rates: <span class="doc">Tariff</span> for the lane, or a <span class="doc">Charge Package</span></li>
+      <li>Chargeable weight (air) or revenue weight (ocean)</li></ul></div>
+    <div class="col"><h4>Produces</h4><ul>
+      <li><span class="doc">Quote</span> sent to customer</li>
+      <li>Customer's acceptance</li>
+      <li><span class="doc">Freight File</span> with a system File Number</li></ul></div>
+  </div>
+  <div class="sys">
+    <div><span class="tag t-plat">In the platform</span><span>Quote moves Draft → Sent → Accepted, Rejected or Expired. Only an Accepted quote can become a file; its lines replace tariff lines. New file starts as <b>Draft</b>.</span></div>
+    <div><span class="tag t-conf">To confirm</span><span>Sales / Customer service is not one of the five platform roles. Operator or Manager does this today. Tariff data is mostly empty.</span></div>
+  </div>
+</section>
+
+<section class="gate">
+  <div class="num"><i>?</i></div>
+  <div class="head"><h3>Customer accepts the quote?</h3></div>
+  <div class="outs">
+    <div><b>Yes</b>Quote becomes Accepted. Continue to step 3.</div>
+    <div><b>No or no reply</b>Quote becomes Rejected or Expired. No file is worked.</div>
+  </div>
+</section>
+
+<section class="step">
+  <div class="num">3</div>
+  <div class="head"><h3>Booking request + instructions</h3><span class="who">Shipper / Consignee</span></div>
+  <div class="cols">
+    <div class="col"><h4>Needs from the customer</h4><ul>
+      <li><span class="doc">Booking request</span> and <span class="doc">Shipping instructions</span></li>
+      <li><span class="doc">Commercial invoice</span></li>
+      <li><span class="doc">Packing list</span></li>
+      <li>Goods codes (HS code) for each commodity</li>
+      <li><span class="doc">Dangerous goods declaration</span>, if the goods are flagged</li>
+      <li>Shipper, consignee and notify party details</li></ul></div>
+    <div class="col"><h4>Produces</h4><ul>
+      <li>File filled in: parties, cargo, dimension lines, containers (ocean), weights, VAT</li></ul></div>
+  </div>
+  <div class="sys">
+    <div><span class="tag t-plat">In the platform</span><span>File fields, commodity catalogue with HS code and dangerous-goods flag, ocean containers, air dimension lines. File is still <b>Draft</b> and editable.</span></div>
+    <div><span class="tag t-conf">To confirm</span><span>Whether customer documents are attached to the file or kept elsewhere.</span></div>
+  </div>
+</section>
+
+<!-- ============ PHASE B ============ -->
+<div class="phase"><b>B. Plan and approve</b><span>Space is booked and a manager releases the file</span></div>
+
+<section class="step">
+  <div class="num">4</div>
+  <div class="head"><h3>Book carrier / airline space</h3><span class="who">Operations</span></div>
+  <div class="cols">
+    <div class="col"><h4>Needs</h4><ul>
+      <li>Completed file from step 3</li>
+      <li>Carrier or airline, ports, preferred sailing or flight</li>
+      <li>Cut-off dates the customer can meet</li></ul></div>
+    <div class="col"><h4>Produces</h4><ul>
+      <li><span class="doc">Booking request</span> to the carrier or airline</li>
+      <li>File submitted for approval</li></ul></div>
+  </div>
+  <div class="sys">
+    <div><span class="tag t-plat">In the platform</span><span>Carriers, ports, airlines in the directory. <b>Submit</b> checks required fields, then the file becomes <b>Pending</b> and nobody can edit it.</span></div>
+    <div><span class="tag t-conf">To confirm</span><span>When staff submit: before booking, after the carrier confirms, or at another point.</span></div>
+  </div>
+</section>
+
+<section class="step">
+  <div class="num">5</div>
+  <div class="head"><h3>Confirm space</h3><span class="who">Carrier / Airline</span></div>
+  <div class="cols">
+    <div class="col"><h4>Needs</h4><ul><li>Booking request from step 4</li></ul></div>
+    <div class="col"><h4>Produces</h4><ul>
+      <li><span class="doc">Booking confirmation</span></li>
+      <li><span class="doc">Booking Number</span></li>
+      <li>Vessel or flight, and cut-offs</li></ul></div>
+  </div>
+  <div class="sys"><div><span class="tag t-out">Outside the platform</span><span>The carrier's reference is typed on the file. It is not our File Number. The public lookup can find a shipment by it.</span></div></div>
+</section>
+
+<section class="gate">
+  <div class="num"><i>?</i></div>
+  <div class="head"><h3>Manager approves the file?</h3><span class="who">Manager or Superadmin</span></div>
+  <div class="outs">
+    <div><b>Approve</b>File becomes <b>Approved</b>. Operators can no longer change it. Billing is released.</div>
+    <div><b>Return, with a note</b>File becomes <b>For Correction</b>. Operator fixes it and submits again. An image can be attached to the note.</div>
+    <div><b>Shipment will not happen</b>There is no Cancelled status today (OP-03). <span class="gap">to confirm</span></div>
+  </div>
+  <p class="note">The platform lets billing start as soon as the file is Approved. It does not wait for delivery.</p>
+</section>
+
+<!-- ============ PHASE C ============ -->
+<div class="phase"><b>C. Move the cargo</b><span>Origin side: collect, document, clear, load, depart</span></div>
+
+<section class="step">
+  <div class="num">6</div>
+  <div class="head"><h3>Pickup, receive, check</h3><span class="who">Warehouse / Trucker</span><span class="tag t-amber" data-for="consol">Consolidation: build up the load</span></div>
+  <div class="cols">
+    <div class="col"><h4>Needs</h4><ul>
+      <li><span class="doc">Cartage order</span> (pickup, delivery, cross-dock or exchange)</li>
+      <li>Pickup address, contact, cargo-ready date</li>
+      <li>Driver and truck, if our own</li></ul></div>
+    <div class="col"><h4>Produces</h4><ul>
+      <li>Cargo received and checked: pieces, actual weight, measurements</li>
+      <li>Delivery paper signed by the receiver (<span class="doc">POD</span>)</li>
+      <li>Milestone: cargo received</li>
+      <li data-for="consol"><span class="doc">House air waybill</span> rows added to the load</li></ul></div>
+  </div>
+  <div class="sys">
+    <div><span class="tag t-plat">In the platform</span><span>Cartage order Open → Assigned → In Transit → Delivered. Dispatch routes with stops. POD records signer and time. Air: dimension lines give volumetric and chargeable weight.</span></div>
+    <div data-for="consol"><span class="tag t-plat">In the platform</span><span>Pieces and gross weight are totalled from the house rows. The master's chargeable weight is the greater of the <b>total</b> gross and the <b>total</b> volumetric weight. It is not the sum of the houses' chargeable weights. Duplicate house numbers are flagged.</span></div>
+    <div><span class="tag t-conf">To confirm</span><span>The POD signature works only when a signature pad is connected. The warehouse receipt is not described. There is no "dispatcher" role.</span></div>
+  </div>
+</section>
+
+<section class="step">
+  <div class="num">7</div>
+  <div class="head"><h3><span data-for="ocean">Draft bill of lading</span><span data-for="air consol"> Draft HAWB</span>, approve</h3><span class="who">Documentation</span></div>
+  <div class="cols">
+    <div class="col"><h4>Needs</h4><ul>
+      <li><span class="doc">Shipping instructions</span></li>
+      <li><span class="doc">Commercial invoice</span> and <span class="doc">Packing list</span></li>
+      <li>Checked weights and pieces from step 6</li>
+      <li>Shipper's confirmation of the draft</li></ul></div>
+    <div class="col"><h4>Produces</h4><ul>
+      <li data-for="ocean"><span class="doc">Draft house bill of lading</span>, approved by shipper</li>
+      <li data-for="air"><span class="doc">Draft air waybill</span>, approved by shipper</li>
+      <li data-for="consol"><span class="doc">One house air waybill per shipper</span>, approved</li></ul></div>
+  </div>
+  <div class="sys">
+    <div><span class="tag t-plat">In the platform</span><span>Documents print from the browser with branded layouts.</span></div>
+    <div><span class="tag t-conf">To confirm</span><span>The design document lists a house bill of lading; the requirements do not. Nobody has checked layouts against carrier or legal formats. <span class="gap">GAP-13</span></span></div>
+  </div>
+</section>
+
+<section class="step">
+  <div class="num">8</div>
+  <div class="head"><h3>Export customs</h3><span class="who">Customs broker</span></div>
+  <div class="cols">
+    <div class="col"><h4>Needs</h4><ul>
+      <li><span class="doc">Commercial invoice</span>, <span class="doc">Packing list</span></li>
+      <li>HS codes and values</li>
+      <li>Export permits or licences, if the goods need them</li>
+      <li>Authority to act for the shipper</li></ul></div>
+    <div class="col"><h4>Produces</h4><ul>
+      <li><span class="doc">Export declaration</span> and customs release</li></ul></div>
+  </div>
+  <div class="sys">
+    <div><span class="tag t-out">Outside the platform</span><span>No customs filing or clearance status is described for cargo files.</span></div>
+    <div><span class="tag t-conf">To confirm</span><span>Vehicle files (roll-on/roll-off) have a customs-hold flag and a lien-release flag. Who sets or clears them is not defined. <span class="gap">GAP-24</span></span></div>
+  </div>
+</section>
+
+<section class="step amber" data-for="consol">
+  <div class="num">9</div>
+  <div class="head"><h3>Master air waybill, consolidation manifest, e-messages</h3><span class="who">Documentation</span><span class="tag t-amber">Air consolidation only</span></div>
+  <div class="cols">
+    <div class="col"><h4>Needs</h4><ul>
+      <li>Every house air waybill final</li>
+      <li>Totals checked against the airline booking</li>
+      <li>Customs release from step 8</li></ul></div>
+    <div class="col"><h4>Produces</h4><ul>
+      <li><span class="doc">Master air waybill</span> (one for the whole load)</li>
+      <li><span class="doc">Consolidation manifest</span></li>
+      <li>Electronic messages to the airline</li></ul></div>
+  </div>
+  <div class="sys">
+    <div><span class="tag t-plat">In the platform</span><span>Master record with house rows and totals.</span></div>
+    <div><span class="tag t-conf">To confirm</span><span>Manifest layout and electronic messages are not described.</span></div>
+  </div>
+</section>
+
+<section class="step">
+  <div class="num">10</div>
+  <div class="head"><h3>Accept, depart, issue <span data-for="ocean">bill of lading</span><span data-for="air consol"> air waybill</span></h3><span class="who">Carrier / Airline</span></div>
+  <div class="cols">
+    <div class="col"><h4>Needs</h4><ul>
+      <li>Cargo delivered inside the cut-offs</li>
+      <li>Approved bill of lading or waybill details</li>
+      <li data-for="ocean"><span class="doc">VGM</span> (verified gross mass) for each container</li>
+      <li data-for="ocean">Container cut-offs met: documents, cargo, VGM</li></ul></div>
+    <div class="col"><h4>Produces</h4><ul>
+      <li data-for="ocean"><span class="doc">Master bill of lading</span></li>
+      <li data-for="air"><span class="doc">Air waybill</span></li>
+      <li data-for="consol"><span class="doc">Master air waybill</span> issued</li>
+      <li>Departure confirmed</li></ul></div>
+  </div>
+  <div class="sys">
+    <div><span class="tag t-plat">In the platform</span><span>Staff enter milestones by hand (dated, with place and note). The public can look up status by reference number.</span></div>
+    <div><span class="tag t-conf">To confirm</span><span>The public lookup returns "tracking fields" that are not listed, and file numbers follow a pattern. <span class="gap">GAP-29</span></span></div>
+  </div>
+</section>
+
+<!-- ============ PHASE D ============ -->
+<div class="phase"><b>D. Arrive and deliver</b><span>Destination side</span></div>
+
+<section class="step">
+  <div class="num">11</div>
+  <div class="head"><h3>Pre-alert</h3><span class="who">Documentation</span></div>
+  <div class="cols">
+    <div class="col"><h4>Needs</h4><ul>
+      <li>Issued bill of lading or waybill (copy)</li>
+      <li><span class="doc">Commercial invoice</span>, <span class="doc">Packing list</span></li>
+      <li data-for="consol"><span class="doc">Consolidation manifest</span></li>
+      <li>Expected arrival date</li></ul></div>
+    <div class="col"><h4>Produces</h4><ul>
+      <li><span class="doc">Pre-alert</span> to the destination agent</li></ul></div>
+  </div>
+  <div class="sys"><div><span class="tag t-conf">To confirm</span><span>Not described in the requirements. Agents are in the directory, but sending a pre-alert is not a listed function.</span></div></div>
+</section>
+
+<section class="step">
+  <div class="num">12</div>
+  <div class="head"><h3>Arrival, import clearance, delivery</h3><span class="who">Destination agent</span></div>
+  <div class="cols">
+    <div class="col"><h4>Needs</h4><ul>
+      <li>Pre-alert documents</li>
+      <li>Original, or released, bill of lading or waybill</li>
+      <li><span class="doc">Import declaration</span>; duties and taxes paid</li>
+      <li>Consignee's delivery instructions</li></ul></div>
+    <div class="col"><h4>Produces</h4><ul>
+      <li><span class="doc">Arrival notice</span> <span data-for="consol">(one per house air waybill)</span></li>
+      <li>Customs release</li>
+      <li><span class="doc">Delivery order</span></li>
+      <li>Delivery with signed <span class="doc">POD</span></li></ul></div>
+  </div>
+  <div class="sys">
+    <div><span class="tag t-plat">In the platform</span><span>Arrival notice and milestones.</span></div>
+    <div><span class="tag t-conf">To confirm</span><span>Arrival notice email is a preview only until email sending is set up. <span class="gap">GAP-14</span> Import clearance and delivery order are not described.</span></div>
+  </div>
+</section>
+
+<section class="step">
+  <div class="num">13</div>
+  <div class="head"><h3>Receive cargo, pay</h3><span class="who">Shipper / Consignee</span></div>
+  <div class="cols">
+    <div class="col"><h4>Needs</h4><ul>
+      <li>Delivery order or release</li>
+      <li>Invoice from us (and from the agent, if billed separately)</li></ul></div>
+    <div class="col"><h4>Produces</h4><ul>
+      <li>Signed <span class="doc">POD</span></li>
+      <li>Payment</li></ul></div>
+  </div>
+  <div class="sys">
+    <div><span class="tag t-plat">In the platform</span><span>Proof of delivery with signer and time.</span></div>
+    <div><span class="tag t-conf">To confirm</span><span>No customer payments, receipts, ageing or statements of account. <span class="gap">GAP-53</span></span></div>
+  </div>
+</section>
+
+<!-- ============ PHASE E ============ -->
+<div class="phase"><b>E. Bill and close</b><span>Step 14 broken into the stages the platform actually has</span></div>
+
+<section class="step">
+  <div class="num">14</div>
+  <div class="head"><h3>Invoice, pay vendors, close</h3><span class="who">Finance (Accountant role)</span></div>
+  <div class="sub">
+    <div>
+      <h5>14a. Rate and invoice <span class="tag t-plat">In the platform</span></h5>
+      <ul>
+        <li><b>Needs:</b> Approved file, tariffs and charge codes, bill-to party, document currency, VAT, charge code linked to a ledger account</li>
+        <li><b>Produces:</b> sell lines (to customer), cost lines (expected supplier costs), manual lines if typed in, then a <span class="doc">Draft invoice</span> with a temporary reference. <b>Issue</b> gives the final <span class="doc">Invoice Number</span>, which never changes.</li>
+        <li>Each save of an approved file re-rates the lines. Only one live invoice per file.</li>
+        <li class="gap">GAP-33: a consolidation cannot be invoiced per house customer. GAP-34: one bill-to party per file, so prepaid/collect or agent splits cannot be shown.</li>
+      </ul>
+    </div>
+    <div>
+      <h5>14b. Accounting Bridge <span class="tag t-plat">In the platform</span></h5>
+      <ul>
+        <li><b>Needs:</b> an invoice or cost item, and a ledger account for its charge code (no account means refused)</li>
+        <li><b>Produces:</b> Bridge item: Staged → Trial Verified → Posted. Each item is staged once. Trial posting writes nothing to the books.</li>
+        <li>Company setting decides how invoices reach the books: Manual, Review or Auto.</li>
+      </ul>
+    </div>
+    <div>
+      <h5>14c. Ledger <span class="tag t-plat">In the platform</span></h5>
+      <ul>
+        <li><b>Produces:</b> balanced journal and voucher numbers. Posted entries are never edited.</li>
+        <li><b>If an invoice is wrong:</b> Void it. A <span class="doc">Reversal voucher</span> undoes the posting and the next invoice revision is drafted.</li>
+        <li class="gap">AC-06: no credit note exists for a partial correction.</li>
+      </ul>
+    </div>
+    <div>
+      <h5>14d. Pay vendors <span class="tag t-plat">In the platform</span> <span class="tag t-conf">To confirm</span></h5>
+      <ul>
+        <li><b>Needs:</b> supplier bill, authorised signatory</li>
+        <li><b>Produces:</b> <span class="doc">Check disbursement voucher</span>: Draft → Printed → Posted or Void. Staff print the check; there is no bank transfer.</li>
+        <li class="gap">GAP-54: cost lines are estimates. Actual supplier bills are not recorded or matched. GAP-48: "CDV" is defined two ways.</li>
+      </ul>
+    </div>
+    <div>
+      <h5>14e. Month-end close <span class="tag t-plat">In the platform</span></h5>
+      <ul>
+        <li><b>Needs:</b> every item for the month posted or deliberately left out</li>
+        <li><b>Produces:</b> period set to Closed. Nothing more can be dated in that month, and the system cannot reopen it.</li>
+        <li>Also not covered: profit per file, collections (AC-08 to AC-10).</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="loop">
+  <h3 style="margin:0 0 6px;font:600 15px var(--font)">Running alongside every step</h3>
+  <ul>
+    <li><b>Tracking:</b> milestones are typed in by staff, shown on the public lookup page and on the live map. The map needs internet and a ship-feed token; without the token no ships show. <span class="gap">GAP-31</span></li>
+    <li><b>Access:</b> five roles only: Superadmin, Manager, Operator, Accountant, Viewer. Branches exist on the map but not in permissions.</li>
+    <li><b>Returned files:</b> For Correction → Submit → Pending → decision again. No limit on loops is described.</li>
+  </ul>
+</section>
+
+</div><!-- /flow -->
+
+<h2 class="sec">Documents and information checklist</h2>
+<p class="lede">Who supplies each item, the step that first needs it, and whether the platform holds it. Document names are the usual freight terms. Confirm the exact set per trade lane in the workshops.</p>
+<div class="tablewrap"><table>
+<thead><tr><th>Document or item</th><th>Supplied by</th><th>First needed</th><th>Platform</th></tr></thead>
+<tbody>
+<tr><td>Inquiry details</td><td>Shipper / Consignee</td><td>1</td><td><span class="tag t-out">Outside</span></td></tr>
+<tr><td>Quote</td><td>Sales / Customer service</td><td>2</td><td><span class="tag t-plat">In platform</span></td></tr>
+<tr><td>Booking request, shipping instructions</td><td>Shipper</td><td>3</td><td><span class="tag t-conf">To confirm</span></td></tr>
+<tr><td>Commercial invoice, packing list</td><td>Shipper</td><td>3, 7, 8, 11, 12</td><td><span class="tag t-conf">To confirm</span></td></tr>
+<tr><td>Dangerous goods declaration</td><td>Shipper</td><td>3</td><td><span class="tag t-plat">Flag only</span> <span class="tag t-conf">To confirm</span></td></tr>
+<tr><td>Freight file and File Number</td><td>Operator</td><td>2</td><td><span class="tag t-plat">In platform</span></td></tr>
+<tr><td>Booking confirmation and Booking Number</td><td>Carrier / Airline</td><td>5</td><td><span class="tag t-plat">Number only</span></td></tr>
+<tr><td>Approval and return note</td><td>Manager</td><td>after 4</td><td><span class="tag t-plat">In platform</span></td></tr>
+<tr><td>Cartage order, dispatch route, POD</td><td>Operator / Driver</td><td>6, 12</td><td><span class="tag t-plat">In platform</span></td></tr>
+<tr><td>Warehouse receipt</td><td>Warehouse</td><td>6</td><td><span class="tag t-conf">To confirm</span></td></tr>
+<tr><td>House bill of lading / house air waybill</td><td>Documentation</td><td>7</td><td><span class="tag t-plat">Prints</span> <span class="tag t-conf">Check layout</span></td></tr>
+<tr><td>Export declaration</td><td>Customs broker</td><td>8</td><td><span class="tag t-out">Outside</span></td></tr>
+<tr><td>Master air waybill, consolidation manifest</td><td>Documentation</td><td>9</td><td><span class="tag t-plat">Master</span> <span class="tag t-conf">Manifest?</span></td></tr>
+<tr><td>VGM and container cut-offs (ocean)</td><td>Shipper / Carrier</td><td>10</td><td><span class="tag t-out">Outside</span></td></tr>
+<tr><td>Master bill of lading / air waybill</td><td>Carrier / Airline</td><td>10</td><td><span class="tag t-out">Outside</span></td></tr>
+<tr><td>Pre-alert</td><td>Documentation</td><td>11</td><td><span class="tag t-conf">To confirm</span></td></tr>
+<tr><td>Arrival notice</td><td>Destination agent</td><td>12</td><td><span class="tag t-plat">Preview only</span></td></tr>
+<tr><td>Import declaration, delivery order</td><td>Destination agent</td><td>12</td><td><span class="tag t-out">Outside</span></td></tr>
+<tr><td>Invoice, Invoice Number</td><td>Accountant</td><td>14a</td><td><span class="tag t-plat">In platform</span></td></tr>
+<tr><td>Charge code to ledger account link</td><td>Accountant</td><td>14b</td><td><span class="tag t-plat">In platform</span></td></tr>
+<tr><td>Reversal voucher</td><td>System, on void</td><td>14c</td><td><span class="tag t-plat">In platform</span></td></tr>
+<tr><td>Supplier bill</td><td>Supplier</td><td>14d</td><td><span class="tag t-conf">Not recorded</span></td></tr>
+<tr><td>Check disbursement voucher</td><td>Accountant</td><td>14d</td><td><span class="tag t-plat">In platform</span></td></tr>
+<tr><td>Customer receipt, ageing</td><td>Finance</td><td>13, 14</td><td><span class="tag t-conf">Not recorded</span></td></tr>
+</tbody></table></div>
+
+<p class="foot">Built from the swimlane, the requirements (SRS v0.1), the design document (SAD v0.1) and this repository's gap analysis. GAP and question IDs refer to <b>PROCESS-GAP-ANALYSIS.md</b> and <b>OPEN-QUESTIONS.md</b>. A label of "To confirm" means the documents are silent, not that the platform lacks the feature.</p>
+</div>
+
+<script>
+(function () {
+  var sets = { all: null, ocean: ['ocean'], air: ['air'], consol: ['air', 'consol'] };
+  var buttons = document.querySelectorAll('#modes button');
+  function apply(mode) {
+    var allow = sets[mode];
+    document.querySelectorAll('[data-for]').forEach(function (el) {
+      var f = el.getAttribute('data-for').split(' ');
+      var show = !allow || f.some(function (x) { return allow.indexOf(x) > -1; });
+      el.hidden = !show;
+    });
+    buttons.forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.mode === mode ? 'true' : 'false'); });
+  }
+  buttons.forEach(function (b) { b.addEventListener('click', function () { apply(b.dataset.mode); }); });
+  apply('all');
+})();
+</script>
+
+</body>
+</html>
