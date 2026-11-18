@@ -6,6 +6,12 @@ For anyone who has not worked in logistics. No prior knowledge needed. The examp
 
 A freight forwarder is a travel agent for cargo. The company arranges for goods to get from a seller in one country to a buyer in another, using ships, planes, trucks and customs officers it does not own. It makes money on the gap between what it charges the customer and what it pays those suppliers.
 
+## The whole journey on one picture
+
+![How a shipment works in 11 steps, from asking for a price to billing and closing the month](plain-english-diagram.svg)
+
+The numbers in the picture match the numbered story below.
+
 ## A story to hold onto
 
 A furniture maker in Manila wants to send 40 chairs to a shop in Dubai.
