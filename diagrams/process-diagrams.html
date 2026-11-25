@@ -1,0 +1,615 @@
+<title>Platform Process Diagrams</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: one column of diagram panels, grouped under five headings, with a chip index on top. */
+:root {
+  --bg: #f4f7f8;
+  --panel: #ffffff;
+  --ink: #14232b;
+  --muted: #55676f;
+  --line: #d5dfe3;
+  --accent: #0d6b78;
+  --accent-ink: #ffffff;
+  --gap-bg: #fbdcd8;
+  --gap-ink: #8c1d16;
+  --ask-bg: #fdecc4;
+  --ask-ink: #7a4a00;
+  --ok-bg: #d3ebe6;
+  --ok-ink: #0f5547;
+  --no-bg: #e9eef0;
+  --font-head: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Inter", "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e171c; --panel: #16232a; --ink: #e6eef1; --muted: #9db0b8; --line: #2a3b44;
+    --accent: #4fc3d1; --accent-ink: #072228;
+    --gap-bg: #4a1f1c; --gap-ink: #ffb4ab; --ask-bg: #4a3710; --ask-ink: #f5cf7a;
+    --ok-bg: #123a33; --ok-ink: #8fd9c8; --no-bg: #1f2f37;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e171c; --panel: #16232a; --ink: #e6eef1; --muted: #9db0b8; --line: #2a3b44;
+  --accent: #4fc3d1; --accent-ink: #072228;
+  --gap-bg: #4a1f1c; --gap-ink: #ffb4ab; --ask-bg: #4a3710; --ask-ink: #f5cf7a;
+  --ok-bg: #123a33; --ok-ink: #8fd9c8; --no-bg: #1f2f37;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 28px 64px;
+}
+main { max-width: 1040px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
+h1, h2, h3 { font-family: var(--font-head); line-height: 1.2; text-wrap: balance; margin: 0; }
+h1 { font-size: 2rem; }
+h2 { font-size: 1.3rem; }
+h3 { font-size: 1rem; }
+p { margin: 0; max-width: 68ch; }
+a { color: var(--accent); }
+.lede { color: var(--muted); }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 0.85rem; align-items: center; }
+.sw { display: inline-block; width: 14px; height: 14px; border-radius: 3px; margin-right: 6px; vertical-align: -2px; border: 2px solid; }
+.sw.gap { background: var(--gap-bg); border-color: var(--gap-ink); }
+.sw.ask { background: var(--ask-bg); border-color: var(--ask-ink); }
+.sw.ok { background: var(--ok-bg); border-color: var(--ok-ink); }
+nav { display: flex; flex-wrap: wrap; gap: 6px; }
+nav a { text-decoration: none; font-size: 0.82rem; padding: 4px 10px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); color: var(--ink); }
+nav a:hover, nav a:focus-visible { border-color: var(--accent); outline: none; }
+.group { font-family: var(--font-head); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.78rem; color: var(--muted); margin-top: 18px; }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 18px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.read { color: var(--muted); font-size: 0.92rem; }
+.diagram { overflow-x: auto; padding: 4px 0; }
+.diagram pre.mermaid { margin: 0; text-align: center; }
+.watch { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: baseline; font-size: 0.88rem; }
+.watch strong { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+.q { font-variant-numeric: tabular-nums; font-size: 0.78rem; padding: 1px 7px; border-radius: 4px; background: var(--ask-bg); color: var(--ask-ink); white-space: nowrap; }
+.q.gap { background: var(--gap-bg); color: var(--gap-ink); }
+.pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+.pair > div { min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+.strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(118px, 1fr)); gap: 8px; }
+.cell { border: 1px solid var(--line); border-radius: 6px; padding: 10px; background: var(--no-bg); display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.cell b { font-family: var(--font-head); font-size: 1.7rem; line-height: 1; font-variant-numeric: tabular-nums; }
+.cell span { font-size: 0.8rem; }
+.cell em { font-style: normal; font-size: 0.78rem; font-weight: 600; }
+.cell.h0 { background: var(--ok-bg); color: var(--ok-ink); }
+.cell.h1 { background: var(--ask-bg); color: var(--ask-ink); }
+.cell.h2 { background: var(--gap-bg); color: var(--gap-ink); }
+.cell.h3 { background: var(--gap-ink); color: var(--gap-bg); }
+.table-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: 0.88rem; }
+th, td { border: 1px solid var(--line); padding: 6px 8px; text-align: center; }
+th:first-child, td:first-child { text-align: left; }
+th { background: var(--no-bg); font-weight: 600; }
+td.y { background: var(--ok-bg); color: var(--ok-ink); font-weight: 600; }
+td.n { background: var(--no-bg); color: var(--muted); }
+td.r { background: var(--no-bg); color: var(--ink); }
+td.a { background: var(--ask-bg); color: var(--ask-ink); font-weight: 700; }
+td.s { background: var(--gap-bg); color: var(--gap-ink); font-weight: 700; }
+footer { color: var(--muted); font-size: 0.85rem; }
+@media (max-width: 520px) { h1 { font-size: 1.6rem; } .panel { padding: 14px; } }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Space+Grotesk:wght@500;700&display=swap">
+
+<main>
+  <header style="display:flex;flex-direction:column;gap:12px">
+    <h1>Platform Process Diagrams</h1>
+    <p class="lede">Every process in the requirements pack, drawn. Each diagram shows what the system does today according to the SRS and SAD. Where the business has not decided, or the documents disagree, it is marked.</p>
+    <div class="legend" aria-label="Colour key">
+      <span><i class="sw gap"></i>A gap today</span>
+      <span><i class="sw ask"></i>An open question (IDs like <span class="q">OP-02</span> are in OPEN-QUESTIONS.md)</span>
+      <span><i class="sw ok"></i>An end state, or settled</span>
+    </div>
+    <nav aria-label="Diagrams">
+      <a href="#lifecycle">1 Lifecycle</a><a href="#gapmap">2 Gap map</a><a href="#approval">3 Approval</a><a href="#quote">4 Quote</a>
+      <a href="#weights">5 Weights</a><a href="#consolidation">6 Consolidation</a><a href="#movement">7 Movement</a><a href="#lookup">8 Public lookup</a>
+      <a href="#rating">9 Rating</a><a href="#invoice">10 Invoice</a><a href="#modes">11 Posting modes</a><a href="#bridge">12 Bridge</a>
+      <a href="#period">13 Periods</a><a href="#roles">14 Roles</a><a href="#signin">15 Sign-in</a>
+      <a href="#pack">16 Pack workflow</a><a href="#topic">17 Workshop topic</a><a href="#update">18 After an answer</a><a href="#decide">19 Who decides</a>
+    </nav>
+  </header>
+
+  <h2 class="group">The big picture</h2>
+
+  <section class="panel" id="lifecycle">
+    <h2>1 · From quote to ledger</h2>
+    <p class="read">Read left to right. One File Number links every step. Billing starts only after approval, and the bridge is the only way into the books.</p>
+    <div class="diagram"><pre class="mermaid">
+flowchart LR
+  subgraph OPS["Operations"]
+    direction LR
+    Q["1 Quote<br/>Operator or Manager"] --> B["2 Booking<br/>Operator<br/>Freight File + File Number"]
+    B --> A{{"3 Approval<br/>Manager approves<br/>or returns with a note"}}
+    A --> M["4 Movement<br/>vehicles, trucking,<br/>deliveries"]
+    M --> T["5 Tracking<br/>milestones +<br/>public lookup"]
+  end
+  subgraph ACC["Accounting"]
+    direction LR
+    BL["6 Billing<br/>system rates the file,<br/>invoice drafted"] --> BR["7 Bridge<br/>stage, trial post, post"]
+    BR --> L["8 Ledger<br/>books and<br/>month-end close"]
+  end
+  A -- "approved files only" --> BL
+  classDef ask fill:#fdecc4,stroke:#a86a00,color:#3a2600,stroke-width:2px
+  class A,BR ask
+    </pre></div>
+    <div class="watch"><strong>Amber steps</strong> are the two control points. <span class="q">BO-02</span> self-approval <span class="q">AC-15</span> who may post</div>
+  </section>
+
+  <section class="panel" id="gapmap">
+    <h2>2 · Where the 72 gaps sit</h2>
+    <p class="read">The same eight steps, with the gaps found in each. Darker means more High gaps. The full list is in PROCESS-GAP-ANALYSIS.md.</p>
+    <div class="strip">
+      <div class="cell h1"><span>Before step 1<br/>set-up, go-live</span><b>6</b><em>2 High</em></div>
+      <div class="cell h0"><span>1 Quote</span><b>1</b><em>0 High</em></div>
+      <div class="cell h0"><span>2 Booking</span><b>7</b><em>0 High</em></div>
+      <div class="cell h2"><span>3 Approval</span><b>7</b><em>3 High</em></div>
+      <div class="cell h1"><span>4 Movement</span><b>6</b><em>1 High</em></div>
+      <div class="cell h1"><span>5 Tracking</span><b>5</b><em>1 High</em></div>
+      <div class="cell h3"><span>6 Billing</span><b>10</b><em>6 High</em></div>
+      <div class="cell h1"><span>7 Bridge</span><b>6</b><em>1 High</em></div>
+      <div class="cell h1"><span>8 Ledger</span><b>4</b><em>1 High</em></div>
+      <div class="cell h2"><span>After step 8<br/>payments, profit</span><b>3</b><em>2 High</em></div>
+      <div class="cell h2"><span>Release, backup, speed</span><b>6</b><em>4 High</em></div>
+      <div class="cell h0"><span>Roles and offices</span><b>5</b><em>0 High</em></div>
+      <div class="cell h0"><span>Records, terms, owners</span><b>6</b><em>0 High</em></div>
+    </div>
+    <div class="watch"><strong>Hot spots</strong> <span class="q gap">Billing: 6 High</span> <span class="q gap">Release and backup: 4 High</span> <span class="q gap">Approval: 3 High</span></div>
+  </section>
+
+  <h2 class="group">Freight files</h2>
+
+  <section class="panel" id="approval">
+    <h2>3 · Approving a Freight File</h2>
+    <p class="read">Operation Status. A Pending file is locked for everyone. An Approved file is released to billing and locked for Operators.</p>
+    <div class="diagram"><pre class="mermaid">
+stateDiagram-v2
+  direction LR
+  state "For Correction" as FC
+  [*] --> Draft: Operator creates
+  Draft --> Pending: Submit, required fields checked
+  Pending --> Approved: Manager or Superadmin approves
+  Pending --> FC: Return, note required
+  FC --> Pending: Resubmit
+  Approved --> [*]: released to billing
+  note right of Pending
+    Locked for everyone,
+    including the Submitter
+  end note
+    </pre></div>
+    <div class="watch"><strong>Gaps</strong>
+      <span class="q gap">BO-02</span> a Manager can approve their own file
+      <span class="q gap">OP-02</span> an Approved file can be edited and re-billed with no second approval
+      <span class="q gap">OP-03</span> no way to cancel
+      <span class="q">OP-12</span> no time limit, no deputy
+      <span class="q">OP-16</span> nobody is told a file is waiting
+    </div>
+  </section>
+
+  <section class="panel" id="quote">
+    <h2>4 · A Quote</h2>
+    <p class="read">An Accepted Quote can become a Freight File, and its prices then replace the standard rates on the invoice.</p>
+    <div class="diagram"><pre class="mermaid">
+stateDiagram-v2
+  direction LR
+  state "Linked to a Freight File" as LF
+  [*] --> Draft
+  Draft --> Sent
+  Sent --> Accepted
+  Sent --> Rejected
+  Sent --> Expired
+  Accepted --> LF: converted or linked
+  Rejected --> [*]
+  Expired --> [*]
+  LF --> [*]
+    </pre></div>
+    <div class="watch"><strong>Gaps</strong> <span class="q">OP-14</span> who marks it Accepted, what proves it, whether it expires by date</div>
+  </section>
+
+  <section class="panel" id="weights">
+    <h2>5 · The weight a charge is based on</h2>
+    <p class="read">Ocean and air each take the greater of two numbers. The examples use the numbers from the Stakeholder Summary.</p>
+    <div class="pair">
+      <div>
+        <h3>Ocean: Revenue Weight</h3>
+        <div class="diagram"><pre class="mermaid">
+flowchart TB
+  G["Gross weight<br/>3.2 tonnes"] --> X{"Greater of the two"}
+  V["Volume<br/>5.0 cubic metres"] --> X
+  X --> R["Revenue Weight = 5.0"]
+  classDef good fill:#d3ebe6,stroke:#1f7a6b,color:#0c2e29
+  class R good
+        </pre></div>
+      </div>
+      <div>
+        <h3>Air: Chargeable Weight</h3>
+        <div class="diagram"><pre class="mermaid">
+flowchart TB
+  P["2 pieces, each 100 x 50 x 40 cm"] --> D["Each piece: 200,000 / 6000<br/>= 33.33 kg volume"]
+  D --> T["Two pieces: 66.67 kg"]
+  T --> RU["Round up to the next half kilo<br/>= 67.0 kg"]
+  GW["Actual weight<br/>30 kg"] --> X{"Greater of the two"}
+  RU --> X
+  X --> R["Chargeable Weight = 67.0 kg"]
+  classDef good fill:#d3ebe6,stroke:#1f7a6b,color:#0c2e29
+  class R good
+        </pre></div>
+      </div>
+    </div>
+    <div class="watch"><strong>Ask</strong> <span class="q">TL-10</span> is the half-kilo rounding done per piece or on the total?</div>
+  </section>
+
+  <section class="panel" id="consolidation">
+    <h2>6 · Air consolidation: why the master is 150, not 190</h2>
+    <p class="read">One master air waybill carries many house air waybills. The airline charges on the master's totals. The sum of the houses' own charges is higher, and that difference is part of the business.</p>
+    <div class="diagram"><pre class="mermaid">
+flowchart TB
+  HA["House A<br/>actual 100 kg, volume 60 kg<br/>charged on 100 kg"]
+  HB["House B<br/>actual 40 kg, volume 90 kg<br/>charged on 90 kg"]
+  HA & HB --> TOT["Master totals<br/>actual 140 kg, volume 150 kg"]
+  TOT --> MW["MAWB Chargeable Weight = 150 kg<br/>the greater of the two totals"]
+  HA & HB --> SUM["Houses added up: 100 + 90 = 190 kg<br/>NOT used for the master"]
+  classDef ask fill:#fdecc4,stroke:#a86a00,color:#3a2600,stroke-width:2px
+  classDef good fill:#d3ebe6,stroke:#1f7a6b,color:#0c2e29
+  class SUM ask
+  class MW good
+    </pre></div>
+    <div class="watch"><strong>Gaps</strong> <span class="q gap">AC-01</span> one invoice for the master, or one per house customer? <span class="q">OP-11</span> house number on the invoice</div>
+  </section>
+
+  <h2 class="group">Movement and tracking</h2>
+
+  <section class="panel" id="movement">
+    <h2>7 · Status lists for movement records</h2>
+    <p class="read">Four records move through their own steps. The documents list the statuses, not which moves are allowed. Dotted lines are moves the documents leave unclear.</p>
+    <div class="pair">
+      <div>
+        <h3>RORO Vehicle</h3>
+        <div class="diagram"><pre class="mermaid">
+flowchart LR
+  E["Expected"] --> R["Received"] --> RS["Ready to Ship"] --> PL["Pre-Loaded"] --> L["Loaded"] --> S["Shipped"]
+  H["Hold"] -.-> R
+  R -.-> H
+  classDef ask fill:#fdecc4,stroke:#a86a00,color:#3a2600,stroke-width:2px
+  class H ask
+        </pre></div>
+        <span class="q">OP-17</span>
+      </div>
+      <div>
+        <h3>Cartage Order</h3>
+        <div class="diagram"><pre class="mermaid">
+flowchart LR
+  O["Open"] --> A["Assigned"] --> T["In Transit"] --> D["Delivered"]
+  O -.-> C["Cancelled"]
+  A -.-> C
+  classDef ask fill:#fdecc4,stroke:#a86a00,color:#3a2600,stroke-width:2px
+  class C ask
+        </pre></div>
+        <span class="q">AC-17</span> how it is billed
+      </div>
+      <div>
+        <h3>Dispatch Route</h3>
+        <div class="diagram"><pre class="mermaid">
+flowchart LR
+  D["Draft"] --> DI["Dispatched"] --> T["In Transit"] --> A["Arrived"] --> C["Completed"]
+  A --> POD["Proof of Delivery<br/>signature pad only"]
+  classDef gap fill:#fbdcd8,stroke:#b3261e,color:#3a0f0c,stroke-width:2px
+  class POD gap
+        </pre></div>
+        <span class="q gap">OP-10</span> no pad is connected
+      </div>
+      <div>
+        <h3>Fleet Vehicle and Driver</h3>
+        <div class="diagram"><pre class="mermaid">
+flowchart LR
+  subgraph FV["Fleet Vehicle"]
+    direction LR
+    A1["Available"] <--> U["In Use"] <--> MA["Maintenance"]
+  end
+  subgraph DR["Driver"]
+    direction LR
+    A2["Available"] <--> OT["On Trip"] <--> OD["Off Duty"]
+  end
+        </pre></div>
+        <span class="q">OP-04</span> is a dispatcher a separate role?
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" id="lookup">
+    <h2>8 · The public lookup</h2>
+    <p class="read">Anyone can look up a shipment without signing in. The page returns tracking fields only.</p>
+    <div class="diagram"><pre class="mermaid">
+flowchart TB
+  V["Visitor enters a File, booking,<br/>waybill, master or house number"] --> PZ["Browser solves a small puzzle<br/>single use, signed, expires"]
+  PZ --> C1{"Puzzle valid<br/>and not reused?"}
+  C1 -- no --> X1["Refused"]
+  C1 -- yes --> C2{"Within the<br/>rate limit?"}
+  C2 -- no --> X2["Refused"]
+  C2 -- yes --> M["Match against files,<br/>consolidation house rows<br/>and tracking items"]
+  M --> F{"Found?"}
+  F -- no --> NF["Nothing found,<br/>no data shown"]
+  F -- yes --> OUT["Status and milestones shown<br/>no amounts or financial fields"]
+  classDef ask fill:#fdecc4,stroke:#a86a00,color:#3a2600,stroke-width:2px
+  classDef good fill:#d3ebe6,stroke:#1f7a6b,color:#0c2e29
+  class OUT ask
+  class NF good
+    </pre></div>
+    <div class="watch"><strong>Gaps</strong> <span class="q gap">BO-07</span> the exact fields shown are not written down, and a guessed number shows a status <span class="q">OP-06</span> milestones are typed by hand</div>
+  </section>
+
+  <h2 class="group">Billing and the books</h2>
+
+  <section class="panel" id="rating">
+    <h2>9 · How a charge is worked out</h2>
+    <p class="read">Runs each time an Approved file is saved. The numbers are examples.</p>
+    <div class="diagram"><pre class="mermaid">
+flowchart TB
+  S["Approved file is saved"] --> Q{"Accepted Quote linked?"}
+  Q -- yes --> QL["Quote lines become the Sell Lines"]
+  Q -- no --> C1{"Tariff for this Customer<br/>and Lane, in date?"}
+  C1 -- yes --> U1["Use it, e.g. 80.00"]
+  C1 -- no --> C2{"Tariff for the Lane<br/>only, in date?"}
+  C2 -- yes --> U2["Use it, e.g. 95.00"]
+  C2 -- no --> C3{"General Tariff,<br/>in date?"}
+  C3 -- yes --> U3["Use it, e.g. 110.00"]
+  C3 -- no --> NT["File shows 'no tariff'"]
+  U1 & U2 & U3 & QL --> MIN{"Below the<br/>Minimum Charge?"}
+  MIN -- yes --> RA["Raised to the minimum<br/>1,800 becomes 2,500"]
+  MIN -- no --> KE["Kept as calculated"]
+  RA & KE --> MAN["Manual Lines are added<br/>and never changed"]
+  MAN --> VAT["VAT on taxable lines<br/>10,000 gives 1,200, total 11,200"]
+  VAT --> INV["Draft Invoice<br/>one per file"]
+  classDef gap fill:#fbdcd8,stroke:#b3261e,color:#3a0f0c,stroke-width:2px
+  classDef ask fill:#fdecc4,stroke:#a86a00,color:#3a2600,stroke-width:2px
+  classDef good fill:#d3ebe6,stroke:#1f7a6b,color:#0c2e29
+  class NT gap
+  class INV ask
+  class RA good
+    </pre></div>
+    <div class="watch"><strong>Gaps</strong>
+      <span class="q gap">AC-18</span> tariffs are mostly empty, so 'no tariff' is common
+      <span class="q gap">AC-01</span> one invoice per file
+      <span class="q">AC-04</span> when VAT is zero-rated or exempt
+      <span class="q">OP-02</span> a re-rate after an edit
+    </div>
+  </section>
+
+  <section class="panel" id="invoice">
+    <h2>10 · An Invoice</h2>
+    <p class="read">A posted Invoice is never edited. To correct it, the system reverses it and drafts the next revision.</p>
+    <div class="diagram"><pre class="mermaid">
+stateDiagram-v2
+  direction LR
+  [*] --> Draft: reference number given
+  Draft --> Issued: Issue, invoice number fixed
+  Issued --> Posted: posted through the bridge
+  Posted --> Void: Void creates a Reversal Voucher
+  Void --> Draft: next revision drafted
+  note right of Draft
+    A total of zero or less
+    is refused, there is
+    no Credit Note
+  end note
+    </pre></div>
+    <div class="watch"><strong>Gaps</strong>
+      <span class="q gap">AC-06</span> no Credit Note
+      <span class="q gap">AC-03</span> no exchange rate rule
+      <span class="q">AC-05</span> official invoice rules
+      <span class="q">AC-20</span> who re-issues after a re-rate
+    </div>
+  </section>
+
+  <section class="panel" id="modes">
+    <h2>11 · The three posting modes</h2>
+    <p class="read">One company setting decides how invoices reach the books. Review is the standard setting.</p>
+    <div class="diagram"><pre class="mermaid">
+flowchart LR
+  F["Approved file rated,<br/>Invoice drafted"] --> M{"Billing-to-Ledger Mode"}
+  M -- "Manual" --> D["Stays a draft<br/>nothing staged"]
+  M -- "Review, standard" --> S["Staged in the bridge<br/>an Accountant posts"]
+  M -- "Auto" --> C{"Period open, entries balance,<br/>no Rate Note open?"}
+  C -- yes --> P["Posted automatically<br/>no person checks"]
+  C -- no --> N["Not posted<br/>what happens next is not stated"]
+  classDef gap fill:#fbdcd8,stroke:#b3261e,color:#3a0f0c,stroke-width:2px
+  classDef ask fill:#fdecc4,stroke:#a86a00,color:#3a2600,stroke-width:2px
+  class P gap
+  class C,N ask
+    </pre></div>
+    <div class="watch"><strong>Ask</strong> <span class="q">AC-13</span> which mode at go-live, and who may change it <span class="q">AC-14</span> what is a Rate Note?</div>
+  </section>
+
+  <section class="panel" id="bridge">
+    <h2>12 · The Accounting Bridge</h2>
+    <p class="read">The only door into the Ledger. Each amount is staged once, rehearsed with a Trial Post, then posted.</p>
+    <div class="diagram"><pre class="mermaid">
+flowchart LR
+  ST["Staged<br/>once only"] --> TP{"Trial Post:<br/>Charge Code has an account<br/>and debits = credits?"}
+  TP -- yes --> TV["Trial Verified<br/>nothing written yet"]
+  TP -- no --> R1["Refused with the reason<br/>stays Staged"]
+  TV --> PO{"Post:<br/>Period open?"}
+  PO -- yes --> POS["Posted<br/>Journal reference kept"]
+  PO -- no --> R2["Refused<br/>names the first open date"]
+  Q["Can a Staged item be posted<br/>without a Trial Post?"] -.-> ST
+  classDef ask fill:#fdecc4,stroke:#a86a00,color:#3a2600,stroke-width:2px
+  classDef gap fill:#fbdcd8,stroke:#b3261e,color:#3a0f0c,stroke-width:2px
+  classDef good fill:#d3ebe6,stroke:#1f7a6b,color:#0c2e29
+  class Q ask
+  class R1,R2 gap
+  class POS good
+    </pre></div>
+    <div class="watch"><strong>Ask</strong>
+      <span class="q">AC-23</span> is the trial mandatory?
+      <span class="q">AC-15</span> who may trial post and post
+      <span class="q">AC-24</span> what happens to staged items after a re-rate
+      <span class="q">AC-19</span> the miscellaneous invoice
+    </div>
+  </section>
+
+  <section class="panel" id="period">
+    <h2>13 · Months in the Ledger</h2>
+    <p class="read">Once a month is closed, nothing can be dated in it. The system cannot reopen it.</p>
+    <div class="pair">
+      <div>
+        <h3>A month closes</h3>
+        <div class="diagram"><pre class="mermaid">
+flowchart TB
+  O["Period Open"] -- "Month-end Close<br/>closing entries created" --> C["Period Closed"]
+  C -. "reopened outside the system<br/>no audit record" .-> O
+  classDef gap fill:#fbdcd8,stroke:#b3261e,color:#3a0f0c,stroke-width:2px
+  class C gap
+        </pre></div>
+        <span class="q">AC-12</span> <span class="q">AC-21</span> <span class="q">AC-25</span>
+      </div>
+      <div>
+        <h3>A new entry is dated</h3>
+        <div class="diagram"><pre class="mermaid">
+flowchart TB
+  J["New or re-dated Journal"] --> D{"Dated in a<br/>Closed Period?"}
+  D -- yes --> R["Refused, names the first open date<br/>October closed, so 1 November"]
+  D -- no --> B{"Debits = credits?"}
+  B -- yes --> OK["Saved"]
+  B -- no --> R2["Refused"]
+  classDef good fill:#d3ebe6,stroke:#1f7a6b,color:#0c2e29
+  class OK good
+        </pre></div>
+        <span class="q">TL-09</span> which time zone decides the date
+      </div>
+    </div>
+  </section>
+
+  <h2 class="group">People and access</h2>
+
+  <section class="panel" id="roles">
+    <h2>14 · Who can do what</h2>
+    <p class="read">As the documents describe it today. Amber cells are not stated, or the documents contradict each other.</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Action</th><th>Superadmin</th><th>Manager</th><th>Operator</th><th>Accountant</th><th>Viewer</th></tr></thead>
+      <tbody>
+        <tr><td>Create or edit a Draft or For Correction file</td><td class="y">Yes</td><td class="y">Yes</td><td class="y">Yes</td><td class="n">No</td><td class="n">No</td></tr>
+        <tr><td>Submit a file</td><td class="y">Yes</td><td class="y">Yes</td><td class="y">Yes</td><td class="n">No</td><td class="n">No</td></tr>
+        <tr><td>Edit a Pending file</td><td class="n">No</td><td class="n">No</td><td class="n">No</td><td class="n">No</td><td class="n">No</td></tr>
+        <tr><td>Approve or return a file</td><td class="y">Yes</td><td class="y">Yes</td><td class="n">No</td><td class="n">No</td><td class="n">No</td></tr>
+        <tr><td>Approve a file they submitted themselves</td><td class="s">Yes</td><td class="s">Yes</td><td class="n">n/a</td><td class="n">n/a</td><td class="n">n/a</td></tr>
+        <tr><td>Edit an Approved file</td><td class="y">Yes</td><td class="y">Yes</td><td class="n">No</td><td class="a">?</td><td class="n">No</td></tr>
+        <tr><td>See files that are not yet Approved</td><td class="y">Yes</td><td class="y">Yes</td><td class="y">Yes</td><td class="n">No</td><td class="r">Read</td></tr>
+        <tr><td>Trial post and post to the books</td><td class="y">Yes</td><td class="a">?</td><td class="n">No</td><td class="y">Yes</td><td class="n">No</td></tr>
+        <tr><td>Record entries, close the month</td><td class="y">Yes</td><td class="y">Yes</td><td class="n">No</td><td class="y">Yes</td><td class="n">No</td></tr>
+        <tr><td>Read the books and reports</td><td class="y">Yes</td><td class="y">Yes</td><td class="n">No</td><td class="y">Yes</td><td class="a">?</td></tr>
+        <tr><td>Add, change or switch off users</td><td class="y">Yes</td><td class="a">?</td><td class="a">?</td><td class="a">?</td><td class="n">No</td></tr>
+        <tr><td>Delete records</td><td class="a">?</td><td class="a">?</td><td class="a">?</td><td class="a">?</td><td class="n">No</td></tr>
+        <tr><td>Read the record of who changed what</td><td class="a">?</td><td class="a">?</td><td class="a">?</td><td class="a">?</td><td class="a">?</td></tr>
+      </tbody>
+    </table></div>
+    <div class="watch"><strong>Questions</strong> <span class="q gap">BO-02</span> <span class="q">AC-15</span> <span class="q">AC-16</span> <span class="q">DOC-13</span> <span class="q">DOC-14</span> <span class="q">BO-14</span>. Red is a control that does not exist today.</div>
+  </section>
+
+  <section class="panel" id="signin">
+    <h2>15 · Signing in</h2>
+    <p class="read">A small puzzle slows down automated guessing. Five wrong attempts in a row lock sign-in for one minute.</p>
+    <div class="diagram"><pre class="mermaid">
+sequenceDiagram
+  participant U as User's browser
+  participant S as The system
+  U->>S: Ask for a puzzle
+  S-->>U: Signed puzzle with an expiry
+  U->>U: Solve it in the background
+  U->>S: Username, password and solved puzzle
+  alt Puzzle bad, expired or already used
+    S-->>U: Refused
+  else Five failed attempts in a row
+    S-->>U: Blocked for one minute
+  else Wrong password
+    S-->>U: Refused, counts as a failure
+  else Correct
+    S-->>U: Short-lived pass and a renewal pass
+  end
+  Note over U,S: Idle for too long, the browser signs the user out
+    </pre></div>
+    <div class="watch"><strong>Ask</strong> <span class="q">TL-11</span> idle time, password rules, what resets the count <span class="q">TL-13</span> how long a pass lasts <span class="q">BO-06</span> no self-service password reset</div>
+  </section>
+
+  <h2 class="group">How to run the pack</h2>
+
+  <section class="panel" id="pack">
+    <h2>16 · From triage to version 0.2</h2>
+    <p class="read">The order of work for QA. Decisions go into the one log within a working day of each session.</p>
+    <div class="diagram"><pre class="mermaid">
+flowchart LR
+  T["1 Internal triage<br/>120 min<br/>name owners, route questions"] --> P["2 Pre-read sent<br/>5 working days before<br/>Summary + Glossary"]
+  P --> W1["3a Workshop<br/>Operations"] --> W2["3b Workshop<br/>Accounting"] --> W3["3c Workshop<br/>Business owner"] --> W4["3d Workshop<br/>Technical"]
+  W4 --> PB["Play-back<br/>30 min<br/>read back, sign-off"]
+  PB --> V["5 Engineering issues<br/>SRS and SAD v0.2"]
+  W1 & W2 & W3 & W4 -. "within one working day" .-> LOG["4 Decisions written in<br/>OPEN-QUESTIONS.md"]
+  LOG -.-> V
+  classDef good fill:#d3ebe6,stroke:#1f7a6b,color:#0c2e29
+  class V good
+    </pre></div>
+    <div class="watch"><strong>Why this order</strong> Operations first because the process starts with a booking. Accounting needs Operations' answers on files and consolidations. The Business owner settles what the first two could not. Technical turns the decisions into dates.</div>
+  </section>
+
+  <section class="panel" id="topic">
+    <h2>17 · One topic in a workshop</h2>
+    <p class="read">Every topic in every script follows this path. The proposed answer comes last, and only if the owner has no view.</p>
+    <div class="diagram"><pre class="mermaid">
+flowchart TB
+  A["As-is: ask how the work is done today"] --> L["Listen, write down the steps"]
+  L --> SH["Show the system or the summary page"]
+  SH --> SA["Say what the system does today"]
+  SA --> AS["Ask the question"]
+  AS --> V{"Does the owner<br/>have a view?"}
+  V -- yes --> RB["Say it back in one sentence"]
+  V -- no --> OF["Offer the proposed answer<br/>and say it is a proposal"]
+  OF --> D{"Can they decide?"}
+  D -- yes --> RB
+  D -- no --> PL["Parking lot<br/>a name and a date"]
+  RB --> RE["Record: decision, who, date"]
+  classDef ask fill:#fdecc4,stroke:#a86a00,color:#3a2600,stroke-width:2px
+  classDef good fill:#d3ebe6,stroke:#1f7a6b,color:#0c2e29
+  class OF ask
+  class RE good
+    </pre></div>
+  </section>
+
+  <section class="panel" id="update">
+    <h2>18 · After an answer arrives</h2>
+    <p class="read">Update in this order. Nothing else stores decisions.</p>
+    <div class="diagram"><pre class="mermaid">
+flowchart LR
+  A["1 OPEN-QUESTIONS.md<br/>status, decision, who, date"] --> B["2 CONTEXT.md and GLOSSARY.md<br/>if a term changed,<br/>remove the flag"]
+  B --> C["3 requirements-breakdown<br/>tick Confirmed or rewrite"]
+  C --> D["4 PROCESS-GAP-ANALYSIS.md<br/>fill in how the business<br/>works today"]
+  D --> E["5 bash tools/check-docs.sh<br/>must print OK"]
+  classDef good fill:#d3ebe6,stroke:#1f7a6b,color:#0c2e29
+  class E good
+    </pre></div>
+  </section>
+
+  <section class="panel" id="decide">
+    <h2>19 · Who decides when two owners are involved</h2>
+    <p class="read">An arrow points to the owner who decides. Its label lists the questions where the owner it starts from gives input. If two owners disagree, the Business owner decides.</p>
+    <div class="diagram"><pre class="mermaid">
+flowchart LR
+  OPS(["Operations lead"])
+  ACC(["Accounting lead"])
+  BIZ(["Business owner"])
+  TEC(["Technical lead"])
+  OPS -- "AC-01, OP-11, AC-16, AC-17" --> ACC
+  ACC -- "OP-02" --> OPS
+  OPS -- "BO-02, BO-04, BO-07, AC-18" --> BIZ
+  ACC -- "AC-15, AC-18, BO-11" --> BIZ
+  BIZ -- "AC-13" --> ACC
+  TEC -- "AC-03" --> ACC
+  ACC -- "TL-09" --> TEC
+  BIZ -- "TL-01 limits" --> TEC
+  TEC -- "TL-11 values, BO-10" --> BIZ
+  classDef ask fill:#fdecc4,stroke:#a86a00,color:#3a2600,stroke-width:2px
+  class BIZ ask
+    </pre></div>
+  </section>
+
+  <footer>Drawn from SRS v0.1 and SAD v0.1 (8 November 2026) and the requirements pack of 15 November 2026. Nothing here is agreed until its owner confirms it. Gap counts come from PROCESS-GAP-ANALYSIS.md.</footer>
+</main>

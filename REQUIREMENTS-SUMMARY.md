@@ -2,7 +2,9 @@
 
 **A plain-language guide to SRS v0.1 and SAD v0.1 (rev. 2), both dated 8 November 2026**
 
-**Prepared by:** QA (requirements confirmation) · **Companions:** [OPEN-QUESTIONS.md](OPEN-QUESTIONS.md) · [CONTEXT.md](CONTEXT.md) (shared terminology)
+**Prepared by:** QA (requirements confirmation) · **Companions:** [OPEN-QUESTIONS.md](OPEN-QUESTIONS.md) · [CONTEXT.md](CONTEXT.md) (canonical terms) · [GLOSSARY.md](GLOSSARY.md) (plain-language terms) · [PROCESS-GAP-ANALYSIS.md](PROCESS-GAP-ANALYSIS.md) · [requirements-breakdown/](requirements-breakdown/README.md) · full index in [README.md](README.md)
+
+**Updated 15 November 2026:** question ranges and gaps brought into line with the second review pass (99 questions, 72 gaps).
 
 > **Read this first.** Engineering wrote both source documents from the code (they are "revised to the origin/main state"). They describe **what the system does today**, not what the business has agreed it needs. No owner has signed either one. Treat every statement below as *"the system currently does this"* until the owner in Section 10 confirms it.
 
@@ -76,6 +78,8 @@
 | Ledger (vouchers, journals, month-end) | ✔ | ✔ | ✖ | ✔ | ? (DOC-13) |
 | Manage users | ✔ | ? (DOC-14) | ✖ | ✖ | ✖ |
 | Change a superadmin account | ✔ | ✖ | ✖ | ✖ | ✖ |
+| Delete records | ? (BO-14) | ? (BO-14) | ? (BO-14) | ? (BO-14) | ✖ |
+| Read the audit trail | ? (BO-14) | ? (BO-14) | ? (BO-14) | ? (BO-14) | ? (BO-14) |
 
 ⚠ Self-approval is **not blocked** today (risk R-02, rated High). See BO-02.
 
@@ -190,7 +194,7 @@
 | **Usability** | Usable at 390 px (phone) width; light and dark appearance; loading, empty and error states on lists | Partial |
 | **Delivery** | Additive schema changes only, applied at start-up; merge only when checks pass; deploy only from `main`, one at a time | Built |
 | **Data** | Company code set by the server; exact decimal money; balanced journals; numbers never reused; audited deletes | Built |
-| **Not specified at all** | Expected volumes and number of users, uptime target, backup targets (data loss and restore time), record retention, time zone, password reset | *Gap* |
+| **Not specified at all** | Expected volumes and number of users, uptime target, backup targets (data loss and restore time), record retention, time zone, password reset, password policy values and idle time-out (TL-11), notifications (OP-16), fiscal year (AC-21), data migration and cut-over (BO-12) | *Gap* |
 
 ---
 
@@ -241,10 +245,11 @@
 
 | Owner | Confirms | Requirement groups | Open questions |
 |---|---|---|---|
-| **Business owner** | Scope, priorities, roles, release gate | FR-AU-09 to 12, FR-AD, NFR-SE-05, IFR-07 | BO-01 to BO-11 |
-| **Accounting lead** | Billing, tax, exchange rates, bridge, ledger, periods | FR-RT, FR-BL, FR-BR, FR-FS, NFR-AU | AC-01 to AC-18 |
-| **Operations lead** | Freight, approval, cartage, dispatch, tracking | FR-AP, FR-OV, FR-SH, FR-VH, FR-PD, FR-FD, FR-TR, FR-PT, FR-MP | OP-01 to OP-12 |
-| **Technical lead** | Feasibility, security, performance, deployment | FR-AU-01 to 08, IFR, NFR-SE, NFR-PF, NFR-AV, NFR-MT, DR | TL-01 to TL-10 |
+| **Business owner** | Scope, priorities, roles, release gate | FR-AU-09 to 12, FR-AD, NFR-SE-05, IFR-07 | BO-01 to BO-15 |
+| **Accounting lead** | Billing, tax, exchange rates, bridge, ledger, periods | FR-RT, FR-BL, FR-BR, FR-FS, NFR-AU | AC-01 to AC-26 |
+| **Operations lead** | Freight, approval, cartage, dispatch, tracking | FR-AP, FR-OV, FR-SH, FR-VH, FR-PD, FR-FD, FR-TR, FR-PT, FR-MP | OP-01 to OP-18 |
+| **Technical lead** | Feasibility, security, performance, deployment | FR-AU-01 to 08, IFR, NFR-SE, NFR-PF, NFR-AV, NFR-MT, DR | TL-01 to TL-13 |
+| *No owner in the SRS* | Usability, constraints, assumptions | NFR-US, NFR-SE-06/07, C-02 to C-05, A-01 to A-04 | DOC-18 |
 
 ### The biggest gaps to raise first
 1. **Release gate:** 4 Must items are not built (BO-01).
@@ -253,12 +258,16 @@
 4. **Exchange rate and tax rules** are missing for foreign-currency invoices (AC-03, AC-04, AC-05).
 5. **Nothing after the invoice:** collections, supplier bill matching and profit per file (AC-08 to AC-10).
 6. **No backup and restore** for a system that runs on two single-file databases (TL-01).
+7. **No data migration or cut-over plan:** nothing says what existing data is loaded, by whom, or when (BO-12).
+8. **Requirements with no owner:** nobody confirms the usability requirements, two security requirements, most constraints or the assumptions (DOC-18).
+
+The full list of 72 gaps, by process step, is in [PROCESS-GAP-ANALYSIS.md](PROCESS-GAP-ANALYSIS.md).
 
 ---
 
 ## 11. Glossary (as used in the source documents)
 
-> This is a quick reference using the source documents' own wording. The **canonical terms**, the words to avoid, and how terms relate are kept in [CONTEXT.md](CONTEXT.md). Use those in tickets, test cases and screens.
+> Quick reference in the source documents' own wording. **Stakeholders:** use [GLOSSARY.md](GLOSSARY.md). **Developers and testers:** the canonical terms and the words to avoid are in [CONTEXT.md](CONTEXT.md). Use those in tickets, test cases and screens.
 
 | Term | Plain meaning |
 |---|---|
