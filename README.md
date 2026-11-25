@@ -29,6 +29,12 @@ Everything QA needs to confirm the requirements of the Platform with its four ow
 
 ## The documents
 
+### Diagrams
+
+| File | What it is for |
+|---|---|
+| [diagrams/process-diagrams.html](diagrams/process-diagrams.html) | 19 diagrams, one for each process in the pack: the lifecycle, a gap map, approval, weights, billing, the bridge, sign-in, and how to run the workshops. Published as an [artifact](https://claude.ai/artifact/244QyWx19WTEQGW43f2vBK), which draws the diagrams; the file itself needs that viewer. |
+
 ### For stakeholders
 
 | File | What it is for |
