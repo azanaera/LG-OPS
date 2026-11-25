@@ -1,0 +1,440 @@
+<title>Platform Access and Release</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: one column of diagram panels, grouped under five headings, with a chip index on top. */
+:root {
+  --bg: #f4f7f8;
+  --panel: #ffffff;
+  --ink: #14232b;
+  --muted: #55676f;
+  --line: #d5dfe3;
+  --accent: #0d6b78;
+  --accent-ink: #ffffff;
+  --gap-bg: #fbdcd8;
+  --gap-ink: #8c1d16;
+  --ask-bg: #fdecc4;
+  --ask-ink: #7a4a00;
+  --ok-bg: #d3ebe6;
+  --ok-ink: #0f5547;
+  --no-bg: #e9eef0;
+  --canvas: #ffffff; /* diagrams keep a white canvas in both themes */
+  --font-head: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Inter", "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e171c; --panel: #16232a; --ink: #e6eef1; --muted: #9db0b8; --line: #2a3b44;
+    --accent: #4fc3d1; --accent-ink: #072228;
+    --gap-bg: #4a1f1c; --gap-ink: #ffb4ab; --ask-bg: #4a3710; --ask-ink: #f5cf7a;
+    --ok-bg: #123a33; --ok-ink: #8fd9c8; --no-bg: #1f2f37;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e171c; --panel: #16232a; --ink: #e6eef1; --muted: #9db0b8; --line: #2a3b44;
+  --accent: #4fc3d1; --accent-ink: #072228;
+  --gap-bg: #4a1f1c; --gap-ink: #ffb4ab; --ask-bg: #4a3710; --ask-ink: #f5cf7a;
+  --ok-bg: #123a33; --ok-ink: #8fd9c8; --no-bg: #1f2f37;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 28px 64px;
+}
+main { max-width: 1040px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
+h1, h2, h3 { font-family: var(--font-head); line-height: 1.2; text-wrap: balance; margin: 0; }
+h1 { font-size: 2rem; }
+h2 { font-size: 1.3rem; }
+h3 { font-size: 1rem; }
+p { margin: 0; max-width: 68ch; }
+a { color: var(--accent); }
+.lede { color: var(--muted); }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 0.85rem; align-items: center; }
+.sw { display: inline-block; width: 14px; height: 14px; border-radius: 3px; margin-right: 6px; vertical-align: -2px; border: 2px solid; }
+.sw.gap { background: var(--gap-bg); border-color: var(--gap-ink); }
+.sw.ask { background: var(--ask-bg); border-color: var(--ask-ink); }
+.sw.ok { background: var(--ok-bg); border-color: var(--ok-ink); }
+nav { display: flex; flex-wrap: wrap; gap: 6px; }
+nav a { text-decoration: none; font-size: 0.82rem; padding: 4px 10px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); color: var(--ink); }
+nav a:hover, nav a:focus-visible { border-color: var(--accent); outline: none; }
+.group { font-family: var(--font-head); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.78rem; color: var(--muted); margin-top: 18px; }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 18px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.read { color: var(--muted); font-size: 0.92rem; }
+.diagram { overflow-x: auto; padding: 4px 0; }
+.diagram pre.mermaid { margin: 0; text-align: center; }
+.dg { background: var(--canvas); border: 1px solid var(--line); border-radius: 6px; padding: 12px; overflow-x: auto; text-align: center; }
+.dg svg { max-width: 100%; height: auto; }
+.watch { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: baseline; font-size: 0.88rem; }
+.watch strong { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+.q { font-variant-numeric: tabular-nums; font-size: 0.78rem; padding: 1px 7px; border-radius: 4px; background: var(--ask-bg); color: var(--ask-ink); white-space: nowrap; }
+.q.gap { background: var(--gap-bg); color: var(--gap-ink); }
+.pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+.pair > div { min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+.strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(118px, 1fr)); gap: 8px; }
+.cell { border: 1px solid var(--line); border-radius: 6px; padding: 10px; background: var(--no-bg); display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.cell b { font-family: var(--font-head); font-size: 1.7rem; line-height: 1; font-variant-numeric: tabular-nums; }
+.cell span { font-size: 0.8rem; }
+.cell em { font-style: normal; font-size: 0.78rem; font-weight: 600; }
+.cell.h0 { background: var(--ok-bg); color: var(--ok-ink); }
+.cell.h1 { background: var(--ask-bg); color: var(--ask-ink); }
+.cell.h2 { background: var(--gap-bg); color: var(--gap-ink); }
+.cell.h3 { background: var(--gap-ink); color: var(--gap-bg); }
+.table-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: 0.88rem; }
+th, td { border: 1px solid var(--line); padding: 6px 8px; text-align: center; }
+th:first-child, td:first-child { text-align: left; }
+th { background: var(--no-bg); font-weight: 600; }
+td.y { background: var(--ok-bg); color: var(--ok-ink); font-weight: 600; }
+td.n { background: var(--no-bg); color: var(--muted); }
+td.r { background: var(--no-bg); color: var(--ink); }
+td.a { background: var(--ask-bg); color: var(--ask-ink); font-weight: 700; }
+td.s { background: var(--gap-bg); color: var(--gap-ink); font-weight: 700; }
+footer { color: var(--muted); font-size: 0.85rem; }
+@media (max-width: 520px) { h1 { font-size: 1.6rem; } .panel { padding: 14px; } }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Space+Grotesk:wght@500;700&display=swap">
+
+<main>
+  <header style="display:flex;flex-direction:column;gap:12px">
+    <h1>Platform Access and Release</h1>
+    <p class="lede">Part 3 of 3. How people sign in and what the system checks on every action, how a change goes live, backup and the go-live gate, and the working methods of the requirements pack.</p>
+    <div class="legend" aria-label="Colour key">
+      <span><i class="sw gap"></i>A gap today</span>
+      <span><i class="sw ask"></i>An open question (IDs like <span class="q">OP-02</span> are in OPEN-QUESTIONS.md)</span>
+      <span><i class="sw ok"></i>An end state, or settled</span>
+    </div>
+    <nav aria-label="Diagrams on this page"><a href="#refresh">34 Staying signed in</a><a href="#pwchange">35 Password change</a><a href="#forgot">36 Forgotten password</a><a href="#useradmin">37 User admin</a><a href="#request">38 Every action</a><a href="#attachments">39 Attachments</a><a href="#seed">40 Demo data</a><a href="#release">41 Release</a><a href="#schema">42 Schema change</a><a href="#cleanup">43 Ledger cleanup</a><a href="#backup">44 Backup</a><a href="#golive">45 Go-live gate</a><a href="#qlife">46 Question life</a><a href="#test">47 Detail test</a><a href="#triage">48 Triage routing</a><a href="#signoff">49 Sign-off</a><a href="#tiebreak">50 Tie-break</a><a href="#study">51 Study plan</a></nav>
+    <nav aria-label="Other parts"><a href="https://claude.ai/artifact/244QyWx19WTEQGW43f2vBK" target="_blank" rel="noopener">Part 1: Process Diagrams</a><a href="https://claude.ai/artifact/L7edNbvhsRgGWLc7E8zNnH" target="_blank" rel="noopener">Part 2: Process Detail</a></nav>
+  </header>
+
+  <h2 class="group">Sign-in, access and records</h2>
+
+  <section class="panel" id="refresh">
+    <h2>34 · Staying signed in, and signing out</h2>
+    <p class="read">A short-lived pass does the work. A longer renewal pass replaces it quietly.</p>
+    <div class="diagram"><pre class="mermaid">
+sequenceDiagram
+  participant U as User's browser
+  participant S as The system
+  U->>S: Save a file, with the short-lived pass
+  alt Pass still valid
+    S-->>U: Saved
+  else Pass expired, renewal pass valid
+    U->>S: Renew with the renewal pass
+    S-->>U: A new short-lived pass
+    U->>S: Save again
+    S-->>U: Saved
+  else Both expired or revoked
+    S-->>U: Refused, sign in again
+  end
+  U->>S: Sign out
+  S-->>U: Renewal pass revoked
+  Note over U,S: Idle for too long, the browser ends the session
+    </pre></div>
+    <div class="watch"><strong>Ask</strong> <span class="q">TL-13</span> how long each pass lasts <span class="q">TL-11</span> the idle time</div>
+  </section>
+
+  <section class="panel" id="pwchange">
+    <h2>35 · Changing a password</h2>
+    <div class="diagram"><pre class="mermaid">
+flowchart TB
+  A["User changes their password"] --> B{"Over 72 bytes?"}
+  B -- yes --> R1["Refused"]
+  B -- no --> C{"Meets the password policy?&lt;br/&gt;the rules are not stated"}
+  C -- no --> R2["Refused"]
+  C -- yes --> D{"Same as a recent password?&lt;br/&gt;how many are kept is not stated"}
+  D -- yes --> R3["Refused"]
+  D -- no --> E["Saved as a salted one-way hash&lt;br/&gt;and added to the history"]
+  classDef ask fill:#fdecc4,stroke:#a86a00,color:#3a2600,stroke-width:2px
+  classDef good fill:#d3ebe6,stroke:#1f7a6b,color:#0c2e29
+  class C,D ask
+  class E good
+    </pre></div>
+    <div class="watch"><strong>Ask</strong> <span class="q">TL-11</span> minimum length, character rules, how many past passwords count</div>
+  </section>
+
+  <section class="panel" id="forgot">
+    <h2>36 · A forgotten password</h2>
+    <p class="read">There is no self-service reset and no self-registration. The only route is a help request.</p>
+    <div class="diagram"><pre class="mermaid">
+flowchart TB
+  A["User forgets the password"] --> B["Sends a help request&lt;br/&gt;from the sign-in page"]
+  B --> C["Support ticket created&lt;br/&gt;rate limited"]
+  C --> D["Administrator sees the ticket"]
+  D --> E["Administrator resets&lt;br/&gt;the password"]
+  E --> F["User signs in"]
+  X["No self-service reset"] -.-> A
+  classDef gap fill:#fbdcd8,stroke:#b3261e,color:#3a0f0c,stroke-width:2px
+  classDef ask fill:#fdecc4,stroke:#a86a00,color:#3a2600,stroke-width:2px
+  class X gap
+  class D ask
+    </pre></div>
+    <div class="watch"><strong>Ask</strong> <span class="q">BO-06</span> is waiting for an administrator acceptable, and how fast must tickets be handled</div>
+  </section>
+
+  <section class="panel" id="useradmin">
+    <h2>37 · Managing users</h2>
+    <div class="diagram"><pre class="mermaid">
+flowchart TB
+  A["An authorised user opens user administration&lt;br/&gt;which Roles are authorised is not stated"] --> B{"Action"}
+  B --> C["Create a User&lt;br/&gt;set Role and Company access"]
+  B --> D["Edit a User"]
+  B --> E["Deactivate a User"]
+  C & D & E --> G{"Is the target&lt;br/&gt;a Superadmin?"}
+  G -- yes --> H["Only a Superadmin may change it"]
+  G -- no --> I["Allowed for the authorised user"]
+  H & I --> J["Takes effect at the next request&lt;br/&gt;audit record written"]
+  classDef ask fill:#fdecc4,stroke:#a86a00,color:#3a2600,stroke-width:2px
+  class A ask
+    </pre></div>
+    <div class="watch"><strong>Ask</strong> <span class="q">BO-14</span> which Roles <span class="q">DOC-14</span> may a Manager manage other users at all</div>
+  </section>
+
+  <section class="panel" id="request">
+    <h2>38 · What happens on every action</h2>
+    <p class="read">Every request passes the same gates, and every change leaves a record.</p>
+    <div class="diagram"><pre class="mermaid">
+flowchart TB
+  A["Any request"] --> B{"Signed in with a valid pass?&lt;br/&gt;except sign-in, the puzzle,&lt;br/&gt;public lookup, help request"}
+  B -- no --> X1["Refused"]
+  B -- yes --> C{"Role allowed for this action?&lt;br/&gt;a Viewer is refused every write"}
+  C -- no --> X2["Refused"]
+  C -- yes --> D["Company taken from the signed-in User&lt;br/&gt;any Company the browser sends is ignored"]
+  D --> E{"Record belongs to&lt;br/&gt;the User's Company?"}
+  E -- no --> X3["Refused"]
+  E -- yes --> F["Input checked, business rules run"]
+  F --> G["Saved"]
+  G --> H["Audit record&lt;br/&gt;user, company, time, action,&lt;br/&gt;record, content of the change"]
+  classDef good fill:#d3ebe6,stroke:#1f7a6b,color:#0c2e29
+  class H good
+    </pre></div>
+    <div class="watch"><strong>Ask</strong> <span class="q">BO-14</span> who may read the audit trail <span class="q">BO-11</span> how long it is kept</div>
+  </section>
+
+  <section class="panel" id="attachments">
+    <h2>39 · Attaching a file</h2>
+    <div class="diagram"><pre class="mermaid">
+flowchart LR
+  A["Attach a file to a record,&lt;br/&gt;or a return image to a Return"] --> B{"Up to 15 MB?"}
+  B -- no --> X["Refused"]
+  B -- yes --> C["Stored inside the database"]
+  C --> D["Opens from the record"]
+  C -.-> E["Planned: a separate file store&lt;br/&gt;when volume grows"]
+  Q["Accepted file types and&lt;br/&gt;scanning are not stated"] -.-> B
+  classDef ask fill:#fdecc4,stroke:#a86a00,color:#3a2600,stroke-width:2px
+  class Q ask
+    </pre></div>
+    <div class="watch"><strong>Ask</strong> <span class="q">TL-12</span> file types and scanning</div>
+  </section>
+
+  <section class="panel" id="seed">
+    <h2>40 · Demonstration data</h2>
+    <p class="read">For demos and the workshops. It must never touch real records.</p>
+    <div class="diagram"><pre class="mermaid">
+flowchart TB
+  A["Someone runs the demo seed command"] --> B{"Running against&lt;br/&gt;production records?"}
+  B -- yes --> X["Refused"]
+  B -- no --> C["Creates the demo set&lt;br/&gt;22 Freight Files in all four statuses,&lt;br/&gt;parties, tariffs, vehicles, cartage,&lt;br/&gt;quotes, ledger entries"]
+  C --> D["Every demo row carries a marker"]
+  D --> E["Rows can be found and removed"]
+  classDef good fill:#d3ebe6,stroke:#1f7a6b,color:#0c2e29
+  class X good
+    </pre></div>
+    <div class="watch"><strong>Ask</strong> <span class="q">Q2</span> is the system already live with real shipments</div>
+  </section>
+
+  <h2 class="group">Release and operations</h2>
+
+  <section class="panel" id="release">
+    <h2>41 · How a change goes live</h2>
+    <p class="read">Every accepted change goes straight to the live site, one at a time.</p>
+    <div class="diagram"><pre class="mermaid">
+flowchart TB
+  A["Work on a branch"] --> B["Pull request&lt;br/&gt;type check, build,&lt;br/&gt;automated checks"]
+  B --> C{"All checks pass&lt;br/&gt;and reviewed?"}
+  C -- no --> A
+  C -- yes --> D["Merge to main"]
+  D --> E["Deployment, one at a time&lt;br/&gt;install, build web, build server,&lt;br/&gt;prune, bundle, publish"]
+  E --> F["Live on the production slot"]
+  F --> G["Health check and&lt;br/&gt;live site checked"]
+  N["No stage where owners&lt;br/&gt;see a change first"] -.-> D
+  classDef ask fill:#fdecc4,stroke:#a86a00,color:#3a2600,stroke-width:2px
+  class N ask
+    </pre></div>
+    <div class="watch"><strong>Ask</strong> <span class="q">TL-07</span> end-to-end scripts are not among the checks. How a bad release is undone is not stated.</div>
+  </section>
+
+  <section class="panel" id="schema">
+    <h2>42 · Changing the database structure</h2>
+    <div class="diagram"><pre class="mermaid">
+flowchart TB
+  A["A release needs a new table or column"] --> B{"Additive only?"}
+  B -- yes --> C["Added by the start-up routine&lt;br/&gt;the schema file kept in step"]
+  C --> D["Start-up checks run before&lt;br/&gt;the server takes requests"]
+  B -- no --> E["Needs a planned, reviewed&lt;br/&gt;data migration&lt;br/&gt;production has no migration command"]
+  classDef ask fill:#fdecc4,stroke:#a86a00,color:#3a2600,stroke-width:2px
+  class E ask
+    </pre></div>
+    <div class="watch"><strong>Ask</strong> who approves a change that must remove or rename something</div>
+  </section>
+
+  <section class="panel" id="cleanup">
+    <h2>43 · Cleaning old rows out of the Ledger</h2>
+    <p class="read">A command exists to remove leftover rows from other companies and test vouchers. It has not been run on production.</p>
+    <div class="diagram"><pre class="mermaid">
+flowchart TB
+  A["Run the cleanup command"] --> B["Dry run by default&lt;br/&gt;reports leftover rows and conflicts"]
+  B --> C["Verified backup taken"]
+  C --> D["One reviewed run&lt;br/&gt;removes only unreferenced rows&lt;br/&gt;in one transaction"]
+  N["Tested on synthetic ledgers only&lt;br/&gt;not yet run on production"] -.-> A
+  classDef gap fill:#fbdcd8,stroke:#b3261e,color:#3a0f0c,stroke-width:2px
+  class N gap
+    </pre></div>
+    <div class="watch"><strong>Ask</strong> <span class="q">BO-09</span> when it runs. The owner decides after the dry run.</div>
+  </section>
+
+  <section class="panel" id="backup">
+    <h2>44 · Backup and restore</h2>
+    <p class="read">A Must requirement that is only partly there. Both databases are single files, so recovery depends on copies.</p>
+    <div class="diagram"><pre class="mermaid">
+flowchart LR
+  subgraph NOW["Described today"]
+    direction TB
+    H["Health check for the host"]
+    CB["The cleanup command makes&lt;br/&gt;a verified copy first"]
+  end
+  subgraph MISS["Not described"]
+    direction TB
+    R1["Routine backup of&lt;br/&gt;both databases"] --> R2["Stated limits&lt;br/&gt;data lost, time to restore"] --> R3["Restore tested&lt;br/&gt;end to end"]
+  end
+  classDef gap fill:#fbdcd8,stroke:#b3261e,color:#3a0f0c,stroke-width:2px
+  class R1,R2,R3 gap
+    </pre></div>
+    <div class="watch"><strong>Ask</strong> <span class="q gap">TL-01</span> method, date and name <span class="q">BO-10</span> volumes <span class="q">TL-04</span> encryption of the files</div>
+  </section>
+
+  <section class="panel" id="golive">
+    <h2>45 · The go-live gate</h2>
+    <p class="read">By the SRS's own rule, a Must item is required for release. Four are not finished, and the Business owner decides what happens.</p>
+    <div class="diagram"><pre class="mermaid">
+flowchart TB
+  subgraph MUST["Must items not built"]
+    direction LR
+    m1["Credit Note"]
+    m2["Penetration test and&lt;br/&gt;dependency audit"]
+    m3["Backup and restore"]
+    m4["Paging on every list"]
+  end
+  O["Also needed before go-live&lt;br/&gt;replace development credentials,&lt;br/&gt;load existing data, train staff,&lt;br/&gt;accept each area"] --> D
+  MUST --> D{"Business owner:&lt;br/&gt;finish first, or postpone&lt;br/&gt;in writing with a date?"}
+  D -- "all done or postponed" --> G["Go-live"]
+  D -- "not agreed" --> W["Go-live waits"]
+  classDef gap fill:#fbdcd8,stroke:#b3261e,color:#3a0f0c,stroke-width:2px
+  classDef ask fill:#fdecc4,stroke:#a86a00,color:#3a2600,stroke-width:2px
+  class m1,m2,m3,m4 gap
+  class D ask
+    </pre></div>
+    <div class="watch"><strong>Ask</strong> <span class="q gap">BO-01</span> the four items <span class="q">TL-05</span> credentials <span class="q">BO-12</span> data load <span class="q">BO-13</span> training and acceptance</div>
+  </section>
+
+  <h2 class="group">Running the pack, in detail</h2>
+
+  <section class="panel" id="qlife">
+    <h2>46 · Life of a question</h2>
+    <div class="diagram"><pre class="mermaid">
+stateDiagram-v2
+  direction LR
+  [*] --> Open
+  Open --> Answered: the owner decides
+  Answered --> Closed: written into SRS and SAD v0.2
+  Open --> Deferred: owner accepts it for later, in writing
+  Closed --> [*]
+  Deferred --> [*]
+    </pre></div>
+    <div class="watch"><strong>Rule</strong> a question is never dropped. Deferred needs a reason and a name.</div>
+  </section>
+
+  <section class="panel" id="test">
+    <h2>47 · Is a requirement detailed enough?</h2>
+    <p class="read">The test behind the 45, 52 and 28 split in the requirements breakdown.</p>
+    <div class="diagram"><pre class="mermaid">
+flowchart TB
+  A["Take one requirement"] --> T{"Six tests&lt;br/&gt;one behaviour, a named Role,&lt;br/&gt;trigger and starting condition,&lt;br/&gt;a visible result, every value stated,&lt;br/&gt;every term defined"}
+  T -- "all pass" --> D["Detailed enough&lt;br/&gt;one example"]
+  T -- "some fail" --> Q{"Can it be refined from&lt;br/&gt;what the SRS and SAD already say?"}
+  Q -- yes --> R["Refined&lt;br/&gt;child statements and worked examples"]
+  Q -- "needs an owner's decision" --> B["Blocked&lt;br/&gt;tied to a question"]
+  B --> ANS["Question answered"] --> R
+  D --> OWN["Owner ticks Confirmed"]
+  R --> OWN
+  classDef good fill:#d3ebe6,stroke:#1f7a6b,color:#0c2e29
+  classDef ask fill:#fdecc4,stroke:#a86a00,color:#3a2600,stroke-width:2px
+  class OWN good
+  class B ask
+    </pre></div>
+  </section>
+
+  <section class="panel" id="triage">
+    <h2>48 · Where does a question go?</h2>
+    <p class="read">The routing rule used at the internal triage meeting.</p>
+    <div class="diagram"><pre class="mermaid">
+flowchart TB
+  Q["An open question"] --> A{"Can Engineering state it&lt;br/&gt;as a fact from the code?"}
+  A -- yes --> I["Answer internally&lt;br/&gt;the owner only confirms"]
+  A -- no --> B{"Is a document wrong&lt;br/&gt;or unclear?"}
+  B -- yes --> DF["Document fix for v0.2"]
+  B -- no --> C{"Needs a business&lt;br/&gt;decision or fact?"}
+  C -- yes --> D{"Crosses two owners?"}
+  D -- no --> S["One workshop, one owner"]
+  D -- yes --> X["Raised with the owner who decides,&lt;br/&gt;confirmed with the other"]
+  C -- no --> DEF["Deferred, with a reason and a name"]
+    </pre></div>
+  </section>
+
+  <section class="panel" id="signoff">
+    <h2>49 · From pre-read to sign-off</h2>
+    <p class="read">What an owner goes through. Signing confirms the description, not that the system is accepted.</p>
+    <div class="diagram"><pre class="mermaid">
+flowchart TB
+  A["Summary and Glossary sent&lt;br/&gt;5 working days before"] --> B["Owner marks each item&lt;br/&gt;correct, change, wrong, not mine"]
+  B --> C["Workshop goes through&lt;br/&gt;the marks"]
+  C --> D["Notes sent next day&lt;br/&gt;owner corrects by a date"]
+  D --> E["Play-back&lt;br/&gt;decisions read to all four"]
+  E --> F["Sign-off&lt;br/&gt;the description, not acceptance"]
+  classDef good fill:#d3ebe6,stroke:#1f7a6b,color:#0c2e29
+  class F good
+    </pre></div>
+  </section>
+
+  <section class="panel" id="tiebreak">
+    <h2>50 · When two owners disagree</h2>
+    <div class="diagram"><pre class="mermaid">
+flowchart TB
+  A["Two owners give different answers"] --> B["Write each position&lt;br/&gt;in one sentence"]
+  B --> C["Do not choose or take a side"]
+  C --> D["Take both to the Business owner"]
+  D --> E["Business owner decides"]
+  E --> F["Decision logged&lt;br/&gt;with both positions"]
+  classDef ask fill:#fdecc4,stroke:#a86a00,color:#3a2600,stroke-width:2px
+  class E ask
+    </pre></div>
+  </section>
+
+  <section class="panel" id="study">
+    <h2>51 · The seven-day study plan</h2>
+    <p class="read">For the QA preparing to run the sessions.</p>
+    <div class="diagram"><pre class="mermaid">
+flowchart TB
+  D1["Day 1&lt;br/&gt;Summary and&lt;br/&gt;Glossary"] --> D2["Day 2&lt;br/&gt;Freight&lt;br/&gt;basics"] --> D3["Day 3&lt;br/&gt;Approval and&lt;br/&gt;movement"] --> D4["Day 4&lt;br/&gt;Billing&lt;br/&gt;and tax"] --> D5["Day 5&lt;br/&gt;Bridge and&lt;br/&gt;ledger"] --> D6["Day 6&lt;br/&gt;Gaps and&lt;br/&gt;questions"] --> D7["Day 7&lt;br/&gt;Dry run&lt;br/&gt;a script"] --> ST["Self-test&lt;br/&gt;17 of 20 or more"]
+  classDef good fill:#d3ebe6,stroke:#1f7a6b,color:#0c2e29
+  class ST good
+    </pre></div>
+  </section>
+
+
+  <footer>Drawn from SRS v0.1 and SAD v0.1 (8 November 2026) and the requirements pack of 15 November 2026. Nothing here is agreed until its owner confirms it. Gap counts come from PROCESS-GAP-ANALYSIS.md.</footer>
+</main>

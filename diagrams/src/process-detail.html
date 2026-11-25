@@ -1,0 +1,413 @@
+<title>Platform Process Detail</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: one column of diagram panels, grouped under five headings, with a chip index on top. */
+:root {
+  --bg: #f4f7f8;
+  --panel: #ffffff;
+  --ink: #14232b;
+  --muted: #55676f;
+  --line: #d5dfe3;
+  --accent: #0d6b78;
+  --accent-ink: #ffffff;
+  --gap-bg: #fbdcd8;
+  --gap-ink: #8c1d16;
+  --ask-bg: #fdecc4;
+  --ask-ink: #7a4a00;
+  --ok-bg: #d3ebe6;
+  --ok-ink: #0f5547;
+  --no-bg: #e9eef0;
+  --canvas: #ffffff; /* diagrams keep a white canvas in both themes */
+  --font-head: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Inter", "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0e171c; --panel: #16232a; --ink: #e6eef1; --muted: #9db0b8; --line: #2a3b44;
+    --accent: #4fc3d1; --accent-ink: #072228;
+    --gap-bg: #4a1f1c; --gap-ink: #ffb4ab; --ask-bg: #4a3710; --ask-ink: #f5cf7a;
+    --ok-bg: #123a33; --ok-ink: #8fd9c8; --no-bg: #1f2f37;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0e171c; --panel: #16232a; --ink: #e6eef1; --muted: #9db0b8; --line: #2a3b44;
+  --accent: #4fc3d1; --accent-ink: #072228;
+  --gap-bg: #4a1f1c; --gap-ink: #ffb4ab; --ask-bg: #4a3710; --ask-ink: #f5cf7a;
+  --ok-bg: #123a33; --ok-ink: #8fd9c8; --no-bg: #1f2f37;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.55;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 28px 64px;
+}
+main { max-width: 1040px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
+h1, h2, h3 { font-family: var(--font-head); line-height: 1.2; text-wrap: balance; margin: 0; }
+h1 { font-size: 2rem; }
+h2 { font-size: 1.3rem; }
+h3 { font-size: 1rem; }
+p { margin: 0; max-width: 68ch; }
+a { color: var(--accent); }
+.lede { color: var(--muted); }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 0.85rem; align-items: center; }
+.sw { display: inline-block; width: 14px; height: 14px; border-radius: 3px; margin-right: 6px; vertical-align: -2px; border: 2px solid; }
+.sw.gap { background: var(--gap-bg); border-color: var(--gap-ink); }
+.sw.ask { background: var(--ask-bg); border-color: var(--ask-ink); }
+.sw.ok { background: var(--ok-bg); border-color: var(--ok-ink); }
+nav { display: flex; flex-wrap: wrap; gap: 6px; }
+nav a { text-decoration: none; font-size: 0.82rem; padding: 4px 10px; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); color: var(--ink); }
+nav a:hover, nav a:focus-visible { border-color: var(--accent); outline: none; }
+.group { font-family: var(--font-head); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.78rem; color: var(--muted); margin-top: 18px; }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 18px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.read { color: var(--muted); font-size: 0.92rem; }
+.diagram { overflow-x: auto; padding: 4px 0; }
+.diagram pre.mermaid { margin: 0; text-align: center; }
+.dg { background: var(--canvas); border: 1px solid var(--line); border-radius: 6px; padding: 12px; overflow-x: auto; text-align: center; }
+.dg svg { max-width: 100%; height: auto; }
+.watch { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: baseline; font-size: 0.88rem; }
+.watch strong { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+.q { font-variant-numeric: tabular-nums; font-size: 0.78rem; padding: 1px 7px; border-radius: 4px; background: var(--ask-bg); color: var(--ask-ink); white-space: nowrap; }
+.q.gap { background: var(--gap-bg); color: var(--gap-ink); }
+.pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+.pair > div { min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+.strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(118px, 1fr)); gap: 8px; }
+.cell { border: 1px solid var(--line); border-radius: 6px; padding: 10px; background: var(--no-bg); display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.cell b { font-family: var(--font-head); font-size: 1.7rem; line-height: 1; font-variant-numeric: tabular-nums; }
+.cell span { font-size: 0.8rem; }
+.cell em { font-style: normal; font-size: 0.78rem; font-weight: 600; }
+.cell.h0 { background: var(--ok-bg); color: var(--ok-ink); }
+.cell.h1 { background: var(--ask-bg); color: var(--ask-ink); }
+.cell.h2 { background: var(--gap-bg); color: var(--gap-ink); }
+.cell.h3 { background: var(--gap-ink); color: var(--gap-bg); }
+.table-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; min-width: 560px; font-size: 0.88rem; }
+th, td { border: 1px solid var(--line); padding: 6px 8px; text-align: center; }
+th:first-child, td:first-child { text-align: left; }
+th { background: var(--no-bg); font-weight: 600; }
+td.y { background: var(--ok-bg); color: var(--ok-ink); font-weight: 600; }
+td.n { background: var(--no-bg); color: var(--muted); }
+td.r { background: var(--no-bg); color: var(--ink); }
+td.a { background: var(--ask-bg); color: var(--ask-ink); font-weight: 700; }
+td.s { background: var(--gap-bg); color: var(--gap-ink); font-weight: 700; }
+footer { color: var(--muted); font-size: 0.85rem; }
+@media (max-width: 520px) { h1 { font-size: 1.6rem; } .panel { padding: 14px; } }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Space+Grotesk:wght@500;700&display=swap">
+
+<main>
+  <header style="display:flex;flex-direction:column;gap:12px">
+    <h1>Platform Process Detail</h1>
+    <p class="lede">Part 2 of 3. The freight, movement and money processes in more detail: booking step by step, consolidation, documents, RORO vehicles, deliveries, tracking, the map, voiding, posting, month-end, checks, voucher numbers and the exchange rate.</p>
+    <div class="legend" aria-label="Colour key">
+      <span><i class="sw gap"></i>A gap today</span>
+      <span><i class="sw ask"></i>An open question (IDs like <span class="q">OP-02</span> are in OPEN-QUESTIONS.md)</span>
+      <span><i class="sw ok"></i>An end state, or settled</span>
+    </div>
+    <nav aria-label="Diagrams on this page"><a href="#seq-booking">20 Booking sequence</a><a href="#consol-booking">21 Consolidation booking</a><a href="#documents">22 Documents</a><a href="#roro">23 RORO intake</a><a href="#cartage">24 Cartage and dispatch</a><a href="#tracking">25 Tracking</a><a href="#mapfeed">26 Map</a><a href="#void">27 Void</a><a href="#bridge-seq">28 Posting sequence</a><a href="#monthend">29 Month-end</a><a href="#checks">30 Checks</a><a href="#vouchers">31 Voucher numbers</a><a href="#money">32 Money in and out</a><a href="#fx">33 Exchange rate</a></nav>
+    <nav aria-label="Other parts"><a href="https://claude.ai/artifact/244QyWx19WTEQGW43f2vBK" target="_blank" rel="noopener">Part 1: Process Diagrams</a><a href="https://claude.ai/artifact/HAdpyicBFKjYJvbhvHd2Dc" target="_blank" rel="noopener">Part 3: Access and Release</a></nav>
+  </header>
+
+  <h2 class="group">Freight, movement and tracking in detail</h2>
+
+  <section class="panel" id="seq-booking">
+    <h2>20 · Booking to billing, step by step</h2>
+    <p class="read">Who talks to whom from the first save to the first invoice draft.</p>
+    <div class="diagram"><pre class="mermaid">
+sequenceDiagram
+  participant O as Operator
+  participant M as Manager
+  participant S as The system
+  participant B as Billing engine
+  O->>S: Enter the file,&lt;br/&gt;required fields and warnings checked
+  S-->>O: Saved as Draft under the Operator's Company
+  O->>S: Submit
+  S-->>O: Pending, revision up by one,&lt;br/&gt;event written, file locked
+  alt Manager approves
+    M->>S: Approve
+    S-->>M: Approved, event written,&lt;br/&gt;billing released
+    S->>B: Rate the file
+    B-->>S: Sell Lines, Cost Lines,&lt;br/&gt;Draft Invoice
+    S->>S: Stage items in the bridge, if Review mode
+  else Manager returns
+    M->>S: Return with a note
+    S-->>O: For Correction, note and image shown
+    O->>S: Fix and resubmit, back to Pending
+  end
+    </pre></div>
+    <div class="watch"><strong>Ask</strong> <span class="q">OP-15</span> which fields are required <span class="q">OP-16</span> how each person learns it is their turn</div>
+  </section>
+
+  <section class="panel" id="consol-booking">
+    <h2>21 · Booking an air consolidation</h2>
+    <p class="read">One master, many houses, all typed as rows on one screen.</p>
+    <div class="diagram"><pre class="mermaid">
+flowchart TB
+  A["Open an air file and enter the MAWB"] --> B["Type the HAWB rows on one screen&lt;br/&gt;5 rows or 40 rows&lt;br/&gt;number, shipper, consignee, notify party,&lt;br/&gt;pieces, weight, dimensions"]
+  B --> C{"Same HAWB or master&lt;br/&gt;number used twice?"}
+  C -- yes --> W["Flagged as a duplicate"]
+  C -- no --> D["Pieces and gross weight&lt;br/&gt;rolled up to the master"]
+  W --> D
+  D --> E["Master Chargeable Weight =&lt;br/&gt;greater of total gross and total volume"]
+  E --> F["Print the consolidation manifest,&lt;br/&gt;the MAWB and each HAWB"]
+  E --> G["Print one Arrival Notice&lt;br/&gt;for each HAWB"]
+  E --> H["Rate and invoice&lt;br/&gt;the house number on the invoice&lt;br/&gt;repeats the MAWB number"]
+  classDef ask fill:#fdecc4,stroke:#a86a00,color:#3a2600,stroke-width:2px
+  class H ask
+    </pre></div>
+    <div class="watch"><strong>Ask</strong> <span class="q gap">AC-01</span> how it is invoiced <span class="q">OP-11</span> the house number <span class="q">OP-07</span> legal format of the house documents</div>
+  </section>
+
+  <section class="panel" id="documents">
+    <h2>22 · Printed documents from a file</h2>
+    <p class="read">Documents are printed from the browser with the Company's branded layouts. The commercial invoice is for the goods, not the forwarder's own Invoice.</p>
+    <div class="diagram"><pre class="mermaid">
+flowchart LR
+  F["Freight File"] --> MO{"Mode"}
+  MO -- Ocean --> BL["Bill of lading"]
+  MO -- Air --> AWB["Air Waybill"]
+  F --> PL["Packing list"]
+  F --> CI["Commercial invoice&lt;br/&gt;for the goods"]
+  F --> MF["Manifest"]
+  F --> ED["Export declaration"]
+  F --> AN["Arrival Notice"]
+  AN --> EM{"Email sending&lt;br/&gt;set up?"}
+  EM -- no --> PV["Preview only"]
+  EM -- yes --> SE["Sent by email"]
+  HB["House bill of lading&lt;br/&gt;listed in the SAD only"] -.-> BL
+  classDef ask fill:#fdecc4,stroke:#a86a00,color:#3a2600,stroke-width:2px
+  class HB,EM ask
+    </pre></div>
+    <div class="watch"><strong>Ask</strong> <span class="q">DOC-07</span> house bill of lading <span class="q">OP-09</span> email at go-live <span class="q">OP-07</span> which documents need a legal format</div>
+  </section>
+
+  <section class="panel" id="roro">
+    <h2>23 · Receiving a RORO vehicle</h2>
+    <p class="read">From intake to shipment. The three hold markers have no stated rules.</p>
+    <div class="diagram"><pre class="mermaid">
+flowchart TB
+  A["Vehicle is expected or arrives&lt;br/&gt;ID number, year, make, model, colour,&lt;br/&gt;shipper, consignee, ports,&lt;br/&gt;booking number, location, condition"] --> B{"US-format&lt;br/&gt;vehicle number?"}
+  B -- yes --> C["Details filled in from&lt;br/&gt;a public lookup"]
+  B -- no --> D["Details typed by hand"]
+  C & D --> E["Set the title status&lt;br/&gt;Pending, Received or Missing"]
+  E --> F{"Customs hold or&lt;br/&gt;lien release flag set?"}
+  F -- yes --> G["Hold&lt;br/&gt;who sets and clears it&lt;br/&gt;is not stated"]
+  F -- no --> H["Status moves on: Received, Ready to Ship,&lt;br/&gt;Pre-Loaded, Loaded, Shipped"]
+  G -.-> H
+  H --> I["Every status change&lt;br/&gt;kept in the history"]
+  classDef ask fill:#fdecc4,stroke:#a86a00,color:#3a2600,stroke-width:2px
+  class G ask
+    </pre></div>
+    <div class="watch"><strong>Ask</strong> <span class="q">OP-17</span> hold rules <span class="q">AC-17</span> how shipping a vehicle is billed</div>
+  </section>
+
+  <section class="panel" id="cartage">
+    <h2>24 · A delivery from order to proof</h2>
+    <p class="read">A Cartage Order says what to move. A Dispatch Route says which Driver and truck do it, and where they stop.</p>
+    <div class="diagram"><pre class="mermaid">
+flowchart LR
+  subgraph CO["Cartage Order"]
+    direction TB
+    C1["Create&lt;br/&gt;pickup, delivery,&lt;br/&gt;cross-dock or exchange&lt;br/&gt;addresses, schedule, cargo"] --> C2["Assign a Driver&lt;br/&gt;and equipment"] --> C3["In Transit"] --> C4["Delivered"]
+    C1 -. "may link to" .-> FF["Freight File"]
+  end
+  subgraph DR["Dispatch Route"]
+    direction TB
+    D1["Draft&lt;br/&gt;Driver, Fleet Vehicle,&lt;br/&gt;stops, cargo reference"] --> D2["Dispatched"] --> D3["In Transit"] --> D4["Arrived"] --> D5["Completed"]
+    D4 --> POD["Proof of Delivery&lt;br/&gt;needs a signature pad&lt;br/&gt;none is connected"]
+  end
+  classDef gap fill:#fbdcd8,stroke:#b3261e,color:#3a0f0c,stroke-width:2px
+  class POD gap
+    </pre></div>
+    <div class="watch"><strong>Ask</strong> <span class="q gap">OP-10</span> proof without a pad <span class="q">OP-04</span> is a dispatcher a role <span class="q">AC-17</span> how it is billed</div>
+  </section>
+
+  <section class="panel" id="tracking">
+    <h2>25 · Tracking a shipment</h2>
+    <p class="read">Staff type each update. The public sees only what staff have entered.</p>
+    <div class="diagram"><pre class="mermaid">
+flowchart TB
+  A["Tracking Item created&lt;br/&gt;reference number, linked to a Freight File,&lt;br/&gt;Cartage Order or RORO Vehicle"] --> B["Staff add a Milestone&lt;br/&gt;status, place, note, date and time"]
+  B --> C["Milestones shown in time order"]
+  C --> D["Public Lookup shows&lt;br/&gt;status and Milestones"]
+  F["Customer Web Account&lt;br/&gt;permission flags only"] -.-> E["Customer portal&lt;br/&gt;sign-in, own files, invoices"]
+  C -.-> E
+  classDef gap fill:#fbdcd8,stroke:#b3261e,color:#3a0f0c,stroke-width:2px
+  class E gap
+    </pre></div>
+    <div class="watch"><strong>Ask</strong> <span class="q">OP-06</span> who enters updates and how soon <span class="q">BO-05</span> is the portal needed at go-live. Dotted means not built.</div>
+  </section>
+
+  <section class="panel" id="mapfeed">
+    <h2>26 · The live map</h2>
+    <p class="read">Branches, ports and routes come from the Company's own data. Ship and aircraft positions come from outside feeds, with limits.</p>
+    <div class="diagram"><pre class="mermaid">
+flowchart TB
+  A["Someone opens the map"] --> B["Branches, ports and active&lt;br/&gt;Dispatch Routes drawn&lt;br/&gt;from the Company's records"]
+  A --> C["Ship or aircraft search"]
+  C --> D{"Within 20 degrees a side&lt;br/&gt;or 250 nautical miles?"}
+  D -- no --> X["Refused or cut down&lt;br/&gt;not stated which"]
+  D -- yes --> E{"Feed set up?"}
+  E -- no --> F["Map says not configured&lt;br/&gt;no sample data shown"]
+  E -- yes --> G["At most 1,500 markers returned"]
+  H["Needs internet for the map background&lt;br/&gt;ships also need a feed token"] -.-> A
+  classDef ask fill:#fdecc4,stroke:#a86a00,color:#3a2600,stroke-width:2px
+  class X ask
+    </pre></div>
+    <div class="watch"><strong>Ask</strong> <span class="q">BO-08</span> are ship and aircraft positions needed at go-live</div>
+  </section>
+
+  <h2 class="group">Money in detail</h2>
+
+  <section class="panel" id="void">
+    <h2>27 · Voiding a posted Invoice</h2>
+    <p class="read">The books are never edited. A second, opposite entry cancels the first.</p>
+    <div class="diagram"><pre class="mermaid">
+sequenceDiagram
+  participant A as Accountant
+  participant S as The system
+  participant L as Ledger
+  A->>S: Void the Posted Invoice
+  S->>L: Write a Reversal Voucher in the open Period
+  L-->>S: It mirrors the posted Vouchers
+  S->>S: Mark the Invoice Void
+  S->>S: Draft the next revision from the file
+  S-->>A: New Draft Invoice, higher revision number
+  Note over A,L: Posted data is never edited. There is no Credit Note.
+    </pre></div>
+    <div class="watch"><strong>Ask</strong> <span class="q gap">AC-06</span> Credit Note <span class="q">AC-05</span> do voided numbers meet the tax rules <span class="q">AC-25</span> which month if the Invoice is in a closed month</div>
+  </section>
+
+  <section class="panel" id="bridge-seq">
+    <h2>28 · Posting an item, step by step</h2>
+    <p class="read">Who does what between a staged amount and a line in the books.</p>
+    <div class="diagram"><pre class="mermaid">
+sequenceDiagram
+  participant B as Billing flow
+  participant A as Accountant
+  participant S as The system
+  participant R as Bridge rules
+  participant L as Ledger
+  B->>S: Stage items once each,&lt;br/&gt;status Staged
+  A->>S: Open the queue and select items
+  S->>R: Is each Charge Code&lt;br/&gt;linked to an account?
+  alt Not linked
+    R-->>A: Refused with the reason
+  else Linked
+    A->>S: Trial Post
+    S->>R: Build the Journal in memory,&lt;br/&gt;check debits equal credits
+    R-->>A: Trial Verified, nothing written
+    A->>S: Post
+    S->>L: Write the balanced Journal
+    L-->>S: Journal reference
+    S-->>A: Posted, audit record written
+  end
+  Note over A,L: A Closed Period refuses the entry
+    </pre></div>
+    <div class="watch"><strong>Ask</strong> <span class="q">AC-23</span> is the Trial Post mandatory <span class="q">AC-15</span> who may do each step</div>
+  </section>
+
+  <section class="panel" id="monthend">
+    <h2>29 · Month-end close</h2>
+    <p class="read">After the close, the month's figures cannot change.</p>
+    <div class="diagram"><pre class="mermaid">
+sequenceDiagram
+  participant A as Accountant
+  participant S as The system
+  participant L as Ledger
+  A->>S: Run month-end for the open Period
+  S->>L: Create the closing entries
+  S->>L: Mark the Period Closed
+  S-->>A: Closed
+  A->>S: Later, enter a Journal dated in that month
+  S-->>A: Refused, the first open date is named
+  Note over A,L: Reopening is done outside the system
+    </pre></div>
+    <div class="watch"><strong>Ask</strong> <span class="q gap">AC-12</span> how reopening is authorised and recorded <span class="q">AC-21</span> year-end <span class="q">AC-25</span> can two months be open at once</div>
+  </section>
+
+  <section class="panel" id="checks">
+    <h2>30 · A Check Disbursement</h2>
+    <p class="read">Checks are recorded and printed by staff. There are no bank file transfers.</p>
+    <div class="diagram"><pre class="mermaid">
+stateDiagram-v2
+  direction LR
+  [*] --> Draft
+  Draft --> Printed: printed by staff
+  Printed --> Posted: Journal reference recorded
+  Draft --> Void
+  Printed --> Void
+  Posted --> [*]
+  Void --> [*]
+  note right of Printed
+    Which moves are allowed
+    is not stated
+  end note
+    </pre></div>
+    <div class="watch"><strong>Ask</strong> <span class="q">AC-22</span> what checks are used for, and where other payments are recorded <span class="q">DOC-09</span> check or cash disbursement voucher</div>
+  </section>
+
+  <section class="panel" id="vouchers">
+    <h2>31 · Voucher numbers for one Invoice</h2>
+    <p class="read">Each Invoice has three fixed Voucher numbers, and the system checks the Ledger before writing any of them, so running a step twice cannot double-post.</p>
+    <div class="diagram"><pre class="mermaid">
+flowchart LR
+  I["Invoice"] --> V1["Sales invoice&lt;br/&gt;Voucher number"]
+  I --> V2["Receipt&lt;br/&gt;Voucher number"]
+  I --> V3["Reversal&lt;br/&gt;Voucher number"]
+  V1 & V2 & V3 --> C{"Checked against the Ledger&lt;br/&gt;before every write"}
+  C -- "already written" --> N["Nothing written again"]
+  C -- "not yet written" --> W["Voucher written"]
+  R["How a customer payment&lt;br/&gt;gets a receipt is not described"] -.-> V2
+  classDef gap fill:#fbdcd8,stroke:#b3261e,color:#3a0f0c,stroke-width:2px
+  class R gap
+    </pre></div>
+    <div class="watch"><strong>Ask</strong> <span class="q">AC-08</span> are payments and receipts in scope</div>
+  </section>
+
+  <section class="panel" id="money">
+    <h2>32 · Money in and money out</h2>
+    <p class="read">What the documents cover (solid) and what they leave out (dotted, red).</p>
+    <div class="diagram"><pre class="mermaid">
+flowchart LR
+  subgraph AR["Money in: receivables"]
+    direction LR
+    S1["Sell Lines"] --> I1["Invoice"] --> B1["Bridge item, AR"] --> L1["Ledger"]
+  end
+  subgraph AP["Money out: payables"]
+    direction LR
+    C1["Cost Lines&lt;br/&gt;estimates from Tariffs"] --> B2["Bridge item, AP"] --> L2["Ledger"]
+  end
+  L1 -.-> P1["Customer payment, receipt,&lt;br/&gt;aging, statement of account"]
+  L2 -.-> P2["Supplier's actual bill,&lt;br/&gt;matching, payment"]
+  L1 & L2 -.-> PR["Profit per file,&lt;br/&gt;Customer or Lane"]
+  classDef gap fill:#fbdcd8,stroke:#b3261e,color:#3a0f0c,stroke-width:2px
+  class P1,P2,PR gap
+    </pre></div>
+    <div class="watch"><strong>Ask</strong> <span class="q gap">AC-08</span> collections <span class="q gap">AC-09</span> supplier bills <span class="q">AC-10</span> profit <span class="q">AC-22</span> other payments</div>
+  </section>
+
+  <section class="panel" id="fx">
+    <h2>33 · The exchange rate: no rule yet</h2>
+    <p class="read">Invoices can be in dollars and the books are in pesos. The documents give no rule, and they disagree on who fetches the rate.</p>
+    <div class="diagram"><pre class="mermaid">
+flowchart TB
+  A["Invoice in USD or another currency&lt;br/&gt;the books are kept in PHP"] --> Q{"Which rate, from where,&lt;br/&gt;fixed at which moment?"}
+  Q --> P1["SRS: the server calls&lt;br/&gt;the exchange rate service"]
+  Q --> P2["SAD: the browser may connect&lt;br/&gt;to the exchange rate service"]
+  Q --> P3["No rule for the moment:&lt;br/&gt;booking, issue or posting"]
+  P1 & P2 & P3 --> R["Decision needed"]
+  classDef gap fill:#fbdcd8,stroke:#b3261e,color:#3a0f0c,stroke-width:2px
+  classDef ask fill:#fdecc4,stroke:#a86a00,color:#3a2600,stroke-width:2px
+  class Q gap
+  class R ask
+    </pre></div>
+    <div class="watch"><strong>Ask</strong> <span class="q gap">AC-03</span> the rule <span class="q">TL-08</span> where the rate is fetched <span class="q">Q8</span></div>
+  </section>
+
+
+  <footer>Drawn from SRS v0.1 and SAD v0.1 (8 November 2026) and the requirements pack of 15 November 2026. Nothing here is agreed until its owner confirms it. Gap counts come from PROCESS-GAP-ANALYSIS.md.</footer>
+</main>

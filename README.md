@@ -33,7 +33,10 @@ Everything QA needs to confirm the requirements of the Platform with its four ow
 
 | File | What it is for |
 |---|---|
-| [diagrams/process-diagrams.html](diagrams/process-diagrams.html) | 19 diagrams, one for each process in the pack: the lifecycle, a gap map, approval, weights, billing, the bridge, sign-in, and how to run the workshops. Published as an [artifact](https://claude.ai/artifact/244QyWx19WTEQGW43f2vBK), which draws the diagrams; the file itself needs that viewer. |
+| [diagrams/process-diagrams.html](diagrams/process-diagrams.html) | Part 1 of 3, 19 diagrams: quote to ledger, a gap map, approval, weights, billing, who can do what, sign-in, running the workshops. Published as an [artifact](https://claude.ai/artifact/244QyWx19WTEQGW43f2vBK). |
+| [diagrams/process-detail.html](diagrams/process-detail.html) | Part 2 of 3, 14 diagrams: booking, consolidation, documents, RORO, deliveries, tracking, the map, voiding, posting, month-end, checks, vouchers, exchange rate. [Artifact](https://claude.ai/artifact/L7edNbvhsRgGWLc7E8zNnH). |
+| [diagrams/access-and-release.html](diagrams/access-and-release.html) | Part 3 of 3, 18 diagrams: sign-in and access, what happens on every action, release, backup, the go-live gate, and the pack's working methods. [Artifact](https://claude.ai/artifact/HAdpyicBFKjYJvbhvHd2Dc). |
+| | Each diagram is drawn into its page as a picture, so the files open in any browser. The editable sources are in `diagrams/src/`, and `tools/build-diagrams.mjs` rebuilds the pages from them. They are split into three pages because one page with all 51 showed code instead of drawings. |
 
 ### For stakeholders
 
